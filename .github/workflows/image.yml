@@ -1,0 +1,66 @@
+name: Image
+
+# Builds the site image, checks it serves the page, and publishes it to
+# ghcr.io/ifoknr/tools so a server (CasaOS, Docker) can pull it.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check scripts
+        run: |
+          node --check site/assets/boot.js
+          node --check site/assets/tools.js
+          node --check site/assets/app.js
+
+      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Build for this runner
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          load: true
+          tags: tools:test
+
+      - name: Smoke test
+        run: |
+          docker run -d --name site -p 8090:80 tools:test
+          for i in $(seq 1 20); do curl -fs http://127.0.0.1:8090/ >/dev/null && break; sleep 1; done
+          curl -fsS http://127.0.0.1:8090/ | grep -q 'assets/app.js'
+          curl -fsSI http://127.0.0.1:8090/assets/tools.js | grep -qi 'content-security-policy'
+          curl -fsS -o /dev/null http://127.0.0.1:8090/assets/fonts/NotoKufiArabic-Regular.woff
+          docker logs site
+
+      - name: Log in to ghcr.io
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish (amd64 + arm64)
+        if: github.event_name != 'pull_request'
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/tools:latest
+            ghcr.io/${{ github.repository_owner }}/tools:${{ github.sha }}
+          labels: |
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.description=IFOKNR tools website

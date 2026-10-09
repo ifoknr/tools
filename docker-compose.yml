@@ -1,0 +1,10 @@
+# Run with: docker compose up -d
+# The site is then at http://SERVER-IP:8090
+services:
+  tools:
+    image: ghcr.io/ifoknr/tools:latest
+    # To build from this folder instead of pulling, replace the line above with:  build: .
+    container_name: ifoknr-tools
+    ports:
+      - "8090:80"
+    restart: unless-stopped
