@@ -103,7 +103,7 @@ if curl -fsS -o /dev/null "http://127.0.0.1:$PORT/"; then
   ip=$(hostname -I 2>/dev/null | awk '{print $1}')
   echo "The site is up: http://${ip:-SERVER-IP}:$PORT"
   if [ -n "$TOKEN" ]; then
-    echo "In Cloudflare, point the public hostname to: HTTP  localhost:$PORT"
+    echo "In Cloudflare, point the public hostname to: HTTP  127.0.0.1:$PORT (not localhost, which can resolve to IPv6)"
   fi
 else
   echo "nginx did not answer on port $PORT. Check: nginx -t ; journalctl -u nginx" >&2
