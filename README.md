@@ -32,8 +32,15 @@ docker pull ghcr.io/ifoknr/tools:latest && docker rm -f ifoknr-tools && docker r
 ```
 الإصدارات الجديدة للأدوات ما تحتاج تحديث: الموقع يجيبها من GitHub مباشرة.
 
-### بدون Docker
-انسخ مجلد `site` لأي سيرفر ويب (nginx، Apache، Caddy) وخلاص.
+### بدون Docker (مثل Droidspaces)
+لو Docker ما يقدر يشغّل حاويات على سيرفرك، هذا الأمر يركّب الموقع على nginx مباشرة على المنفذ 8090، ويحدّثه لحاله كل ساعة:
+```bash
+curl -fsSL https://raw.githubusercontent.com/ifoknr/tools/main/install.sh | bash
+```
+ومعه نفق Cloudflare لدومينك:
+```bash
+curl -fsSL https://raw.githubusercontent.com/ifoknr/tools/main/install.sh | bash -s -- --tunnel التوكن
+```
 
 ## إضافة أداة أو تعديلها
 كل الأدوات في ملف واحد: [`site/assets/tools.json`](site/assets/tools.json). أضف عنصر جديد بنفس الشكل: الاسم، المستودع، اللون، والنص بالعربي والإنجليزي. الموقع والبوت الاثنين يقرون منه.
@@ -84,6 +91,7 @@ docker run -d --name ifoknr-tools-bot --restart unless-stopped \
 
 - **CasaOS:** App Store → Custom Install → image `ghcr.io/ifoknr/tools:latest`, host port `8090` → container port `80`.
 - **Docker:** `docker run -d --name ifoknr-tools -p 8090:80 --restart unless-stopped ghcr.io/ifoknr/tools:latest`
+- **Without Docker** (Debian/Ubuntu, e.g. Droidspaces): `curl -fsSL https://raw.githubusercontent.com/ifoknr/tools/main/install.sh | bash` sets up nginx on port 8090 with hourly updates; add `-s -- --tunnel TOKEN` to connect a Cloudflare Tunnel.
 - **Anything else:** serve the `site` folder with any web server.
 
 To add or change a tool, edit [`site/assets/tools.json`](site/assets/tools.json); the site and the bot both read it.
