@@ -62,7 +62,15 @@ curl -fsSL https://raw.githubusercontent.com/ifoknr/tools/main/install.sh | bash
 2. شغّل البوت (الخطوة الجاية) مرة بدون `OWNER_IDS`، وأرسل له `/id`، يرد عليك برقمك.
 3. حط رقمك في `OWNER_IDS` وأعد تشغيله.
 
-### من CasaOS
+### بدون Docker (مثل Droidspaces) — الأسهل
+```bash
+curl -fsSL https://raw.githubusercontent.com/ifoknr/tools/main/install-bot.sh | bash
+```
+يسألك عن التوكن (ما يطلع على الشاشة) ورقمك في تيليجرام، ويركّب البوت كخدمة تشتغل لحالها مع الجهاز. لو ما تعرف رقمك خلّه فاضي، وأرسل للبوت `/id`، وبعدها شغّل نفس الأمر مرة ثانية وحط الرقم. نفس الأمر يحدّث البوت بعدين بدون ما يضيع إعداداتك.
+- الإعدادات في `/etc/ifoknr-bot.env`، والملفات في `/DATA/Telegram` (لو عندك CasaOS) أو `/var/lib/ifoknr-bot/files`.
+- حالة البوت: `systemctl status ifoknr-bot`، وسجله: `journalctl -u ifoknr-bot -n 50`.
+
+### من CasaOS (Docker)
 App Store ← **Custom Install**:
 - **Docker Image:** `ghcr.io/ifoknr/tools-bot:latest`
 - **Environment variables:**
@@ -100,6 +108,7 @@ To add or change a tool, edit [`site/assets/tools.json`](site/assets/tools.json)
 
 - Everyone: `/tools`, `/latest`, `/lang`, `/id`; one card per tool with the live version and a download button.
 - The owner (`OWNER_IDS`): send any file to store it on the server; `/files` to browse, download, delete and pick the upload folder; `/mkdir`, `/here`, `/note`, `/status`.
+- Without Docker: `curl -fsSL https://raw.githubusercontent.com/ifoknr/tools/main/install-bot.sh | bash` (asks for the token and your id; runs as the `ifoknr-bot` systemd service; run again to update).
 - Image `ghcr.io/ifoknr/tools-bot:latest`. Environment: `BOT_TOKEN` (from @BotFather), `OWNER_IDS`, optional `SITE_URL`, `CHANNEL_URL`, `GITHUB_TOKEN`, `BOT_API_URL`. Volumes: `/data` (settings) and `/data/files` (stored files).
 - Telegram limits bots to 20 MB downloads and 50 MB uploads; the optional `bot-api` service in `docker-compose.yml` raises both to 2 GB.
 - Tests: `cd bot && pip install -r requirements-dev.txt && cp ../site/assets/tools.json ifoknr_bot/ && pytest`
