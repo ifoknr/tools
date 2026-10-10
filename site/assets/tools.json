@@ -1,0 +1,251 @@
+[
+  {
+    "id": "nextzygisk",
+    "name": [
+      "Next",
+      "Zygisk"
+    ],
+    "repo": "ifoknr/NexTZygisk",
+    "group": "hide",
+    "layer": "zygote",
+    "accent": "#3ee0a0",
+    "version": "v1.0.5",
+    "asset": "release\\.zip$",
+    "license": "AGPL-3.0",
+    "base": {
+      "name": "ReZygisk",
+      "by": "PerformanC",
+      "url": "https://github.com/PerformanC/ReZygisk"
+    },
+    "needs": [
+      "KernelSU",
+      "ReSukiSU",
+      "Magisk",
+      "APatch",
+      "Android 7.1+"
+    ],
+    "ar": {
+      "tagline": "Zygisk مستقل لكل مدراء الروت.",
+      "about": "يشغّل وحدات Zygisk مثل LSPosed، NextWheel، Play Integrity Fix، ويخفي الروت عن التطبيقات اللي تختارها.",
+      "points": [
+        "فتح أسرع للتطبيقات: الإجابة تجي من الذاكرة بدل قاعدة البيانات",
+        "أكثر من 12 إصلاح في الخدمة والمراقبة والكود داخل Zygote",
+        "لوحة تحكم داخل مدير الروت: الحالة والوحدات والإخفاء"
+      ]
+    },
+    "en": {
+      "tagline": "Standalone Zygisk for every root manager.",
+      "about": "Runs Zygisk modules such as LSPosed, Play Integrity Fix and NextWheel, and hides root from the apps you choose.",
+      "points": [
+        "Faster app launches: answers come from memory, not the database",
+        "More than a dozen fixes in the daemon, monitor and Zygote code",
+        "A dashboard in your root manager: status, modules and hiding"
+      ]
+    }
+  },
+  {
+    "id": "nextwheel",
+    "name": [
+      "Next",
+      "Wheel"
+    ],
+    "repo": "ifoknr/NextWheel",
+    "group": "hide",
+    "layer": "apps",
+    "accent": "#3ee0a0",
+    "version": "v0.0.15",
+    "asset": "\\.zip$",
+    "license": "AGPL-3.0",
+    "base": {
+      "name": "Treat Wheel",
+      "by": "ThePedroo",
+      "url": "https://github.com/ThePedroo"
+    },
+    "needs": [
+      "NextZygisk / ReZygisk 508+",
+      "Magisk",
+      "KernelSU",
+      "APatch",
+      "Android 7.1+"
+    ],
+    "ar": {
+      "tagline": "طبقة التطبيقات: يخفي Zygisk والروت داخل التطبيقات.",
+      "about": "مبني ليشتغل مع NextZygisk. خفيف وما يترك أثر، ومعه لوحة حية توضّح إذا الإخفاء شغّال أو توقف.",
+      "points": [
+        "لوحة حية: الإخفاء شغّال، انهار، أو Zygisk وقف",
+        "يشتغل مع NextZygisk أو ReZygisk",
+        "واجهة بـ 11 لغة منها العربي، للجوال والتابلت"
+      ]
+    },
+    "en": {
+      "tagline": "The app layer: hides Zygisk and root inside apps.",
+      "about": "Built to work with NextZygisk. Light and traceless, with a live dashboard that shows whether hiding works or stopped.",
+      "points": [
+        "Live dashboard: working, crashed, or Zygisk stopped",
+        "Works with NextZygisk and ReZygisk",
+        "WebUI in 11 languages including Arabic, for phones and tablets"
+      ]
+    }
+  },
+  {
+    "id": "nextsusfs",
+    "name": [
+      "Next",
+      "SUSFS"
+    ],
+    "repo": "ifoknr/NextSUSFS",
+    "group": "hide",
+    "layer": "kernel",
+    "accent": "#3ee0a0",
+    "version": "v0.0.7",
+    "asset": "\\.zip$",
+    "license": "AGPL-3.0",
+    "base": null,
+    "uses": {
+      "name": "susfs4ksu",
+      "by": "simonpunk",
+      "url": "https://gitlab.com/simonpunk/susfs4ksu"
+    },
+    "needs": [
+      "KernelSU / Next / ReSukiSU / SukiSU",
+      "SuSFS v2"
+    ],
+    "ar": {
+      "tagline": "إخفاء الروت من مستوى النواة مع SuSFS.",
+      "about": "يخفي المسارات ونقاط الربط وخرائط الذاكرة والخصائص عن التطبيقات، وكل الإعدادات في واجهة وحدة.",
+      "points": [
+        "يخفي منظومة NEXT لحاله مع كل إقلاع",
+        "أكثر من 40 إعداد في 7 صفحات، وقوائم إخفاء خاصة فيك",
+        "أدوات الفحص داخل الواجهة: Native Detector وغيره"
+      ]
+    },
+    "en": {
+      "tagline": "Kernel-level root hiding with SuSFS.",
+      "about": "Hides paths, mounts, memory maps and properties from apps, with every option in one WebUI.",
+      "points": [
+        "Hides the NEXT stack automatically at every boot",
+        "40+ settings across 7 pages, plus your own hide lists",
+        "Detector apps one tap away to check the result"
+      ]
+    }
+  },
+  {
+    "id": "nextcore",
+    "name": [
+      "NEXT",
+      "CORE"
+    ],
+    "repo": "ifoknr/NEXTCORE",
+    "group": "perf",
+    "accent": "#ff6b2c",
+    "version": "v2.0.0",
+    "asset": "\\.(zip|apk)$",
+    "license": "Apache-2.0",
+    "base": {
+      "name": "AZenith / Encore Tweaks",
+      "by": "Zexshia · Rem01Gaming",
+      "url": "https://github.com/ifoknr/NEXTCORE/blob/main/NOTICE.md"
+    },
+    "needs": [
+      "KernelSU",
+      "APatch",
+      "Magisk",
+      "Android 10+"
+    ],
+    "ar": {
+      "tagline": "أداء مستدام وملفات ألعاب تلقائية، والحماية الحرارية تبقى شغّالة.",
+      "about": "يتعرّف على معالجك مع كل إقلاع ويطبّق اللي يناسبه بأمان، ويبدّل الوضع لحاله لما تفتح لعبة. ومعه تطبيق لإدارته.",
+      "points": [
+        "دعم كامل لمعالجات MediaTek، Snapdragon، Exynos، Tensor، Unisoc",
+        "ما يقفل ملفات النواة ولا يلمس خدمات الحرارة",
+        "مراقب عائم: 20 قراءة، والإطارات من SurfaceFlinger مباشرة"
+      ]
+    },
+    "en": {
+      "tagline": "Sustained performance and automatic game profiles, with thermal protection kept on.",
+      "about": "Reads your SoC on every boot, applies what fits it safely, and switches profiles when a game opens. Comes with an app.",
+      "points": [
+        "Full support for MediaTek, Snapdragon, Exynos, Tensor and Unisoc",
+        "Never locks kernel nodes or touches thermal services",
+        "Floating monitor: 20 readings, FPS straight from SurfaceFlinger"
+      ]
+    }
+  },
+  {
+    "id": "fastbootstudio",
+    "name": [
+      "Fastboot ",
+      "Studio"
+    ],
+    "icon": "assets/img/fastbootstudio-icon.png",
+    "repo": "ifoknr/FastbootStudio",
+    "group": "pc",
+    "accent": "#3dd6c4",
+    "version": "v2.3.0",
+    "asset": "\\.zip$",
+    "license": "MIT",
+    "base": {
+      "name": "Fastboot Enhance",
+      "by": "LibXZR",
+      "url": "https://github.com/libxzr/FastbootEnhance"
+    },
+    "needs": [
+      "Windows 10 / 11",
+      "x64"
+    ],
+    "winget": "winget install IFOKNR.FastbootStudio",
+    "ar": {
+      "tagline": "أداة أندرويد المتكاملة لويندوز.",
+      "about": "فلاش وتحديثات OTA وملفات payload والأقسام والنسخ الاحتياطي في تطبيق واحد، مع فحوصات تمنع الأخطاء اللي تخرّب الجوال.",
+      "points": [
+        "يفلّش payload.bin من ملف OTA مباشرة، ويسوي الأقسام الناقصة",
+        "يحسب مساحة super قبل الفلاش، ونسخ احتياطي للأقسام والملفات",
+        "طرفية، أدوات صور، وضع ليلي ونهاري، وعربي كامل"
+      ]
+    },
+    "en": {
+      "tagline": "The Android toolbox for Windows.",
+      "about": "Flashing, OTA payloads, partitions and backups in one app, with safety checks that stop the mistakes that brick phones.",
+      "points": [
+        "Flashes payload.bin straight from an OTA zip, creates missing partitions",
+        "Checks super space before flashing; backs up partitions and files",
+        "Terminal, image tools, light and dark themes, full Arabic"
+      ]
+    }
+  },
+  {
+    "id": "companion",
+    "name": [
+      "Fastboot Studio ",
+      "Companion"
+    ],
+    "icon": "assets/img/fastbootstudio-icon.png",
+    "repo": null,
+    "soon": true,
+    "group": "pc",
+    "accent": "#3dd6c4",
+    "needs": [
+      "KernelSU",
+      "Magisk",
+      "APatch"
+    ],
+    "ar": {
+      "tagline": "موديول روت يشتغل مع Fastboot Studio.",
+      "about": "يقرأ الأقسام ومعلومات الجهاز من داخل الجوال نفسه، ويجهّز النسخ الاحتياطي، ويوصلها لـ Fastboot Studio.",
+      "points": [
+        "نسخ الأقسام من داخل الجوال بدون fastboot",
+        "قراءة معلومات الجهاز والأقسام لأجهزة كثيرة",
+        "يكمل شغل Fastboot Studio على الكمبيوتر"
+      ]
+    },
+    "en": {
+      "tagline": "A root module that works with Fastboot Studio.",
+      "about": "Reads partitions and device info on the phone itself, prepares backups, and hands them to Fastboot Studio.",
+      "points": [
+        "Back up partitions on the phone, no fastboot needed",
+        "Reads device and partition info on many devices",
+        "Picks up where Fastboot Studio on the PC leaves off"
+      ]
+    }
+  }
+]

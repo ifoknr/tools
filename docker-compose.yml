@@ -1,5 +1,6 @@
 # Run with: docker compose up -d
-# The site is then at http://SERVER-IP:8090
+#   site → http://SERVER-IP:8090
+#   bot  → fill BOT_TOKEN and OWNER_IDS first (see README)
 services:
   tools:
     image: ghcr.io/ifoknr/tools:latest
@@ -7,4 +8,32 @@ services:
     container_name: ifoknr-tools
     ports:
       - "8090:80"
+    restart: unless-stopped
+
+  bot:
+    image: ghcr.io/ifoknr/tools-bot:latest
+    container_name: ifoknr-tools-bot
+    environment:
+      BOT_TOKEN: "PUT-THE-TOKEN-FROM-BOTFATHER-HERE"
+      OWNER_IDS: ""            # your Telegram id; send /id to the bot to get it
+      SITE_URL: ""             # e.g. http://SERVER-IP:8090, shown as a button
+      # BOT_API_URL: "http://bot-api:8081"   # uncomment with the bot-api service below for files up to 2 GB
+    volumes:
+      - ./bot-data:/data                 # settings
+      - ./telegram-files:/data/files     # the files you send to the bot
+      - ./bot-api:/var/lib/telegram-bot-api   # only used with the bot-api service (same path in both)
+    restart: unless-stopped
+
+  # Optional: a local Bot API server lifts Telegram's 20 MB download / 50 MB upload limit to 2 GB.
+  # Needs api_id and api_hash from https://my.telegram.org. Start with: docker compose --profile bigfiles up -d
+  bot-api:
+    profiles: ["bigfiles"]
+    image: aiogram/telegram-bot-api:latest
+    container_name: ifoknr-bot-api
+    environment:
+      TELEGRAM_API_ID: ""
+      TELEGRAM_API_HASH: ""
+      TELEGRAM_LOCAL: "1"
+    volumes:
+      - ./bot-api:/var/lib/telegram-bot-api
     restart: unless-stopped

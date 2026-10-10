@@ -99,6 +99,7 @@
   var root = document.documentElement;
   var releases = {}; // repo -> { tag, date, url, asset, downloads }
   var apiFailed = false;
+  var TOOLS = []; // from tools.json, shared with the Telegram bot
 
   function store(key, value) {
     try { if (value === undefined) return localStorage.getItem(key); localStorage.setItem(key, value); } catch (e) { return null; }
@@ -136,7 +137,7 @@
     grid.textContent = "";
     var totalDownloads = 0, newest = null, anyLive = false;
 
-    window.TOOLS.forEach(function (tool) {
+    TOOLS.forEach(function (tool) {
       var text = tool[lang()];
       var rel = tool.repo ? releases[tool.repo] : null;
       var card = tpl.content.firstElementChild.cloneNode(true);
@@ -223,7 +224,7 @@
       grid.appendChild(card);
     });
 
-    document.getElementById("stat-tools").textContent = window.TOOLS.length;
+    document.getElementById("stat-tools").textContent = TOOLS.length;
     document.getElementById("stat-downloads").textContent = totalDownloads ? number(totalDownloads) : "—";
     document.getElementById("stat-updated").textContent = newest ? date(newest) : "—";
     document.getElementById("api-note").hidden = !(apiFailed && !anyLive);
@@ -263,7 +264,7 @@
     });
     latest = latest || list[0];
     if (!latest) return null;
-    var asset = (latest.assets || []).filter(function (a) { return tool.asset.test(a.name); })[0];
+    var asset = (latest.assets || []).filter(function (a) { return new RegExp(tool.asset, "i").test(a.name); })[0];
     return { tag: latest.tag_name, date: latest.published_at, url: latest.html_url, asset: asset ? asset.browser_download_url : null, downloads: total };
   }
 
@@ -278,7 +279,7 @@
     if (cached) releases = cached.data;
     render();
 
-    var tools = window.TOOLS.filter(function (x) { return x.repo; });
+    var tools = TOOLS.filter(function (x) { return x.repo; });
     Promise.all(tools.map(function (tool) {
       return fetch("https://api.github.com/repos/" + tool.repo + "/releases?per_page=100", { headers: { Accept: "application/vnd.github+json" } })
         .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
@@ -293,5 +294,7 @@
     });
   }
 
-  load();
+  fetch("assets/tools.json", { cache: "no-cache" })
+    .then(function (r) { return r.json(); })
+    .then(function (list) { TOOLS = list; load(); });
 })();

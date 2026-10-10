@@ -5,7 +5,9 @@ name: Image
 on:
   push:
     branches: [main]
+    paths-ignore: ["bot/**", ".github/workflows/bot.yml"]
   pull_request:
+    paths-ignore: ["bot/**", ".github/workflows/bot.yml"]
   workflow_dispatch:
 
 permissions:
@@ -21,7 +23,7 @@ jobs:
       - name: Check scripts
         run: |
           node --check site/assets/boot.js
-          node --check site/assets/tools.js
+          node -e "JSON.parse(require('fs').readFileSync('site/assets/tools.json'))"
           node --check site/assets/app.js
 
       - uses: docker/setup-qemu-action@v3
