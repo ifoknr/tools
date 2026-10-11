@@ -181,7 +181,7 @@
     "repo": "ifoknr/FastbootStudio",
     "group": "pc",
     "accent": "#3dd6c4",
-    "version": "v2.3.0",
+    "version": "v2.4.0",
     "asset": "\\.zip$",
     "license": "MIT",
     "base": {
@@ -196,20 +196,20 @@
     "winget": "winget install IFOKNR.FastbootStudio",
     "ar": {
       "tagline": "أداة أندرويد المتكاملة لويندوز.",
-      "about": "فلاش وتحديثات OTA وملفات payload والأقسام والنسخ الاحتياطي في تطبيق واحد، مع فحوصات تمنع الأخطاء اللي تخرّب الجوال.",
+      "about": "فلاش وتحديثات OTA وملفات payload والأقسام والنسخ الاحتياطي والروت في تطبيق واحد، مع فحوصات تمنع الأخطاء اللي تخرّب الجوال.",
       "points": [
-        "يفلّش payload.bin من ملف OTA مباشرة، ويسوي الأقسام الناقصة",
-        "يحسب مساحة super قبل الفلاش، ونسخ احتياطي للأقسام والملفات",
-        "طرفية، أدوات صور، وضع ليلي ونهاري، وعربي كامل"
+        "روت بـ Magisk أو KernelSU أو APatch في أربع خطوات، وفحص صورة boot قبل التفليش",
+        "يفلّش payload.bin من ملف OTA مباشرة، ويحسب مساحة super ويسوي الأقسام الناقصة",
+        "صفحة الجوال مع إضافة Companion، نسخ احتياطي، طرفية، أدوات صور، وعربي كامل"
       ]
     },
     "en": {
       "tagline": "The Android toolbox for Windows.",
-      "about": "Flashing, OTA payloads, partitions and backups in one app, with safety checks that stop the mistakes that brick phones.",
+      "about": "Flashing, OTA payloads, partitions, backups and root in one app, with safety checks that stop the mistakes that brick phones.",
       "points": [
-        "Flashes payload.bin straight from an OTA zip, creates missing partitions",
-        "Checks super space before flashing; backs up partitions and files",
-        "Terminal, image tools, light and dark themes, full Arabic"
+        "Root with Magisk, KernelSU or APatch in four steps; boot images checked before flashing",
+        "Flashes payload.bin straight from an OTA zip; checks super space, creates missing partitions",
+        "Phone page with the Companion module, backups, terminal, image tools, full Arabic"
       ]
     }
   },
@@ -220,8 +220,7 @@
       "Companion"
     ],
     "icon": "assets/img/fastbootstudio-icon.png",
-    "repo": null,
-    "soon": true,
+    "repo": "ifoknr/FastbootStudio-Companion",
     "group": "pc",
     "accent": "#3dd6c4",
     "needs": [
@@ -230,22 +229,26 @@
       "APatch"
     ],
     "ar": {
-      "tagline": "موديول روت يشتغل مع Fastboot Studio.",
-      "about": "يقرأ الأقسام ومعلومات الجهاز من داخل الجوال نفسه، ويجهّز النسخ الاحتياطي، ويوصلها لـ Fastboot Studio.",
+      "tagline": "موديول روت يكمّل Fastboot Studio من داخل الجوال.",
+      "about": "يقرأ الجهاز والأقسام وحالة الإقلاع من داخل الجوال، ويسوي نسخ احتياطية، ويكشف التعارض بين المودات، ويرسل كل هذا لـ Fastboot Studio على الكمبيوتر. قراءة فقط: ما يكتب على أي قسم.",
       "points": [
-        "نسخ الأقسام من داخل الجوال بدون fastboot",
-        "قراءة معلومات الجهاز والأقسام لأجهزة كثيرة",
-        "يكمل شغل Fastboot Studio على الكمبيوتر"
+        "حالة AVB من البوت لودر نفسه، ويكشف مود الإخفاء اللي يغيّرها",
+        "يكشف التعارض بين المودات: نفس الملف، مجلد مستبدل، خاصية مكررة",
+        "نسخ احتياطي للأقسام من الجوال، وواجهة للجوال والتابلت بالوضع الليلي والنهاري"
       ]
     },
     "en": {
-      "tagline": "A root module that works with Fastboot Studio.",
-      "about": "Reads partitions and device info on the phone itself, prepares backups, and hands them to Fastboot Studio.",
+      "tagline": "A root module that brings Fastboot Studio onto the phone.",
+      "about": "Reads the device, its partitions and its boot state from the phone itself, makes backups, finds conflicts between root modules, and hands it all to Fastboot Studio on the PC. Read-only: it never writes to a partition.",
       "points": [
-        "Back up partitions on the phone, no fastboot needed",
-        "Reads device and partition info on many devices",
-        "Picks up where Fastboot Studio on the PC leaves off"
+        "The AVB state from the bootloader itself, and the hiding module that changes it",
+        "Finds conflicts between modules: the same file, a replaced folder, a property set twice",
+        "Partition backups on the phone; a WebUI for phones and tablets, day and night"
       ]
-    }
+    },
+    "version": "v2.4.0",
+    "beta": true,
+    "asset": "\\.zip$",
+    "license": "MIT"
   }
 ]

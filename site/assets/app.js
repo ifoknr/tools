@@ -28,6 +28,7 @@
       source: "المصدر",
       changes: "التغييرات",
       soon: "قريباً",
+      beta: "تجريبي",
       soon_btn: "تحت التطوير",
       downloads: "{n} تحميل",
       copy: "نسخ",
@@ -73,6 +74,7 @@
       source: "Source",
       changes: "Changelog",
       soon: "Coming soon",
+      beta: "Beta",
       soon_btn: "In development",
       downloads: "{n} downloads",
       copy: "Copy",
@@ -94,7 +96,7 @@
     },
   };
 
-  var CACHE_KEY = "releases-v1";
+  var CACHE_KEY = "releases-v2";
   var CACHE_MS = 60 * 60 * 1000; // GitHub allows 60 unauthenticated requests an hour per visitor.
   var root = document.documentElement;
   var releases = {}; // repo -> { tag, date, url, asset, downloads }
@@ -180,7 +182,8 @@
       } else {
         var repoUrl = "https://github.com/" + tool.repo;
         var v = rel ? rel.tag : tool.version;
-        version.textContent = v;
+        // A pre-release (the Companion while it is in beta) says so next to its version.
+        version.textContent = v + ((rel ? rel.pre : tool.beta) ? " · " + t("beta") : "");
         if (rel) { version.classList.add("live"); anyLive = true; }
         if (rel && rel.date) {
           card.querySelector(".date").textContent = date(rel.date);
@@ -265,7 +268,7 @@
     latest = latest || list[0];
     if (!latest) return null;
     var asset = (latest.assets || []).filter(function (a) { return new RegExp(tool.asset, "i").test(a.name); })[0];
-    return { tag: latest.tag_name, date: latest.published_at, url: latest.html_url, asset: asset ? asset.browser_download_url : null, downloads: total };
+    return { tag: latest.tag_name, pre: !!latest.prerelease, date: latest.published_at, url: latest.html_url, asset: asset ? asset.browser_download_url : null, downloads: total };
   }
 
   function load() {

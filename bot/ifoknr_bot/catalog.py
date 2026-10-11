@@ -22,6 +22,7 @@ class Release:
     url: str
     asset: str  # direct download of the main file, or "" when none matched
     downloads: int
+    pre: bool = False  # only pre-releases so far (a beta)
 
 
 def summarize(tool: dict, releases: list):
@@ -38,7 +39,8 @@ def summarize(tool: dict, releases: list):
         return None
     pattern = re.compile(tool.get("asset") or r"\.zip$", re.I)
     asset = next((a["browser_download_url"] for a in latest.get("assets") or [] if pattern.search(a.get("name", ""))), "")
-    return Release(latest.get("tag_name", ""), latest.get("published_at") or "", latest.get("html_url", ""), asset, total)
+    return Release(latest.get("tag_name", ""), latest.get("published_at") or "", latest.get("html_url", ""), asset, total,
+                   bool(latest.get("prerelease")))
 
 
 class Catalog:

@@ -33,12 +33,12 @@ def test_card_shows_live_version_and_links():
 
 def test_card_without_github_falls_back_to_the_known_version():
     text, keyboard = tool_card(tools()["fastbootstudio"], None, "ar")
-    assert "v2.3.0" in text and "winget install IFOKNR.FastbootStudio" in text
+    assert "v2.4.0" in text and "winget install IFOKNR.FastbootStudio" in text
     assert keyboard.inline_keyboard[0][0].url == "https://github.com/ifoknr/FastbootStudio/releases/latest"
 
 
 def test_coming_soon_has_no_download():
-    text, keyboard = tool_card(tools()["companion"], None, "ar")
+    text, keyboard = tool_card(dict(tools()["companion"], soon=True), None, "ar")
     assert "قريباً" in text
     assert all(b.url is None for row in keyboard.inline_keyboard for b in row)
 
@@ -48,3 +48,13 @@ def test_owner_ids_must_be_numbers():
     assert config.parse_owners("") == frozenset()
     with pytest.raises(ValueError):
         config.parse_owners("@ifoknr")
+
+
+def test_a_beta_says_so():
+    tool = tools()["companion"]
+    release = summarize(tool, [{"tag_name": "v2.4.0", "prerelease": True, "published_at": "2026-10-11T09:00:00Z",
+                                "html_url": "https://r", "assets": [{"name": "FastbootStudio-Companion-v2.4.0.zip",
+                                                                     "browser_download_url": "https://dl/c.zip", "download_count": 4}]}])
+    assert release.pre and release.asset == "https://dl/c.zip"
+    text, _ = tool_card(tool, release, "ar")
+    assert "<code>v2.4.0</code> · تجريبي" in text

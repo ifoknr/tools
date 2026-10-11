@@ -135,7 +135,7 @@ async def test_latest_lists_every_tool(bot):
     text = bot.tg.last("sendMessage")["text"]
     assert "NextZygisk</b>: <code>v1.0.5-601</code>" in text
     assert "NextWheel</b>: <code>v0.0.15</code>" in text  # GitHub had nothing: the known version
-    assert "Companion</b>: 🚧" in text
+    assert "Companion</b>: <code>v2.4.0</code> · Beta" in text  # a beta says so
 
 
 async def test_two_files_with_one_name_at_once_are_both_kept(bot):

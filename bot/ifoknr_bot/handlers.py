@@ -98,6 +98,11 @@ def _tools_keyboard(context, lang: str) -> Keyboard:
     return Keyboard(rows)
 
 
+def _beta(tool: dict, release) -> bool:
+    """A tool that has only pre-releases so far; without GitHub, what tools.json says."""
+    return release.pre if release else bool(tool.get("beta"))
+
+
 def tool_card(tool: dict, release, lang: str):
     """The text and buttons of one tool's card."""
     text = tool.get(lang) or tool.get("en") or {}
@@ -113,6 +118,8 @@ def tool_card(tool: dict, release, lang: str):
     else:
         version = release.tag if release else tool.get("version", "")
         meta = [f"<b>{t(lang, 'version')}:</b> <code>{e(version)}</code>"]
+        if _beta(tool, release):
+            meta.append(t(lang, "beta"))
         if release and release.date:
             meta.append(date_text(lang, release.date))
         if release and release.downloads:
@@ -184,7 +191,8 @@ async def latest(update: Update, context: ContextTypes.DEFAULT_TYPE):
         rel = catalog.release(tool)
         version = html.escape(rel.tag if rel else tool.get("version", ""))
         when = date_text(lang, rel.date) if rel and rel.date else ""
-        lines.append(f"• <b>{name}</b>: <code>{version}</code>" + (f" · {when}" if when else ""))
+        beta = f" · {t(lang, 'beta')}" if _beta(tool, rel) else ""
+        lines.append(f"• <b>{name}</b>: <code>{version}</code>{beta}" + (f" · {when}" if when else ""))
     await _reply(update, "\n".join(lines), _tools_keyboard(context, lang))
 
 
