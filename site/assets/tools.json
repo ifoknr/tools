@@ -247,7 +247,7 @@
         "Partition backups on the phone; a WebUI for phones and tablets, day and night"
       ]
     },
-    "version": "v2.4.0",
+    "version": "v2.5.0",
     "beta": true,
     "asset": "\\.zip$",
     "license": "MIT"
