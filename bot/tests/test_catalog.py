@@ -33,7 +33,7 @@ def test_card_shows_live_version_and_links():
 
 def test_card_without_github_falls_back_to_the_known_version():
     text, keyboard = tool_card(tools()["fastbootstudio"], None, "ar")
-    assert "v2.4.0" in text and "winget install IFOKNR.FastbootStudio" in text
+    assert "v2.5.0" in text and "winget install IFOKNR.FastbootStudio" in text
     assert keyboard.inline_keyboard[0][0].url == "https://github.com/ifoknr/FastbootStudio/releases/latest"
 
 

@@ -181,7 +181,7 @@
     "repo": "ifoknr/FastbootStudio",
     "group": "pc",
     "accent": "#3dd6c4",
-    "version": "v2.4.0",
+    "version": "v2.5.0",
     "asset": "\\.zip$",
     "license": "MIT",
     "base": {
