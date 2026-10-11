@@ -297,7 +297,15 @@
     });
   }
 
-  fetch("assets/tools.json", { cache: "no-cache" })
-    .then(function (r) { return r.json(); })
-    .then(function (list) { TOOLS = list; load(); });
+  // tools.json inside the page when the image put it there (one request less), otherwise fetched.
+  var inline = null;
+  try { inline = JSON.parse(document.getElementById("tools-data").textContent); } catch (e) {}
+  if (Array.isArray(inline) && inline.length) {
+    TOOLS = inline;
+    load();
+  } else {
+    fetch("assets/tools.json", { cache: "no-cache" })
+      .then(function (r) { return r.json(); })
+      .then(function (list) { TOOLS = list; load(); });
+  }
 })();
