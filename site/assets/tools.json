@@ -211,7 +211,8 @@
         "Flashes payload.bin straight from an OTA zip; checks super space, creates missing partitions",
         "Phone page with the Companion module, backups, terminal, image tools, full Arabic"
       ]
-    }
+    },
+    "xda": "https://xdaforums.com/t/tool-windows-fastboot-studio-fastboot-ota-flasher-root-helper-phone-info-payload-dumper-super-builder-backups.4804685/"
   },
   {
     "id": "companion",

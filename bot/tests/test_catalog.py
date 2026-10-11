@@ -58,3 +58,9 @@ def test_a_beta_says_so():
     assert release.pre and release.asset == "https://dl/c.zip"
     text, _ = tool_card(tool, release, "ar")
     assert "<code>v2.4.0</code> · تجريبي" in text
+
+
+def test_a_tool_with_an_xda_thread_links_it():
+    _, keyboard = tool_card(tools()["fastbootstudio"], None, "en")
+    urls = [b.url for row in keyboard.inline_keyboard for b in row if b.url]
+    assert any(u.startswith("https://xdaforums.com/t/") for u in urls)

@@ -199,6 +199,11 @@
         source.textContent = t("source");
         changes.href = rel && rel.url ? rel.url : repoUrl + "/releases";
         changes.textContent = t("changes");
+        if (tool.xda) {
+          var xda = el("a", "btn btn-ghost xda", "XDA");
+          xda.href = tool.xda; xda.target = "_blank"; xda.rel = "noopener";
+          card.querySelector(".actions").appendChild(xda);
+        }
       }
 
       if (tool.winget) {

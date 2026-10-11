@@ -151,6 +151,8 @@ def tool_card(tool: dict, release, lang: str):
             Button(t(lang, "btn_source"), url=repo_url),
             Button(t(lang, "btn_changes"), url=release.url if release and release.url else repo_url + "/releases"),
         ])
+        if tool.get("xda"):
+            rows.append([Button("💬 XDA", url=tool["xda"])])
     rows.append([Button(t(lang, "btn_back"), callback_data="tl")])
     return "\n".join(lines), Keyboard(rows)
 
