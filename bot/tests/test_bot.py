@@ -136,8 +136,9 @@ async def test_latest_lists_every_tool(bot):
     await bot.send(STRANGER, "/latest", lang="en")
     text = bot.tg.last("sendMessage")["text"]
     assert "NextZygisk</b>: <code>v1.0.5-601</code>" in text
-    assert "NextWheel</b>: <code>v0.0.15</code>" in text  # GitHub had nothing: the known version
-    companion = next(t for t in json.loads(TOOLS_JSON.read_text(encoding="utf-8")) if t["id"] == "companion")
+    known = {t["id"]: t for t in json.loads(TOOLS_JSON.read_text(encoding="utf-8"))}
+    assert f"NextWheel</b>: <code>{known['nextwheel']['version']}</code>" in text  # GitHub had nothing: the known version
+    companion = known["companion"]
     assert f"Companion</b>: <code>{companion['version']}</code> · Beta" in text  # a beta says so
 
 
