@@ -96,7 +96,7 @@
     },
   };
 
-  var CACHE_KEY = "releases-v2";
+  var CACHE_KEY = "releases-v3";
   var CACHE_MS = 60 * 60 * 1000; // GitHub allows 60 unauthenticated requests an hour per visitor.
   var root = document.documentElement;
   var releases = {}; // repo -> { tag, date, url, asset, downloads }
@@ -105,6 +105,21 @@
 
   function store(key, value) {
     try { if (value === undefined) return localStorage.getItem(key); localStorage.setItem(key, value); } catch (e) { return null; }
+  }
+
+  // True when version a is newer than b ("v2.5.1" > "v2.5.0", "v1.0.5-601" > "v1.0.5").
+  function newer(a, b) {
+    var x = String(a || "").match(/\d+/g) || [], y = String(b || "").match(/\d+/g) || [];
+    for (var i = 0; i < Math.max(x.length, y.length); i++) {
+      var d = (+x[i] || 0) - (+y[i] || 0);
+      if (d) return d > 0;
+    }
+    return false;
+  }
+  // Release data saved by an earlier visit, or GitHub's answer when its rate limit is hit
+  // (phones on mobile data often share one address), can be older than tools.json.
+  function outdated(data) {
+    return TOOLS.some(function (tool) { var r = data[tool.repo]; return r && newer(tool.version, r.tag); });
   }
 
   function lang() { return root.lang === "en" ? "en" : "ar"; }
@@ -181,10 +196,13 @@
         changes.remove();
       } else {
         var repoUrl = "https://github.com/" + tool.repo;
-        var v = rel ? rel.tag : tool.version;
+        // tools.json is updated with every release, so it wins over older release data.
+        if (rel && newer(tool.version, rel.tag)) rel = { downloads: rel.downloads };
+        var live = !!(rel && rel.tag);
+        var v = live ? rel.tag : tool.version;
         // A pre-release (the Companion while it is in beta) says so next to its version.
-        version.textContent = v + ((rel ? rel.pre : tool.beta) ? " · " + t("beta") : "");
-        if (rel) { version.classList.add("live"); anyLive = true; }
+        version.textContent = v + ((live ? rel.pre : tool.beta) ? " · " + t("beta") : "");
+        if (live) { version.classList.add("live"); anyLive = true; }
         if (rel && rel.date) {
           card.querySelector(".date").textContent = date(rel.date);
           if (!newest || rel.date > newest) newest = rel.date;
@@ -279,7 +297,7 @@
   function load() {
     var cached = null;
     try { cached = JSON.parse(store(CACHE_KEY) || "null"); } catch (e) {}
-    if (cached && Date.now() - cached.at < CACHE_MS) {
+    if (cached && Date.now() - cached.at < CACHE_MS && !outdated(cached.data)) {
       releases = cached.data;
       render();
       return;
