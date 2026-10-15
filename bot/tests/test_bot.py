@@ -139,7 +139,8 @@ async def test_latest_lists_every_tool(bot):
     known = {t["id"]: t for t in json.loads(TOOLS_JSON.read_text(encoding="utf-8"))}
     assert f"NextWheel</b>: <code>{known['nextwheel']['version']}</code>" in text  # GitHub had nothing: the known version
     companion = known["companion"]
-    assert f"Companion</b>: <code>{companion['version']}</code> · Beta" in text  # a beta says so
+    beta = " · Beta" if companion.get("beta") else ""
+    assert f"Companion</b>: <code>{companion['version']}</code>{beta}" in text  # a beta says so
 
 
 async def test_two_files_with_one_name_at_once_are_both_kept(bot):
