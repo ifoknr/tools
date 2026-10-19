@@ -9,7 +9,7 @@
       nav_contact: "تواصل",
       eyebrow: "أدوات أندرويد مفتوحة المصدر",
       hero_title: "أدوات IFOKNR لإخفاء الروت والأداء والفلاش",
-      hero_lead: "موديولات روت لإخفاء الروت من الطبقات الثلاث، وموديول أداء آمن لأي معالج، وتطبيق ويندوز يفلّش ويحمي جوالك من الأخطاء. كل أداة هنا مجانية ومفتوحة المصدر.",
+      hero_lead: "موديولات روت لإخفاء الروت من الطبقات الثلاث، وموديول أداء آمن لأي معالج، وتطبيق ويندوز وتطبيق للجوال يفلّشون ويحمون جوالك من الأخطاء. كل أداة هنا مجانية ومفتوحة المصدر.",
       cta_tools: "تصفّح الأدوات",
       stat_tools: "أدوات",
       stat_downloads: "تحميل",
@@ -55,7 +55,7 @@
       nav_contact: "Contact",
       eyebrow: "Open-source Android tools",
       hero_title: "IFOKNR tools for root hiding, performance and flashing",
-      hero_lead: "Root modules that hide root at all three layers, a performance module that is safe on any SoC, and a Windows app that flashes your phone and guards it against mistakes. Every tool here is free and open source.",
+      hero_lead: "Root modules that hide root at all three layers, a performance module that is safe on any SoC, and a Windows app and a phone app that flash your phone and guard it against mistakes. Every tool here is free and open source.",
       cta_tools: "Browse the tools",
       stat_tools: "Tools",
       stat_downloads: "Downloads",
@@ -307,8 +307,15 @@
 
     var tools = TOOLS.filter(function (x) { return x.repo; });
     Promise.all(tools.map(function (tool) {
-      return fetch("https://api.github.com/repos/" + tool.repo + "/releases?per_page=100", { headers: { Accept: "application/vnd.github+json" } })
-        .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      // The site's own copy first (shared by every visitor, so GitHub's hourly limit is never
+      // reached), then GitHub itself, for a server that does not have it.
+      function ask(url, headers) {
+        return fetch(url, headers ? { headers: headers } : undefined)
+          .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+          .then(function (list) { if (!Array.isArray(list)) throw new Error("not a list"); return list; });
+      }
+      return ask("/gh/repos/" + tool.repo + "/releases")
+        .catch(function () { return ask("https://api.github.com/repos/" + tool.repo + "/releases?per_page=100", { Accept: "application/vnd.github+json" }); })
         .then(function (list) { return [tool.repo, summarize(tool, list)]; })
         .catch(function () { apiFailed = true; return [tool.repo, releases[tool.repo] || null]; });
     })).then(function (pairs) {
