@@ -1,4 +1,6 @@
 FROM nginx:1.27-alpine
+# The certificates nginx checks GitHub's against, for the release data it fetches (nginx.conf).
+RUN apk add --no-cache ca-certificates && test -s /etc/ssl/certs/ca-certificates.crt
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY security-headers.conf /etc/nginx/security-headers.conf
 COPY site/ /usr/share/nginx/html/

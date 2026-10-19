@@ -250,5 +250,43 @@
     "version": "v2.5.1",
     "asset": "\\.zip$",
     "license": "MIT"
+  },
+  {
+    "id": "mobile",
+    "name": [
+      "Fastboot Studio ",
+      "Mobile"
+    ],
+    "icon": "assets/img/fastbootstudio-icon.png",
+    "repo": "ifoknr/FastbootStudio-Mobile",
+    "group": "pc",
+    "accent": "#3dd6c4",
+    "needs": [
+      "Android 8+",
+      "Root",
+      "OTG"
+    ],
+    "ar": {
+      "tagline": "Fastboot Studio على الجوال نفسه: فلّش بأمان بدون كمبيوتر.",
+      "about": "فلّش صورة boot أو ملف كيرنل AnyKernel3 من الجوال، ورجّع نسخة احتياطية بضغطتين، أو أنقذ جوال ثاني بكيبل OTG. كل ملف ينفحص قبل الكتابة: من أي جوال جاء، ونوع الصورة، والكيرنل، وبصمة SHA-256.",
+      "points": [
+        "فحص قبل كل تفليش: الملف الغلط أو المتلاعب فيه أو كيرنل سلسلة ثانية ينرفض",
+        "نسخة احتياطية قبل الكتابة، ونفس مجلدات برنامج الويندز والـ Companion",
+        "OTG: فلّش جوال ثاني في وضع fastboot بالكيبل، بدون روت"
+      ]
+    },
+    "en": {
+      "tagline": "Fastboot Studio on the phone itself: flash safely, no PC needed.",
+      "about": "Flash a boot image or an AnyKernel3 kernel zip on the phone, restore a backup in two taps, or rescue another phone over an OTG cable. Every file is checked before it is written: which phone it came from, the kind of image, its kernel and its SHA-256.",
+      "points": [
+        "A check before every flash: a wrong or tampered file, or a kernel of another series, is refused",
+        "A backup before writing, in the same folders as the Windows app and the Companion",
+        "OTG: flash another phone in fastboot mode over a cable, no root needed"
+      ]
+    },
+    "version": "v1.0.0-beta.1",
+    "beta": true,
+    "asset": "\\.apk$",
+    "license": "MIT"
   }
 ]

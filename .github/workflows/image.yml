@@ -43,6 +43,12 @@ jobs:
           curl -fsS http://127.0.0.1:8090/ | grep -q 'assets/app.js'
           curl -fsSI http://127.0.0.1:8090/assets/tools.js | grep -qi 'content-security-policy'
           curl -fsS -o /dev/null http://127.0.0.1:8090/assets/fonts/NotoKufiArabic-Regular.woff
+          # GitHub's release data through the site: a list, then the same from the cache.
+          curl -fsS http://127.0.0.1:8090/gh/repos/ifoknr/FastbootStudio/releases | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{const l=JSON.parse(s);if(!Array.isArray(l)||!l.length||!l[0].tag_name)process.exit(1);console.log('releases:',l.length,'latest',l[0].tag_name)})"
+          curl -fsSI http://127.0.0.1:8090/gh/repos/ifoknr/FastbootStudio/releases | grep -i '^x-cache: HIT'
+          # Only ifoknr's repositories pass.
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8090/gh/repos/torvalds/linux/releases)" = 404
+          curl -fsSI http://127.0.0.1:8090/ | grep -i "connect-src 'self'"
           docker logs site
 
       - name: Log in to ghcr.io
