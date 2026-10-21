@@ -13,7 +13,9 @@
   var T = {
     ar: {
       title: 'مكتبة الأدوات', sub: '{n} برنامج وموديول للروت', search: 'ابحث: Magisk، إخفاء الروت، بطارية…',
-      mine: 'أدوات IFOKNR', uploads: 'ملفات IFOKNR', cats: 'التصنيفات', picks: 'مختارات ⭐', all: 'الكل', open: 'مفتوح المصدر فقط',
+      mine: 'أدوات IFOKNR', uploads: 'ملفات IFOKNR',
+      stack: 'منظومة الإخفاء', stackSub: 'ثلاث موديولات تشتغل مع بعض، كل وحدة تخفي الروت في طبقة', fbs: 'Fastboot Studio', fbsSub: 'برنامج للويندوز، تطبيق للجوال، وإضافة روت', perf: 'الأداء',
+      layer_apps: 'طبقة التطبيقات', layer_zygote: 'طبقة Zygote', layer_kernel: 'طبقة النواة', plat_fastbootstudio: 'ويندوز', plat_mobile: 'أندرويد', plat_companion: 'إضافة روت', cats: 'التصنيفات', picks: 'مختارات ⭐', all: 'الكل', open: 'مفتوح المصدر فقط',
       results: '{n} نتيجة', none: 'ما لقيت شي', noneHint: 'جرّب كلمة ثانية أو بالإنقليزي', more: 'عرض المزيد ({n})',
       items: '{n} برنامج', download: 'تحميل', downloadApk: 'تحميل APK', source: 'المصدر', page: 'صفحة المشروع',
       fdroid: 'F-Droid', play: 'Google Play', izzy: 'IzzyOnDroid', share: 'مشاركة', copied: 'انسخ الرابط',
@@ -27,7 +29,9 @@
     },
     en: {
       title: 'Tools library', sub: '{n} root apps and modules', search: 'Search: Magisk, hide root, battery…',
-      mine: 'IFOKNR tools', uploads: 'IFOKNR files', cats: 'Categories', picks: 'Picks ⭐', all: 'All', open: 'Open source only',
+      mine: 'IFOKNR tools', uploads: 'IFOKNR files',
+      stack: 'Root hiding stack', stackSub: 'Three modules that work together, each hiding root at one layer', fbs: 'Fastboot Studio', fbsSub: 'A Windows app, a phone app and a root module', perf: 'Performance',
+      layer_apps: 'App layer', layer_zygote: 'Zygote layer', layer_kernel: 'Kernel layer', plat_fastbootstudio: 'Windows', plat_mobile: 'Android', plat_companion: 'Root module', cats: 'Categories', picks: 'Picks ⭐', all: 'All', open: 'Open source only',
       results: '{n} results', none: 'Nothing found', noneHint: 'Try another word', more: 'Show more ({n})',
       items: '{n} apps', download: 'Get', downloadApk: 'Download APK', source: 'Source', page: 'Project page',
       fdroid: 'F-Droid', play: 'Google Play', izzy: 'IzzyOnDroid', share: 'Share', copied: 'Link copied',
@@ -218,15 +222,38 @@
     return '<div class="list">' + shown + '</div>' + (rest > 0 ? '<button class="more" data-more>' + t('more', { n: num(rest) }) + '</button>' : '');
   }
   function toolName(tool) { return Array.isArray(tool.name) ? tool.name.join('') : tool.name; }
-  function toolCard(tool) {
+  // A tool with an icon shows it; the modules get a monogram in their group's colour.
+  function toolAvatar(tool, cls) {
+    if (tool.icon) return '<span class="av ' + (cls || '') + ' acc-icon"><img src="/' + esc(tool.icon) + '" alt=""></span>';
+    var parts = Array.isArray(tool.name) ? tool.name : [tool.name || '?'];
+    var mono = parts.map(function (p) { return String(p).trim().charAt(0); }).join('').toUpperCase().slice(0, 2);
+    return '<span class="av ' + (cls || '') + ' acc-' + esc(tool.group || 'x') + '">' + esc(mono) + '</span>';
+  }
+  function toolRow(tool) {
     var rel = state.rel[tool.id], txt = tool[state.lang] || tool.en || {};
-    var badge = tool.soon ? '<span class="tag">' + t('soon') + '</span>' :
-      rel ? '<span class="tag ver ltr">' + esc(rel.v) + '</span>' + (rel.pre || tool.beta ? ' <span class="tag me">' + t('beta') + '</span>' : '') :
-      tool.version ? '<span class="tag ver ltr">' + esc(tool.version) + '</span>' : '';
-    return '<button class="tool" data-go="#/t/' + esc(tool.id) + '"><span class="row">' +
-      '<img class="av sm" src="/' + esc(tool.icon || 'assets/img/fastbootstudio-icon.png') + '" alt="">' +
-      '<b class="ltr">' + esc(toolName(tool)) + '</b></span><p class="auto">' + esc(txt.tagline || '') + '</p>' +
-      '<span class="foot"><span>' + badge + '</span><span class="tag me">IFOKNR</span></span></button>';
+    var kind = tool.layer ? t('layer_' + tool.layer) : T[state.lang]['plat_' + tool.id] ? t('plat_' + tool.id) : '';
+    var meta = (kind ? '<span class="tag kind">' + esc(kind) + '</span>' : '') +
+      (tool.soon ? '<span class="tag">' + t('soon') + '</span>' :
+        rel ? '<span class="tag ver ltr">' + esc(rel.v) + '</span>' + (rel.pre || tool.beta ? '<span class="tag me">' + t('beta') + '</span>' : '') :
+        tool.version ? '<span class="tag ver ltr">' + esc(tool.version) + '</span>' : '') +
+      '<span class="tag me">IFOKNR</span>';
+    return '<button class="item" data-go="#/t/' + esc(tool.id) + '">' + toolAvatar(tool) +
+      '<span class="t"><span class="nm"><b class="ltr">' + esc(toolName(tool)) + '</b></span>' +
+      (txt.tagline ? '<p>' + esc(txt.tagline) + '</p>' : '') + '<span class="meta">' + meta + '</span></span>' + ICON.chev + '</button>';
+  }
+  var LAYERS = ['apps', 'zygote', 'kernel'];
+  var FBS = ['fastbootstudio', 'mobile', 'companion'];
+  function toolSections() {
+    var hide = state.tools.filter(function (x) { return x.group === 'hide'; })
+      .sort(function (a, b) { return LAYERS.indexOf(a.layer) - LAYERS.indexOf(b.layer); });
+    var fbs = state.tools.filter(function (x) { return x.group === 'pc'; })
+      .sort(function (a, b) { return FBS.indexOf(a.id) - FBS.indexOf(b.id); });
+    var rest = state.tools.filter(function (x) { return x.group !== 'hide' && x.group !== 'pc'; });
+    var h = '';
+    if (hide.length) h += '<div class="sec col"><h2>🛡️ ' + t('stack') + '</h2><span>' + t('stackSub') + '</span></div><div class="list">' + hide.map(toolRow).join('') + '</div>';
+    if (fbs.length) h += '<div class="sec col"><h2>⚡ ' + t('fbs') + '</h2><span>' + t('fbsSub') + '</span></div><div class="list">' + fbs.map(toolRow).join('') + '</div>';
+    if (rest.length) h += '<div class="sec"><h2>🔥 ' + t('perf') + '</h2></div><div class="list">' + rest.map(toolRow).join('') + '</div>';
+    return h;
   }
   function privRow(p) {
     return '<button class="item" data-go="#/p/' + esc(p.id) + '">' + avatar(p.name) +
@@ -266,7 +293,7 @@
       var found = applyFilters(search(state.q));
       return h + filterBar() + '<div class="sec"><h2>' + t('results', { n: num(found.length) }) + '</h2></div>' + list(found);
     }
-    if (state.tools.length) h += '<div class="sec"><h2>' + t('mine') + '</h2></div><div class="rail">' + state.tools.map(toolCard).join('') + '</div>';
+    h += toolSections();
     if (state.priv.length) h += '<div class="sec"><h2>' + t('uploads') + '</h2><span>' + num(state.priv.length) + '</span></div><div class="list">' + state.priv.slice(0, 6).map(privRow).join('') + '</div>';
     h += '<div class="sec"><h2>' + t('cats') + '</h2><span>' + num(d.categories.length) + '</span></div><div class="cats">' +
       d.categories.map(function (c) {
@@ -310,7 +337,7 @@
     var tl = state.tools.filter(function (x) { return x.id === id; })[0];
     if (!tl) return home();
     var rel = state.rel[id] || {}, txt = tl[state.lang] || tl.en || {}, repo = tl.repo ? 'https://github.com/' + tl.repo : '';
-    var h = header('', '') + '<div class="hero"><img class="av lg" src="/' + esc(tl.icon || 'assets/img/fastbootstudio-icon.png') + '" alt=""><h1 class="ltr">' + esc(toolName(tl)) + '</h1>' +
+    var h = header('', '') + '<div class="hero">' + toolAvatar(tl, 'lg') + '<h1 class="ltr">' + esc(toolName(tl)) + '</h1>' +
       '<div class="by">' + t('by', { who: 'IFOKNR' }) + '</div><div class="tags"><span class="tag me">IFOKNR</span>' +
       (rel.v ? '<span class="tag ver ltr">' + esc(rel.v) + '</span>' : '') + (rel.pre || tl.beta ? '<span class="tag me">' + t('beta') + '</span>' : '') +
       (tl.license ? '<span class="tag foss">' + t('foss') + '</span>' : '') + '</div></div>';
