@@ -260,7 +260,7 @@
 
   // ---------- views ----------
   function home() {
-    var d = state.data, h = '<div class="top"><img class="logo" src="/assets/img/fastbootstudio-icon.png" alt=""><div class="title"><h1>' + t('title') +
+    var d = state.data, h = '<div class="top"><img class="logo" src="/app/icon.svg" alt=""><div class="title"><h1>' + t('title') +
       '</h1><p>' + t('sub', { n: num(d.items.length) }) + '</p></div><button class="pill-btn" data-lang>' + t('lang') + '</button></div>' + searchBox();
     if (state.q.trim()) {
       var found = applyFilters(search(state.q));
