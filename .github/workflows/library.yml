@@ -1,0 +1,52 @@
+name: Library
+
+# Rebuilds the tools library (site/app/library.json) from Awesome Android Root's list every day,
+# with each GitHub project's stars and latest release, and publishes a new site image when
+# something changed. A push made with GITHUB_TOKEN starts no workflow, so the image build is
+# started by hand here.
+on:
+  schedule:
+    - cron: "23 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency: library
+
+jobs:
+  library:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: The list
+        uses: actions/checkout@v4
+        with:
+          repository: awesome-android-root/awesome-android-root
+          path: aar
+          sparse-checkout: docs/apps-and-modules
+
+      - name: Tests
+        run: python3 -m unittest discover -s scripts
+
+      - name: Build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 scripts/library.py --src aar/docs/apps-and-modules --out site/app/library.json
+
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if git diff --quiet -- site/app/library.json; then
+            echo "No change."
+            exit 0
+          fi
+          git config user.name "IFOKNR"
+          git config user.email "253658289+ifoknr@users.noreply.github.com"
+          git add site/app/library.json
+          git commit -q -m "Library: today's list from Awesome Android Root"
+          git push -q origin HEAD:main
+          gh workflow run image.yml --ref main

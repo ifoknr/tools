@@ -10,11 +10,12 @@ from datetime import datetime
 
 from telegram import InlineKeyboardButton as Button
 from telegram import InlineKeyboardMarkup as Keyboard
-from telegram import Update
+from telegram import Update, WebAppInfo
 from telegram.constants import ChatType, ParseMode
 from telegram.error import BadRequest
 from telegram.ext import ContextTypes
 
+from .library import CATEGORIES, Library, category_name, clean_name
 from .storage import Store, StoreError, human_size
 from .texts import T, date_text, lang_of, number, t
 
@@ -35,6 +36,13 @@ def _catalog(context):
 
 def _store(context) -> Store:
     return context.application.bot_data["store"]
+
+
+def _library(context) -> Library:
+    lib = context.application.bot_data["library"]
+    if not lib.bot:
+        lib.bot = context.bot.username or ""
+    return lib
 
 
 def _lang(update: Update, context) -> str:
@@ -83,10 +91,24 @@ def _tool_name(tool) -> str:
     return "".join(tool.get("name") or [tool.get("id", "?")])
 
 
-def _tools_keyboard(context, lang: str) -> Keyboard:
+def _library_button(context, lang: str, private: bool = True):
+    """Opens the tools library: inside Telegram in a private chat, in the browser elsewhere
+    (a group cannot show a Mini App button)."""
+    url = _cfg(context).app_url
+    if not url:
+        return None
+    if private:
+        return Button(t(lang, "btn_library"), web_app=WebAppInfo(url=url))
+    return Button(t(lang, "btn_library"), url=url)
+
+
+def _tools_keyboard(context, lang: str, private: bool = True) -> Keyboard:
     catalog = _catalog(context)
     buttons = [Button(_tool_name(tool), callback_data="t:" + tool["id"]) for tool in catalog.tools]
     rows = [buttons[i:i + 2] for i in range(0, len(buttons), 2)]
+    library = _library_button(context, lang, private)
+    if library:
+        rows.insert(0, [library])
     links = []
     cfg = _cfg(context)
     if cfg.site_url:
@@ -159,11 +181,14 @@ def tool_card(tool: dict, release, lang: str):
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     lang = _lang(update, context)
+    if context.args and context.args[0].startswith("get_"):
+        await send_library_file(update, context, context.args[0][4:])
+        return
     name = html.escape(update.effective_user.first_name or "") if update.effective_user else ""
     text = t(lang, "start", name=name)
     if _owner(update, context) and _private(update):
         text += t(lang, "start_owner")
-    await _reply(update, text, _tools_keyboard(context, lang))
+    await _reply(update, text, _tools_keyboard(context, lang, _private(update)))
 
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -177,7 +202,7 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def tools_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     lang = _lang(update, context)
     await _catalog(context).refresh_tools()
-    await _edit_or_reply(update, t(lang, "tools"), _tools_keyboard(context, lang))
+    await _edit_or_reply(update, t(lang, "tools"), _tools_keyboard(context, lang, _private(update)))
 
 
 async def latest(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -195,7 +220,7 @@ async def latest(update: Update, context: ContextTypes.DEFAULT_TYPE):
         when = date_text(lang, rel.date) if rel and rel.date else ""
         beta = f" · {t(lang, 'beta')}" if _beta(tool, rel) else ""
         lines.append(f"• <b>{name}</b>: <code>{version}</code>{beta}" + (f" · {when}" if when else ""))
-    await _reply(update, "\n".join(lines), _tools_keyboard(context, lang))
+    await _reply(update, "\n".join(lines), _tools_keyboard(context, lang, _private(update)))
 
 
 async def show_tool(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -230,8 +255,11 @@ async def my_id(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def other_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Text that is not a command, in a private chat: show the tools."""
+    """Text that is not a command, in a private chat: an answer to a library question, or the tools."""
     lang = _lang(update, context)
+    if _owner(update, context) and context.user_data.get("lib_wait"):
+        await library_answer(update, context)
+        return
     if _owner(update, context):
         await _reply(update, t(lang, "help") + t(lang, "help_owner"))
     else:
@@ -282,8 +310,16 @@ async def receive_file(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if media is None:
         return
     size = media.file_size or 0
+    # A file sent as a file (not a photo or a video) can go into the tools library.
+    pending = {"file_id": media.file_id, "file_name": name, "size": size, "path": ""}
+    add = None
+    if update.effective_message.document:
+        context.user_data["lib_pending"] = pending
+        context.user_data.pop("lib_wait", None)
+        add = Keyboard([[Button(t(lang, "lib_btn_add"), callback_data="la")]])
     if size > cfg.download_limit:
-        await _reply(update, t(lang, "too_big", size=human_size(size), limit=human_size(cfg.download_limit)))
+        text = t(lang, "too_big", size=human_size(size), limit=human_size(cfg.download_limit))
+        await _reply(update, text + (t(lang, "lib_not_saved") if add else ""), add)
         return
 
     folder = _upload_folder(context)
@@ -296,6 +332,7 @@ async def receive_file(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await tg_file.download_to_drive(part)
         os.replace(part, target)
         rel = store.rel(target)
+        pending["path"] = str(target)
         text = t(lang, "saved", path=html.escape("/" + rel), size=human_size(target.stat().st_size))
     except StoreError as e:
         text = _error_text(lang, e)
@@ -307,7 +344,7 @@ async def receive_file(update: Update, context: ContextTypes.DEFAULT_TYPE):
             part.unlink(missing_ok=True)
         if target is not None:
             store.release(target)
-    await status.edit_text(text, parse_mode=ParseMode.HTML)
+    await status.edit_text(text, parse_mode=ParseMode.HTML, reply_markup=add)
 
 
 def _folder_view(context, lang: str, folder: str, page: int = 0):
@@ -519,6 +556,170 @@ async def status_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         count=number(count), size=human_size(size), mem=_memory(), load=load,
         uptime=_uptime(lang, time.time() - started),
     ))
+
+
+# ---------- tools library (the owner's files, sent by the bot) ----------
+
+def _get_link(context, entry_id: str) -> str:
+    return f"https://t.me/{context.bot.username}?start=get_{entry_id}"
+
+
+def _sha256(path: str) -> str:
+    import hashlib
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def _category_keyboard(lang: str) -> Keyboard:
+    buttons = [Button(category_name(cid, lang), callback_data=f"lc:{cid}") for cid, *_ in CATEGORIES]
+    rows = [buttons[i:i + 2] for i in range(0, len(buttons), 2)]
+    rows.append([Button(t(lang, "lib_btn_nocat"), callback_data="lc:"), Button(t(lang, "btn_cancel"), callback_data="lx")])
+    return Keyboard(rows)
+
+
+def _entry_view(context, lang: str, entry):
+    v = f" <code>{html.escape(entry.v)}</code>" if entry.v else ""
+    cat = category_name(entry.c, lang)
+    note = "\n" + html.escape(entry.note) if entry.note else ""
+    text = t(lang, "lib_item", name=html.escape(entry.name), v=v, cat=(html.escape(cat) + " · ") if cat else "",
+             size=human_size(entry.size) if entry.size else "-", date=date_text(lang, entry.t) or entry.t, note=note,
+             link=html.escape(_get_link(context, entry.id)))
+    keyboard = Keyboard([
+        [Button(t(lang, "lib_btn_rename"), callback_data=f"lm:{entry.id}"), Button(t(lang, "lib_btn_note"), callback_data=f"ln:{entry.id}"),
+         Button(t(lang, "lib_btn_version"), callback_data=f"lv:{entry.id}")],
+        [Button(t(lang, "lib_btn_remove"), callback_data=f"lr:{entry.id}")],
+        [Button(t(lang, "lib_btn_back"), callback_data="ll")],
+    ])
+    return text, keyboard
+
+
+def _library_list(context, lang: str):
+    entries = _library(context).entries
+    if not entries:
+        return t(lang, "lib_empty"), None
+    rows = [[Button(("📦 " + e.name)[:60], callback_data=f"lo:{e.id}")] for e in entries[:90]]
+    return t(lang, "lib_list", n=len(entries)), Keyboard(rows)
+
+
+async def library_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    lang = _lang(update, context)
+    if not _owner(update, context):
+        await _reply(update, t(lang, "tools"), _tools_keyboard(context, lang, _private(update)))
+        return
+    text, keyboard = _library_list(context, lang)
+    await _reply(update, text, keyboard)
+
+
+async def library_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    lang = _lang(update, context)
+    if not _owner(update, context):
+        await query.answer()
+        return
+    await query.answer()
+    data = query.data
+    lib = _library(context)
+    if data == "la":
+        pending = context.user_data.get("lib_pending")
+        if not pending:
+            await _edit_or_reply(update, t(lang, "lib_expired"))
+            return
+        context.user_data["lib_wait"] = {"what": "name"}
+        await _edit_or_reply(update, t(lang, "lib_ask_name", file=html.escape(pending["file_name"])),
+                             Keyboard([[Button(t(lang, "btn_cancel"), callback_data="lx")]]))
+    elif data.startswith("lc:"):
+        pending = context.user_data.get("lib_pending")
+        if not pending or not pending.get("name"):
+            await _edit_or_reply(update, t(lang, "lib_expired"))
+            return
+        sha = ""
+        if pending.get("path") and os.path.isfile(pending["path"]):
+            try:
+                sha = await asyncio.to_thread(_sha256, pending["path"])
+            except OSError:
+                log.warning("could not hash %s", pending["path"])
+        entry = lib.add(pending["name"], pending["file_id"], pending["file_name"], pending["size"], data[3:], sha)
+        context.user_data.pop("lib_pending", None)
+        context.user_data.pop("lib_wait", None)
+        rows = [[Button(t(lang, "lib_btn_note"), callback_data=f"ln:{entry.id}"), Button(t(lang, "lib_btn_version"), callback_data=f"lv:{entry.id}")]]
+        library = _library_button(context, lang)
+        if library:
+            rows.append([library])
+        await _edit_or_reply(update, t(lang, "lib_added", name=html.escape(entry.name), link=html.escape(_get_link(context, entry.id))), Keyboard(rows))
+    elif data == "lx":
+        context.user_data.pop("lib_wait", None)
+        await _edit_or_reply(update, t(lang, "lib_cancelled"))
+    elif data == "ll":
+        text, keyboard = _library_list(context, lang)
+        await _edit_or_reply(update, text, keyboard)
+    else:
+        kind, _, entry_id = data.partition(":")
+        entry = lib.get(entry_id)
+        if entry is None:
+            await _edit_or_reply(update, t(lang, "lib_missing"))
+            return
+        if kind == "lo":
+            await _edit_or_reply(update, *_entry_view(context, lang, entry))
+        elif kind in ("ln", "lv", "lm"):
+            what = {"ln": "note", "lv": "v", "lm": "name"}[kind]
+            context.user_data["lib_wait"] = {"what": what, "id": entry.id}
+            key = {"note": "lib_ask_note", "v": "lib_ask_version", "name": "lib_ask_rename"}[what]
+            await _edit_or_reply(update, t(lang, key, name=html.escape(entry.name)),
+                                 Keyboard([[Button(t(lang, "btn_cancel"), callback_data="lx")]]))
+        elif kind == "lr":
+            await _edit_or_reply(update, t(lang, "lib_confirm_remove", name=html.escape(entry.name)),
+                                 Keyboard([[Button(t(lang, "btn_yes_delete"), callback_data=f"ly:{entry.id}"),
+                                            Button(t(lang, "btn_cancel"), callback_data=f"lo:{entry.id}")]]))
+        elif kind == "ly":
+            lib.remove(entry.id)
+            text, keyboard = _library_list(context, lang)
+            await _edit_or_reply(update, t(lang, "lib_removed", name=html.escape(entry.name)) + "\n\n" + text, keyboard)
+
+
+async def library_answer(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """The owner's reply to "what is it called?", or a new description, version or name."""
+    lang = _lang(update, context)
+    wait = context.user_data.get("lib_wait") or {}
+    text = update.effective_message.text or ""
+    if wait.get("what") == "name" and "id" not in wait:
+        pending = context.user_data.get("lib_pending")
+        name = clean_name(text)
+        if not pending or not name:
+            context.user_data.pop("lib_wait", None)
+            await _reply(update, t(lang, "lib_expired"))
+            return
+        pending["name"] = name
+        context.user_data["lib_wait"] = {"what": "category"}
+        await _reply(update, t(lang, "lib_ask_cat", name=html.escape(name)), _category_keyboard(lang))
+        return
+    if wait.get("id"):
+        context.user_data.pop("lib_wait", None)
+        try:
+            entry = _library(context).update(wait["id"], **{wait["what"]: text})
+        except KeyError:
+            await _reply(update, t(lang, "lib_missing"))
+            return
+        await _reply(update, *_entry_view(context, lang, entry))
+        return
+    context.user_data.pop("lib_wait", None)
+    await _reply(update, t(lang, "help") + t(lang, "help_owner"))
+
+
+async def send_library_file(update: Update, context: ContextTypes.DEFAULT_TYPE, entry_id: str):
+    """t.me/<bot>?start=get_<id>, from the Mini App or a shared link: anyone gets the file."""
+    lang = _lang(update, context)
+    entry = _library(context).get(entry_id)
+    if entry is None:
+        await _reply(update, t(lang, "lib_missing"), _tools_keyboard(context, lang, _private(update)))
+        return
+    v = f" <code>{html.escape(entry.v)}</code>" if entry.v else ""
+    caption = t(lang, "lib_caption", name=html.escape(entry.name), v=v)
+    if entry.sha256:
+        caption += f"\nSHA-256: <code>{entry.sha256}</code>"
+    await context.bot.send_document(update.effective_chat.id, document=entry.file_id, caption=caption, parse_mode=ParseMode.HTML)
 
 
 async def on_error(update: object, context: ContextTypes.DEFAULT_TYPE):
