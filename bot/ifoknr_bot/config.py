@@ -25,6 +25,13 @@ class Config:
     site_url: str
     channel_url: str
     bot_api_url: str
+    library_file: Path = Path("/data/library.json")
+    public_dir: Path = Path("/data/public")
+
+    @property
+    def app_url(self) -> str:
+        """The tools library (Telegram Mini App) on the site. Telegram opens only https pages."""
+        return self.site_url.rstrip("/") + "/app/" if self.site_url.startswith("https://") else ""
 
     @property
     def local_api(self) -> bool:
@@ -71,4 +78,6 @@ def load(env=None) -> Config:
         site_url=env.get("SITE_URL", "").strip(),
         channel_url=env.get("CHANNEL_URL", "https://t.me/IFOKNR1").strip(),
         bot_api_url=env.get("BOT_API_URL", "").strip().rstrip("/"),
+        library_file=Path(env.get("LIBRARY_FILE", str(data_dir / "library.json"))),
+        public_dir=Path(env.get("PUBLIC_DIR", str(data_dir / "public"))),
     )

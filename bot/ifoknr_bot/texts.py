@@ -20,7 +20,8 @@ T = {
             "/mkdir اسم ← مجلد جديد ويصير الرفع فيه\n"
             "/here مجلد الرفع الحالي\n"
             "/note نص ← يضيف ملاحظة في notes.md\n"
-            "/status المساحة وحالة السيرفر"
+            "/status المساحة وحالة السيرفر\n"
+            "/library ملفاتك في مكتبة الأدوات (تعدّلها أو تشيلها)"
         ),
         "tools": "اختار أداة:",
         "latest": "<b>آخر الإصدارات</b>",
@@ -79,6 +80,30 @@ T = {
         "err_not_found": "❌ ما لقيته، يمكن انحذف أو انتقل.",
         "err_outside": "❌ هذا المسار برا مجلد الملفات.",
         "err_expired": "القائمة قديمة، افتح /files من جديد.",
+        "btn_library": "📚 مكتبة الأدوات",
+        "lib_btn_add": "📚 أضف للمكتبة",
+        "lib_ask_name": "📚 وش اسم البرنامج؟ اكتبه في رسالة.\nالملف: <code>{file}</code>",
+        "lib_ask_cat": "📂 اختار التصنيف لـ <b>{name}</b>:",
+        "lib_btn_nocat": "بدون تصنيف",
+        "lib_added": "✅ <b>{name}</b> صار في المكتبة.\nالناس ياخذونه من المكتبة، أو من هذا الرابط:\n<code>{link}</code>",
+        "lib_btn_note": "📝 وصف",
+        "lib_btn_version": "🏷 النسخة",
+        "lib_btn_rename": "✏️ الاسم",
+        "lib_ask_note": "📝 اكتب وصف قصير لـ <b>{name}</b>:",
+        "lib_ask_version": "🏷 اكتب رقم النسخة لـ <b>{name}</b>:",
+        "lib_ask_rename": "✏️ اكتب الاسم الجديد لـ <b>{name}</b>:",
+        "lib_expired": "انتهت العملية. أرسل الملف من جديد.",
+        "lib_list": "📚 <b>ملفاتك في المكتبة</b> ({n})\nاختار ملف تعدّله أو تشيله:",
+        "lib_empty": "📚 المكتبة فاضية. أرسل لي ملف واضغط «أضف للمكتبة».",
+        "lib_item": "📦 <b>{name}</b>{v}\n{cat}{size} · {date}{note}\n<code>{link}</code>",
+        "lib_btn_remove": "🗑 شيله من المكتبة",
+        "lib_confirm_remove": "متأكد تشيل <b>{name}</b> من المكتبة؟ الملف المحفوظ في السيرفر يبقى.",
+        "lib_removed": "🗑 انشال <b>{name}</b> من المكتبة.",
+        "lib_btn_back": "« المكتبة",
+        "lib_missing": "❌ هذا الملف ما عاد موجود في المكتبة.",
+        "lib_caption": "📦 <b>{name}</b>{v}\nمن مكتبة IFOKNR",
+        "lib_not_saved": "\n\nالملف ما انحفظ في السيرفر، بس تقدر تضيفه للمكتبة: تيليجرام يحفظه.",
+        "lib_cancelled": "تم الإلغاء.",
         "months": ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"],
         "days": "{n} يوم",
     },
@@ -99,7 +124,8 @@ T = {
             "/mkdir name → new folder, used for uploads\n"
             "/here Current upload folder\n"
             "/note text → adds a note to notes.md\n"
-            "/status Disk space and server status"
+            "/status Disk space and server status\n"
+            "/library Your files in the tools library (edit or remove them)"
         ),
         "tools": "Pick a tool:",
         "latest": "<b>Latest releases</b>",
@@ -158,6 +184,30 @@ T = {
         "err_not_found": "❌ Not found; it may have been moved or deleted.",
         "err_outside": "❌ That path is outside the files folder.",
         "err_expired": "This list is old; open /files again.",
+        "btn_library": "📚 Tools library",
+        "lib_btn_add": "📚 Add to the library",
+        "lib_ask_name": "📚 What is it called? Send the name in a message.\nFile: <code>{file}</code>",
+        "lib_ask_cat": "📂 Pick a category for <b>{name}</b>:",
+        "lib_btn_nocat": "No category",
+        "lib_added": "✅ <b>{name}</b> is in the library.\nPeople get it from the library, or with this link:\n<code>{link}</code>",
+        "lib_btn_note": "📝 Description",
+        "lib_btn_version": "🏷 Version",
+        "lib_btn_rename": "✏️ Name",
+        "lib_ask_note": "📝 Send a short description of <b>{name}</b>:",
+        "lib_ask_version": "🏷 Send the version of <b>{name}</b>:",
+        "lib_ask_rename": "✏️ Send the new name of <b>{name}</b>:",
+        "lib_expired": "That has expired. Send the file again.",
+        "lib_list": "📚 <b>Your files in the library</b> ({n})\nPick one to edit or remove:",
+        "lib_empty": "📚 The library is empty. Send me a file and press “Add to the library”.",
+        "lib_item": "📦 <b>{name}</b>{v}\n{cat}{size} · {date}{note}\n<code>{link}</code>",
+        "lib_btn_remove": "🗑 Remove from the library",
+        "lib_confirm_remove": "Remove <b>{name}</b> from the library? A copy saved on the server stays.",
+        "lib_removed": "🗑 <b>{name}</b> was removed from the library.",
+        "lib_btn_back": "« Library",
+        "lib_missing": "❌ That file is no longer in the library.",
+        "lib_caption": "📦 <b>{name}</b>{v}\nFrom the IFOKNR library",
+        "lib_not_saved": "\n\nThe file was not saved on the server, but you can still add it to the library: Telegram keeps it.",
+        "lib_cancelled": "Cancelled.",
         "months": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
         "days": "{n} days",
     },

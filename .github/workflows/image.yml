@@ -25,6 +25,9 @@ jobs:
           node --check site/assets/boot.js
           node -e "JSON.parse(require('fs').readFileSync('site/assets/tools.json'))"
           node --check site/assets/app.js
+          node --check site/app/app.js
+          node -e "const d=JSON.parse(require('fs').readFileSync('site/app/library.json'));if(d.items.length<100||d.categories.length<10)process.exit(1);console.log('library:',d.items.length,'entries')"
+          python3 -m unittest discover -s scripts
 
       - uses: docker/setup-qemu-action@v3
       - uses: docker/setup-buildx-action@v3
@@ -49,6 +52,17 @@ jobs:
           # Only ifoknr's repositories pass.
           test "$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8090/gh/repos/torvalds/linux/releases)" = 404
           curl -fsSI http://127.0.0.1:8090/ | grep -i "connect-src 'self'"
+          # The tools library: its page (opened by Telegram), its data, and the bot's list only
+          # when the bot's folder is mounted.
+          curl -fsS http://127.0.0.1:8090/app/ | grep -q 'app/app.js?v='
+          curl -fsSI http://127.0.0.1:8090/app/ | grep -i "frame-ancestors 'self' https://web.telegram.org"
+          curl -fsS http://127.0.0.1:8090/app/library.json | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{if(JSON.parse(s).items.length<100)process.exit(1)})"
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8090/app/live/private.json)" = 404
+          mkdir -p live && echo '{"items":[{"id":"abc123","name":"Test"}]}' > live/private.json && echo '{"secret":1}' > live/library.json
+          docker run -d --name site-live -p 8091:80 -v "$PWD/live:/usr/share/nginx/html/app/live:ro" tools:test
+          for i in $(seq 1 20); do curl -fs http://127.0.0.1:8091/ >/dev/null && break; sleep 1; done
+          curl -fsS http://127.0.0.1:8091/app/live/private.json | grep -q abc123
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8091/app/live/library.json)" = 404
           docker logs site
 
       - name: Log in to ghcr.io

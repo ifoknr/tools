@@ -4,7 +4,7 @@ import asyncio
 import logging
 import time
 
-from telegram import BotCommand, BotCommandScopeChat, BotCommandScopeDefault
+from telegram import BotCommand, BotCommandScopeChat, BotCommandScopeDefault, MenuButtonWebApp, WebAppInfo
 from telegram.error import TelegramError
 from telegram.ext import (
     Application,
@@ -19,6 +19,7 @@ from telegram.ext import (
 
 from . import config, handlers
 from .catalog import Catalog
+from .library import Library
 from .storage import Store
 
 log = logging.getLogger("ifoknr_bot")
@@ -28,8 +29,8 @@ PUBLIC_COMMANDS = {
     "en": [("tools", "The tools"), ("latest", "Latest releases"), ("lang", "العربية"), ("help", "Help")],
 }
 OWNER_COMMANDS = {
-    "ar": [("files", "ملفاتي"), ("status", "حالة السيرفر"), ("mkdir", "مجلد جديد"), ("here", "مجلد الرفع"), ("note", "ملاحظة")],
-    "en": [("files", "My files"), ("status", "Server status"), ("mkdir", "New folder"), ("here", "Upload folder"), ("note", "Add a note")],
+    "ar": [("files", "ملفاتي"), ("library", "مكتبة الأدوات"), ("status", "حالة السيرفر"), ("mkdir", "مجلد جديد"), ("here", "مجلد الرفع"), ("note", "ملاحظة")],
+    "en": [("files", "My files"), ("library", "Tools library"), ("status", "Server status"), ("mkdir", "New folder"), ("here", "Upload folder"), ("note", "Add a note")],
 }
 
 MEDIA = (
@@ -51,9 +52,11 @@ def register(app: Application) -> None:
     app.add_handler(CommandHandler("here", handlers.here_command, filters=private))
     app.add_handler(CommandHandler("note", handlers.note_command, filters=private))
     app.add_handler(CommandHandler("status", handlers.status_command, filters=private))
+    app.add_handler(CommandHandler("library", handlers.library_command, filters=private))
     app.add_handler(CallbackQueryHandler(handlers.show_tool, pattern=r"^t:"))
     app.add_handler(CallbackQueryHandler(handlers.tools_back, pattern=r"^tl$"))
     app.add_handler(CallbackQueryHandler(handlers.files_button, pattern=r"^f"))
+    app.add_handler(CallbackQueryHandler(handlers.library_button, pattern=r"^l[a-z]"))
     app.add_handler(MessageHandler(private & MEDIA, handlers.receive_file))
     app.add_handler(MessageHandler(private & filters.TEXT & ~filters.COMMAND, handlers.other_message))
     app.add_error_handler(handlers.on_error)
@@ -75,6 +78,15 @@ async def _post_init(app: Application) -> None:
                 log.info("owner menu for %s not set yet: %s", owner, e)
     except TelegramError as e:
         log.warning("could not set the command menu: %s", e)
+    library = app.bot_data["library"]
+    library.bot = app.bot.username or ""
+    library.save()
+    # The button next to the message box opens the tools library.
+    if cfg.app_url:
+        try:
+            await app.bot.set_chat_menu_button(menu_button=MenuButtonWebApp("📚 الأدوات", WebAppInfo(url=cfg.app_url)))
+        except TelegramError as e:
+            log.warning("could not set the library menu button: %s", e)
     # Warm the release cache so the first /tools is quick.
     app.bot_data["warmup"] = asyncio.create_task(app.bot_data["catalog"].refresh())
 
@@ -100,6 +112,9 @@ def build(cfg: config.Config) -> Application:
     app = builder.build()
     app.bot_data["config"] = cfg
     app.bot_data["store"] = Store(cfg.files_dir)
+    library = Library(cfg.library_file, cfg.public_dir)
+    library.save()  # the site shows public/private.json; write it even while the library is empty
+    app.bot_data["library"] = library
     app.bot_data["catalog"] = Catalog(cfg.tools_file, cfg.tools_url, cfg.github_token)
     register(app)
     return app
