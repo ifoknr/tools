@@ -5,6 +5,7 @@
       "Next",
       "Zygisk"
     ],
+    "icon": "assets/img/tools/nextzygisk.svg",
     "repo": "ifoknr/NexTZygisk",
     "group": "hide",
     "layer": "zygote",
@@ -49,6 +50,7 @@
       "Next",
       "Wheel"
     ],
+    "icon": "assets/img/tools/nextwheel.svg",
     "repo": "ifoknr/NextWheel",
     "group": "hide",
     "layer": "apps",
@@ -93,6 +95,7 @@
       "Next",
       "SUSFS"
     ],
+    "icon": "assets/img/tools/nextsusfs.svg",
     "repo": "ifoknr/NextSUSFS",
     "group": "hide",
     "layer": "kernel",
@@ -135,6 +138,7 @@
       "NEXT",
       "CORE"
     ],
+    "icon": "assets/img/tools/nextcore.svg",
     "repo": "ifoknr/NEXTCORE",
     "group": "perf",
     "accent": "#ff6b2c",
@@ -177,7 +181,7 @@
       "Fastboot ",
       "Studio"
     ],
-    "icon": "assets/img/fastbootstudio-icon.png",
+    "icon": "assets/img/tools/fastbootstudio.svg",
     "repo": "ifoknr/FastbootStudio",
     "group": "pc",
     "accent": "#3dd6c4",
@@ -220,7 +224,7 @@
       "Fastboot Studio ",
       "Companion"
     ],
-    "icon": "assets/img/fastbootstudio-icon.png",
+    "icon": "assets/img/tools/companion.svg",
     "repo": "ifoknr/FastbootStudio-Companion",
     "group": "pc",
     "accent": "#3dd6c4",
@@ -257,7 +261,7 @@
       "Fastboot Studio ",
       "Mobile"
     ],
-    "icon": "assets/img/fastbootstudio-icon.png",
+    "icon": "assets/img/tools/mobile.svg",
     "repo": "ifoknr/FastbootStudio-Mobile",
     "group": "pc",
     "accent": "#3dd6c4",

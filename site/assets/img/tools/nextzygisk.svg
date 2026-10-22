@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<defs><linearGradient id="bgbz" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4ADE80"/><stop offset="1" stop-color="#059669"/></linearGradient>
+<linearGradient id="shbz" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<clipPath id="clbz"><path d="M256 92 L380 138 V250 C380 332 324 388 256 418 C188 388 132 332 132 250 V138 Z"/></clipPath></defs>
+<rect width="512" height="512" rx="116" fill="url(#bgbz)"/><rect width="512" height="512" rx="116" fill="url(#shbz)"/>
+<circle cx="212" cy="256" r="104" fill="#fff" fill-opacity=".96"/>
+<circle cx="316" cy="256" r="96" fill="#fff" fill-opacity=".45"/>
+<path d="M174 204 H250 L174 308 H250" fill="none" stroke="#0E7A57" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/></svg>
