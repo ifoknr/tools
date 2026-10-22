@@ -5,9 +5,9 @@ name: Image
 on:
   push:
     branches: [main]
-    paths-ignore: ["bot/**", ".github/workflows/bot.yml"]
+    paths-ignore: ["bot/**", ".github/workflows/bot.yml", "announcements/**", ".github/workflows/announce.yml"]
   pull_request:
-    paths-ignore: ["bot/**", ".github/workflows/bot.yml"]
+    paths-ignore: ["bot/**", ".github/workflows/bot.yml", "announcements/**", ".github/workflows/announce.yml"]
   workflow_dispatch:
 
 permissions:
