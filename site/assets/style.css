@@ -86,7 +86,7 @@ h1, h2, h3 { margin: 0; line-height: 1.25; letter-spacing: -.01em; }
 .sig-light, :root[data-theme="light"] .sig-dark { display: none; }
 :root[data-theme="light"] .sig-light { display: block; }
 :root[data-theme="light"] .sig-link .sig-light { display: inline-block; }
-.brand-mark { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; background: var(--accent); color: var(--accent-ink); font-size: 13px; font-weight: 900; letter-spacing: 0; direction: ltr; }
+.brand-mark { display: block; width: 34px; height: 34px; border-radius: 8px; flex: none; }
 .top-nav { display: flex; gap: 4px; margin-inline-start: auto; }
 .top-nav a { color: var(--dim); padding: 8px 12px; border-radius: 9px; font-size: 15px; }
 .top-nav a:hover { color: var(--text); background: var(--raised); text-decoration: none; }
