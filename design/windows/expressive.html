@@ -6,8 +6,6 @@
 @font-face { font-family: Roboto; src: url(Roboto-Regular.ttf); font-weight: 400; }
 @font-face { font-family: Roboto; src: url(Roboto-Medium.ttf); font-weight: 500; }
 @font-face { font-family: Roboto; src: url(Roboto-Bold.ttf); font-weight: 700; }
-@font-face { font-family: Prixma; src: url(Prixma-BoldItalic.otf); font-weight: 700; font-style: italic; }
-@font-face { font-family: Sig; src: url(SwampNinja.ttf); }
 @font-face { font-family: Kufi; src: url(NotoKufiArabic-Regular.ttf); font-weight: 400; }
 @font-face { font-family: Kufi; src: url(NotoKufiArabic-Medium.ttf); font-weight: 500; }
 @font-face { font-family: Kufi; src: url(NotoKufiArabic-Bold.ttf); font-weight: 700; }
@@ -265,6 +263,11 @@ body.ar { font-family: Kufi, Roboto, sans-serif; }
 .cookie img { position: relative; width: 74px; height: 74px; }
 .hero .chip { border-color: var(--outlineVariant); color: var(--onSurfaceVariant); }
 .hero .btn.filled, .hero .filled { background: var(--primary); color: var(--onPrimary); }
+/* The app name in the Prixma lettering, drawn as outlines (no font file needed) */
+.appname { display: block; width: auto; height: .95em; }
+.brand b .appname, .hero h2 .appname { width: auto; border-radius: 0; box-shadow: none; }
+.brand b .appname { height: 15px; margin: 2px 0 4px; }
+.hero h2 .appname { height: 25px; margin-bottom: 6px; }
 /* IFOKNR's mark and name keep the brand violet whatever the page colours: the brand files, drawn as outlines */
 .sigimg { width: 56px; height: 56px; flex: none; border-radius: 17px; box-shadow: 0 8px 22px rgba(0,0,0,.35); }
 .signimg { display: block; height: 26px; width: auto; margin: 4px 0 2px; }
@@ -740,7 +743,7 @@ P.about = () => `
     <div class="hero" style="grid-column: 1 / 3">
       <img src="icon-themed.png">
       <div style="position:relative; z-index:1; flex:1">
-        <h2>Fastboot Studio</h2>
+        <h2><img class="appname" src="appname-dark.svg" alt="Fastboot Studio"></h2>
         <p>${T('Flash, back up and root Android phones from Windows, safely.', 'فلّش وخذ نسخة احتياطية وروّت جوالك من الويندوز، بأمان.')}</p>
         <div class="chips"><span class="chip">v2.9.0</span><span class="chip">MIT</span><span class="chip">${T('Free & open source', 'مجاني ومفتوح المصدر')}</span></div>
       </div>
@@ -782,7 +785,7 @@ document.getElementById('win').innerHTML = `
   <div class="titlebar"><span style="direction:ltr">Fastboot Studio v2.9</span><span class="sp"></span><span class="cap">—</span><span class="cap">▢</span><span class="cap">✕</span></div>
   <div class="body">
     <div class="drawer">
-      <div class="brand"><img src="icon-themed.png"><div><b>Fastboot Studio</b><span>v2.9.0</span></div></div>
+      <div class="brand"><img src="icon-themed.png"><div><b><img class="appname" src="appname-dark.svg" alt="Fastboot Studio"></b><span>v2.9.0</span></div></div>
       ${nav}
       <div class="foot"><div class="devchip"><span class="dot"></span><span>${T('1 device in fastboot', 'جهاز واحد في fastboot')}</span></div></div>
     </div>
