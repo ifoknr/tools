@@ -158,6 +158,10 @@ h1, h2, h3 { margin: 0; line-height: 1.25; letter-spacing: -.01em; }
 .title { min-width: 0; }
 .card h3 { font-size: 22px; font-weight: 800; direction: ltr; text-align: start; unicode-bidi: isolate; }
 .card h3 .hl { color: var(--tool); }
+/* Tool names in the Prixma Bold Italic lettering, as outlines; one picture per theme. */
+.card h3 .name { display: block; height: 27px; width: auto; max-width: 100%; }
+.card h3 .name-light, :root[data-theme="light"] .card h3 .name-dark { display: none; }
+:root[data-theme="light"] .card h3 .name-light { display: block; }
 :root[data-theme="light"] .card h3 .hl { filter: brightness(.72) saturate(1.2); }
 :root[data-theme="light"] .logo { color: color-mix(in srgb, var(--tool) 70%, #000); }
 .tagline { margin: 2px 0 0; color: var(--dim); font-size: 14.5px; line-height: 1.5; }
