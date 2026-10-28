@@ -1,6 +1,38 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-<defs><linearGradient id="bgfw" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2C6F6B"/><stop offset="1" stop-color="#173B3D"/></linearGradient>
-<linearGradient id="shfw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/></linearGradient>
-<clipPath id="clfw"><path d="M256 92 L380 138 V250 C380 332 324 388 256 418 C188 388 132 332 132 250 V138 Z"/></clipPath></defs>
-<rect width="512" height="512" rx="116" fill="url(#bgfw)"/><rect width="512" height="512" rx="116" fill="url(#shfw)"/>
-<rect x="96" y="150" width="320" height="208" rx="26" fill="none" stroke="#B8F5EA" stroke-width="22"/><path d="M206 404 H306 M256 358 V404" stroke="#B8F5EA" stroke-width="22" stroke-linecap="round"/><path d="M272 186 L222 262 H258 L246 322 L300 240 H262 Z" fill="#B8F5EA"/></svg>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5a4d98"/>
+      <stop offset="0.55" stop-color="#3a3168"/>
+      <stop offset="1" stop-color="#241e42"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.28" cy="0.2" r="0.75">
+      <stop offset="0" stop-color="#cabeff" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#cabeff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="phone" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2c2550"/>
+      <stop offset="1" stop-color="#1b1733"/>
+    </linearGradient>
+    <linearGradient id="bolt" x1="0.2" y1="0" x2="0.8" y2="1">
+      <stop offset="0" stop-color="#e6deff"/>
+      <stop offset="0.55" stop-color="#cabeff"/>
+      <stop offset="1" stop-color="#edb8cc"/>
+    </linearGradient>
+    <filter id="sh" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#0b0816" flood-opacity="0.55"/>
+    </filter>
+    <filter id="bglow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="10"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="512" height="512" rx="116" fill="url(#bg)"/>
+  <rect x="0" y="0" width="512" height="512" rx="116" fill="url(#glow)"/>
+  <rect x="3" y="3" width="506" height="506" rx="113" fill="none" stroke="#e6deff" stroke-opacity="0.14" stroke-width="3"/>
+  <g filter="url(#sh)">
+    <rect x="160" y="86" width="192" height="340" rx="44" fill="url(#phone)" stroke="#e6deff" stroke-width="14"/>
+  </g>
+  <rect x="226" y="112" width="60" height="12" rx="6" fill="#e6deff" fill-opacity="0.85"/>
+  <path d="M276 146 L194 280 H248 L230 374 L320 228 H266 Z" fill="#cabeff" opacity="0.55" filter="url(#bglow)"/>
+  <path d="M276 146 L194 280 H248 L230 374 L320 228 H266 Z" fill="url(#bolt)" stroke="#f3eeff" stroke-width="6" stroke-linejoin="round"/>
+  <circle cx="256" cy="396" r="9" fill="#e6deff" fill-opacity="0.7"/>
+</svg>

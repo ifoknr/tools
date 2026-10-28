@@ -172,9 +172,15 @@
         logo.textContent = tool.name[0].charAt(0).toUpperCase() + tool.name[1].charAt(0).toUpperCase();
       }
 
+      // The name in the Prixma Bold Italic lettering, drawn as outlines (one picture per theme).
       var h = card.querySelector("h3");
-      h.appendChild(document.createTextNode(tool.name[0]));
-      h.appendChild(el("span", "hl", tool.name[1]));
+      h.setAttribute("aria-label", tool.name[0] + tool.name[1]);
+      ["dark", "light"].forEach(function (theme) {
+        var name = el("img", "name name-" + theme);
+        name.src = "assets/img/names/" + tool.id + "-" + theme + ".svg";
+        name.alt = theme === "dark" ? tool.name[0] + tool.name[1] : "";
+        h.appendChild(name);
+      });
       card.querySelector(".tagline").textContent = text.tagline;
       card.querySelector(".about").textContent = text.about;
       var points = card.querySelector(".points");
