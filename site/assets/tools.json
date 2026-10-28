@@ -181,7 +181,7 @@
       "Fastboot ",
       "Studio"
     ],
-    "icon": "assets/img/tools/fastbootstudio.svg",
+    "icon": "assets/img/tools/fastbootstudio.svg?v=2",
     "repo": "ifoknr/FastbootStudio",
     "group": "pc",
     "accent": "#3dd6c4",
@@ -261,7 +261,7 @@
       "Fastboot Studio ",
       "Mobile"
     ],
-    "icon": "assets/img/tools/mobile.svg",
+    "icon": "assets/img/tools/mobile.svg?v=2",
     "repo": "ifoknr/FastbootStudio-Mobile",
     "group": "pc",
     "accent": "#3dd6c4",
