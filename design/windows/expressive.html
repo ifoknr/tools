@@ -214,14 +214,18 @@ body.ar { font-family: Kufi, Roboto, sans-serif; }
 .cb { border-radius: 50%; width: 20px; height: 20px; border: 2px solid var(--onSurfaceVariant); }
 .cb.on { background: transparent; border-color: var(--primary); }
 .cb.on::after { width: 10px; height: 10px; border: none; border-radius: 50%; background: var(--primary); transform: none; }
-.seg { border: none; gap: 3px; height: 38px; overflow: visible; border-radius: 0; }
-.seg span { border: none !important; background: var(--surfaceContainerHigh); border-radius: 8px; padding: 0 16px; }
-.seg span:first-child { border-start-start-radius: 19px; border-end-start-radius: 19px; }
-.seg span:last-child { border-start-end-radius: 19px; border-end-end-radius: 19px; }
-.seg span.on { background: var(--primary); color: var(--onPrimary); border-radius: 19px; }
-.tabs { border-bottom: none; gap: 6px; margin: 0 26px 14px; }
-.tabs span { border-radius: 20px; padding: 9px 16px; background: var(--surfaceContainer); }
-.tabs span.on { background: var(--secondaryContainer); color: var(--onSecondaryContainer); }
+/* A segmented switch: one pill track, the chosen side a filled pill inside it (the same everywhere) */
+.seg { border: none; gap: 3px; height: 40px; padding: 3px; overflow: visible; border-radius: 20px; background: var(--surfaceContainerHigh); }
+.seg span { border: none !important; background: none; border-radius: 17px; padding: 0 16px; color: var(--onSurfaceVariant); }
+.seg span.on { background: var(--primary); color: var(--onPrimary); font-weight: 600; }
+/* A box standing in a column is shaped like a card; one inside a card is a step smaller */
+.col > .banner { border-radius: 28px; padding: 16px 20px; }
+.card .banner { border-radius: 18px; }
+.card hr { border: none; height: 1px; background: var(--outlineVariant); margin: 14px 0; }
+/* Tabs are the same pill track as the segmented switches */
+.tabs { border-bottom: none; gap: 3px; padding: 3px; margin: 0 26px 14px; width: fit-content; border-radius: 22px; background: var(--surfaceContainer); }
+.tabs span { border-radius: 19px; padding: 9px 16px; background: none; }
+.tabs span.on { background: var(--primary); color: var(--onPrimary); font-weight: 600; }
 .tabs span.on::after { display: none; }
 .progress { height: 8px; border-radius: 4px; background: var(--surfaceContainerHighest); }
 .progress i { border-radius: 4px; }
@@ -553,16 +557,15 @@ P.bricks = () => bar(T('Build Super', 'بناء Super'), T('Build a super image 
     <div class="col">
       <div class="card">
         <h3>${T('Layout', 'التقسيم')}</h3>
-        <div class="seg" style="width:100%; margin-bottom:10px"><span class="on" style="flex:1; justify-content:center">Virtual A/B</span><span style="flex:1; justify-content:center">A/B</span><span style="flex:1; justify-content:center">${T('Single', 'واحد')}</span></div>
+        <div class="seg" style="width:100%; margin-bottom:12px"><span class="on" style="flex:1; justify-content:center">Virtual A/B</span><span style="flex:1; justify-content:center">A/B</span><span style="flex:1; justify-content:center">${T('Single', 'واحد')}</span></div>
         <div class="kv" style="grid-template-columns: 110px 1fr">
           <span>${T('Device size', 'حجم الجهاز')}</span><span class="mono">8.00 GB</span><span>${T('Metadata', 'الميتاداتا')}</span><span class="mono">65536 × 3</span><span>${T('Block', 'البلوك')}</span><span class="mono">4096</span>
         </div>
-      </div>
-      <div class="card">
+        <hr>
         <h3>${T('Output', 'المخرج')}</h3>
-        <div class="seg" style="width:100%"><span class="on" style="flex:1; justify-content:center">Sparse</span><span style="flex:1; justify-content:center">Raw</span></div>
+        <div class="seg" style="width:100%; margin-bottom:14px"><span class="on" style="flex:1; justify-content:center">Sparse</span><span style="flex:1; justify-content:center">Raw</span></div>
+        <div class="banner">${ck.replace('<svg', '<svg width="19" height="19"')}<div><b>${T('Everything fits', 'كل شي يركب')}</b>${T('1.42 GB stays free in super.', 'يبقى 1.42 جيجا فاضي في super.')}</div></div>
       </div>
-      <div class="banner">${ck.replace('<svg', '<svg width="19" height="19"')}<div><b>${T('Everything fits', 'كل شي يركب')}</b>${T('1.42 GB stays free in super.', 'يبقى 1.42 جيجا فاضي في super.')}</div></div>
       <div style="flex:1"></div>
       <button class="btn filled" style="height:42px">${svg(I.bricks)}${T('Build super.img', 'ابنِ super.img')}</button>
     </div>
