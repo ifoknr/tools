@@ -381,7 +381,7 @@ P.backup = () => {
   return top + `<main>
     <div class="row2"><button class="btn primary" data-act="bkNew"><span>${t('نسخة جديدة', 'New backup')}</span></button><button class="btn" data-act="bkVerifyAll" ${list && list.some(b => b.mine) ? '' : 'disabled'}><span>${t('تحقق من الكل', 'Verify all')}</span></button></div>
     ${items}${detail}
-  </main><button class="fab">+</button>` + nav();
+  </main><button class="fab" data-act="bkNew" aria-label="${t('نسخة جديدة', 'New backup')}">+</button>` + nav();
 };
 
 P.otg = () => {
@@ -449,9 +449,9 @@ P.settings = () => {
   const tog = (key, b, small) => `<button class="setrow" data-act="toggle" data-k="${key}"><div class="tx"><b>${b}</b><small>${small}</small></div><span class="toggle${s[key] ? ' on' : ''}"></span></button>`;
   return head(t('الإعدادات', 'Settings'), t('المظهر واللغة والأمان', 'Appearance, language and safety'), '', true) + `<main>
     <div class="card"><h2>${t('المظهر', 'Appearance')}</h2>
-      ${[['auto', 'device', t('تلقائي', 'Auto'), t('مثل الجوال: داكن بالليل وفاتح بالنهار', 'Like the phone: dark at night, light by day')], ['dark', 'about', t('داكن', 'Dark'), t('الألوان المطفية، مريحة للعين', 'Soft muted colours, easy on the eyes')], ['light', 'power', t('فاتح', 'Light'), t('خلفية فاتحة وواضحة', 'A bright, clear background')]].map(([v, i, b, sm]) => `<div class="opt${s.theme === v ? ' on' : ''}"><span class="oi">${svg(i)}</span><div><b>${b}</b><small>${sm}</small></div><span class="r"></span></div>`).join('<div style="height:6px"></div>')}
+      ${[['auto', 'device', t('تلقائي', 'Auto'), t('مثل الجوال: داكن بالليل وفاتح بالنهار', 'Like the phone: dark at night, light by day')], ['dark', 'about', t('داكن', 'Dark'), t('الألوان المطفية، مريحة للعين', 'Soft muted colours, easy on the eyes')], ['light', 'power', t('فاتح', 'Light'), t('خلفية فاتحة وواضحة', 'A bright, clear background')]].map(([v, i, b, sm]) => `<button class="opt${s.theme === v ? ' on' : ''}" data-act="set" data-k="theme" data-v="${v}" style="width:100%;text-align:start"><span class="oi">${svg(i)}</span><div><b>${b}</b><small>${sm}</small></div><span class="r"></span></button>`).join('<div style="height:6px"></div>')}
       <div class="label" style="margin-top:14px">${t('حجم الخط', 'Text size')}</div>
-      <div class="seg size">${[['s', t('صغير', 'Small'), 12], ['m', t('عادي', 'Normal'), 14], ['l', t('كبير', 'Large'), 16], ['xl', t('أكبر', 'Larger'), 18]].map(([v, b, px]) => `<button class="${(s.textSize || 'm') === v ? 'on' : ''}"><b style="font-size:${px}px">${b}</b></button>`).join('')}</div>
+      <div class="seg size">${[['s', t('صغير', 'Small'), 12], ['m', t('عادي', 'Normal'), 14], ['l', t('كبير', 'Large'), 16], ['xl', t('أكبر', 'Larger'), 18]].map(([v, b, px]) => `<button class="${(s.textSize || 'm') === v ? 'on' : ''}" data-act="set" data-k="textSize" data-v="${v}"><b style="font-size:${px}px">${b}</b></button>`).join('')}</div>
       <div class="label" style="margin-top:12px">${t('اللغة', 'Language')}</div>
       ${seg('lang', [['ar', 'العربية'], ['en', 'English']])}</div>
     <div class="card"><h2>${t('الأمان', 'Safety')}</h2>
@@ -608,6 +608,7 @@ function applyLook() {
   document.documentElement.dir = A ? 'rtl' : 'ltr';
   const dark = st.s.theme === 'auto' ? st.systemDark : st.s.theme === 'dark';
   document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+  document.documentElement.dataset.size = st.s.textSize || 'm';
   call('ui.bars', { dark }).catch(() => {});
 }
 
