@@ -288,8 +288,7 @@
         "OTG: flash another phone in fastboot mode over a cable, no root needed"
       ]
     },
-    "version": "v1.0.0-beta.1",
-    "beta": true,
+    "version": "v1.0.0",
     "asset": "\\.apk$",
     "license": "MIT"
   }
