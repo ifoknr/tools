@@ -1,0 +1,791 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@font-face { font-family: Roboto; src: url(Roboto-Regular.ttf); font-weight: 400; }
+@font-face { font-family: Roboto; src: url(Roboto-Medium.ttf); font-weight: 500; }
+@font-face { font-family: Roboto; src: url(Roboto-Bold.ttf); font-weight: 700; }
+@font-face { font-family: Prixma; src: url(Prixma-BoldItalic.otf); font-weight: 700; font-style: italic; }
+@font-face { font-family: Sig; src: url(SwampNinja.ttf); }
+@font-face { font-family: Kufi; src: url(NotoKufiArabic-Regular.ttf); font-weight: 400; }
+@font-face { font-family: Kufi; src: url(NotoKufiArabic-Medium.ttf); font-weight: 500; }
+@font-face { font-family: Kufi; src: url(NotoKufiArabic-Bold.ttf); font-weight: 700; }
+:root { --k: 1; }
+html { font-size: calc(var(--k) * 16px); }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1300px; height: 860px; overflow: hidden; }
+body { font-family: Roboto, Kufi, sans-serif; background: #050407; display: flex; align-items: center; justify-content: center; font-size: .8125rem; }
+body.ar { font-family: Kufi, Roboto, sans-serif; }
+.mono { font-family: 'Cascadia Mono', Consolas, 'DejaVu Sans Mono', monospace; direction: ltr; unicode-bidi: isolate; }
+.win { width: 1220px; height: 780px; border-radius: 12px; overflow: hidden; background: var(--surface); color: var(--onSurface);
+  box-shadow: 0 24px 60px rgba(0,0,0,.45), 0 0 0 1px var(--outlineVariant); display: flex; flex-direction: column; }
+.titlebar { height: 34px; flex: none; display: flex; align-items: center; padding: 0 14px; font-size: .72rem; color: var(--onSurfaceVariant); background: var(--surfaceContainerLow); }
+.titlebar .sp { flex: 1; } .titlebar .cap { width: 40px; text-align: center; font-size: .8rem; }
+.body { flex: 1; display: flex; min-height: 0; }
+.drawer { width: 220px; flex: none; background: var(--surfaceContainerLow); padding: 6px 10px 10px; display: flex; flex-direction: column; }
+.brand { display: flex; align-items: center; gap: 10px; padding: 6px 10px 12px; }
+.brand img { width: 34px; height: 34px; border-radius: 10px; }
+.brand b { display: block; font-family: Prixma, Roboto, sans-serif; font-style: italic; font-weight: 700; font-size: .9rem; letter-spacing: .2px; direction: ltr; }
+.brand span { font-size: .7rem; color: var(--onSurfaceVariant); }
+.section { font-size: .7rem; color: var(--onSurfaceVariant); padding: 9px 14px 4px; font-weight: 500; }
+.nav { height: 36px; border-radius: 18px; display: flex; align-items: center; gap: 11px; padding: 0 14px; font-size: .8125rem; font-weight: 500; color: var(--onSurfaceVariant); margin-bottom: 1px; }
+.nav svg { width: 19px; height: 19px; flex: none; }
+.nav.on { background: var(--secondaryContainer); color: var(--onSecondaryContainer); }
+.nav .badge { margin-inline-start: auto; background: var(--primary); color: var(--onPrimary); font-size: .62rem; border-radius: 8px; padding: 0 6px; height: 15px; line-height: 15px; }
+.drawer .foot { margin-top: auto; }
+.devchip { display: flex; align-items: center; gap: 9px; padding: 9px 13px; border-radius: 14px; background: var(--surfaceContainerHigh); font-size: .75rem; }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--primary); box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 25%, transparent); flex: none; }
+.main { flex: 1; display: flex; flex-direction: column; min-width: 0; position: relative; }
+.appbar { display: flex; align-items: center; gap: 10px; padding: 16px 22px 12px; flex: none; }
+.appbar h1 { font-size: 1.375rem; font-weight: 400; line-height: 1.2; }
+.ar .appbar h1 { font-weight: 500; font-size: 1.3rem; }
+.appbar p { font-size: .78rem; color: var(--onSurfaceVariant); margin-top: 2px; }
+.appbar .sp { flex: 1; }
+.btn { height: 34px; border-radius: 17px; padding: 0 18px; display: inline-flex; align-items: center; justify-content: center; gap: 7px; font-size: .8125rem; font-weight: 500; white-space: nowrap; border: none; background: transparent; color: var(--onSurface); font-family: inherit; }
+.btn svg { width: 16px; height: 16px; }
+.filled { background: var(--primary); color: var(--onPrimary); }
+.tonal { background: var(--secondaryContainer); color: var(--onSecondaryContainer); }
+.outlined { border: 1px solid var(--outline); color: var(--primary); }
+.text { color: var(--primary); padding: 0 10px; }
+.errorbtn { background: var(--errorContainer); color: var(--onErrorContainer); }
+.icon-btn { width: 34px; height: 34px; border-radius: 17px; display: inline-flex; align-items: center; justify-content: center; background: var(--surfaceContainerHighest); color: var(--onSurfaceVariant); font-weight: 700; font-size: .95rem; flex: none; }
+.content { flex: 1; display: grid; gap: 14px; padding: 0 22px 18px; min-height: 0; }
+.col { display: flex; flex-direction: column; gap: 14px; min-height: 0; min-width: 0; }
+.row2 { display: flex; gap: 14px; }
+.card { border-radius: 16px; padding: 14px 16px; background: var(--surfaceContainer); min-width: 0; }
+.card.low { background: var(--surfaceContainerLow); }
+.card.outl { background: var(--surface); border: 1px solid var(--outlineVariant); }
+.card.high { background: var(--surfaceContainerHigh); }
+.card h3 { font-size: .9375rem; font-weight: 500; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+.card h3 .sp { flex: 1; }
+.card h3 small { font-size: .72rem; color: var(--onSurfaceVariant); font-weight: 400; }
+.kv { display: grid; grid-template-columns: 128px 1fr; row-gap: 7px; font-size: .8125rem; }
+.kv > span:nth-child(odd) { color: var(--onSurfaceVariant); }
+.kv > span:nth-child(even) { font-weight: 500; }
+.chip { height: 24px; border-radius: 8px; padding: 0 9px; display: inline-flex; align-items: center; gap: 5px; font-size: .72rem; font-weight: 500; border: 1px solid var(--outlineVariant); color: var(--onSurfaceVariant); white-space: nowrap; }
+.chip.ok { border: none; background: var(--primaryContainer); color: var(--onPrimaryContainer); }
+.chip.sel { border: none; background: var(--secondaryContainer); color: var(--onSecondaryContainer); }
+.chip.warn { border: none; background: var(--tertiaryContainer); color: var(--onTertiaryContainer); }
+.chip.bad { border: none; background: var(--errorContainer); color: var(--onErrorContainer); }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.tag { min-width: 70px; height: 24px; padding: 0 8px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; font-size: .72rem; font-weight: 700; background: var(--tertiaryContainer); color: var(--onTertiaryContainer); }
+.banner { border-radius: 12px; padding: 10px 12px; background: var(--primaryContainer); color: var(--onPrimaryContainer); display: flex; gap: 10px; align-items: flex-start; font-size: .78rem; line-height: 1.45; }
+.banner b { display: block; font-size: .8125rem; margin-bottom: 1px; }
+.banner svg { width: 19px; height: 19px; flex: none; margin-top: 1px; }
+.banner.warn { background: var(--tertiaryContainer); color: var(--onTertiaryContainer); }
+.banner.bad { background: var(--errorContainer); color: var(--onErrorContainer); }
+.li { display: flex; align-items: center; gap: 10px; min-height: 36px; font-size: .8125rem; border-radius: 12px; padding: 0 10px; margin-bottom: 4px; }
+.li.on { background: color-mix(in srgb, var(--secondaryContainer) 70%, transparent); }
+.li .n { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.li .s { color: var(--onSurfaceVariant); font-size: .75rem; }
+.cb { width: 16px; height: 16px; border-radius: 3px; border: 2px solid var(--onSurfaceVariant); flex: none; display: flex; align-items: center; justify-content: center; }
+.cb.on { background: var(--primary); border-color: var(--primary); }
+.cb.on::after { content: ''; width: 8px; height: 4px; border-left: 2px solid var(--onPrimary); border-bottom: 2px solid var(--onPrimary); transform: rotate(-45deg) translate(1px, -1px); }
+.seg { display: inline-flex; border: 1px solid var(--outline); border-radius: 17px; overflow: hidden; height: 32px; }
+.seg span { padding: 0 14px; display: flex; align-items: center; gap: 5px; font-size: .78rem; font-weight: 500; border-inline-start: 1px solid var(--outline); white-space: nowrap; }
+.seg span:first-child { border-inline-start: none; }
+.seg span.on { background: var(--secondaryContainer); color: var(--onSecondaryContainer); }
+.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--outlineVariant); margin: 0 22px 12px; flex: none; }
+.tabs span { padding: 9px 14px 10px; font-size: .8125rem; font-weight: 500; color: var(--onSurfaceVariant); position: relative; }
+.tabs span.on { color: var(--primary); }
+.tabs span.on::after { content: ''; position: absolute; left: 10px; right: 10px; bottom: -1px; height: 3px; border-radius: 3px 3px 0 0; background: var(--primary); }
+.progress { height: 4px; border-radius: 2px; position: relative; margin: 6px 0 4px; background: var(--secondaryContainer); }
+.progress i { position: absolute; inset-block: 0; inset-inline-start: 0; border-radius: 2px; background: var(--primary); }
+.note { font-size: .75rem; color: var(--onSurfaceVariant); line-height: 1.45; }
+.grid2 { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 8px; }
+.grid2 .btn, .col > .btn { min-width: 0; padding: 0 10px; overflow: hidden; text-overflow: ellipsis; }
+.card { overflow: hidden; }
+.switch { width: 46px; height: 28px; border-radius: 14px; background: var(--primary); position: relative; flex: none; }
+.switch::after { content: ''; position: absolute; top: 4px; inset-inline-end: 4px; width: 20px; height: 20px; border-radius: 50%; background: var(--onPrimary); }
+.switch.off { background: var(--surfaceContainerHighest); border: 2px solid var(--outline); }
+.switch.off::after { inset-inline-end: auto; inset-inline-start: 5px; top: 5px; width: 14px; height: 14px; background: var(--outline); }
+.table { width: 100%; border-collapse: separate; border-spacing: 0 4px; font-size: .78rem; }
+.table td, .table th { height: 31px; padding: 0 8px; text-align: start; white-space: nowrap; }
+.table th { border-bottom: 1px solid var(--outlineVariant); }
+.table td:first-child { border-start-start-radius: 10px; border-end-start-radius: 10px; }
+.table td:last-child { border-start-end-radius: 10px; border-end-end-radius: 10px; }
+.table th { color: var(--onSurfaceVariant); font-weight: 500; font-size: .72rem; }
+.table tr.on td { background: color-mix(in srgb, var(--secondaryContainer) 45%, transparent); }
+.avatar { width: 38px; height: 38px; border-radius: 19px; background: var(--primaryContainer); color: var(--onPrimaryContainer); display: flex; align-items: center; justify-content: center; flex: none; }
+.avatar svg { width: 20px; height: 20px; }
+.stat { flex: 1; border-radius: 14px; padding: 11px 14px; background: var(--surfaceContainerHigh); min-width: 0; }
+.stat small { font-size: .7rem; color: var(--onSurfaceVariant); }
+.stat b { display: block; font-size: 1.2rem; font-weight: 400; margin-top: 3px; direction: ltr; text-align: start; }
+.ar .stat b { text-align: right; }
+.field { height: 38px; border-radius: 6px; border: 1px solid var(--outline); display: flex; align-items: center; gap: 8px; padding: 0 12px; font-size: .8125rem; color: var(--onSurfaceVariant); }
+.field.filled-f { border: none; border-bottom: 1px solid var(--onSurfaceVariant); border-radius: 6px 6px 0 0; background: var(--surfaceContainerHighest); }
+.drop { border: 2px dashed var(--outlineVariant); border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: var(--onSurfaceVariant); }
+.drop .avatar { width: 52px; height: 52px; border-radius: 16px; }
+.stepper { display: flex; gap: 10px; }
+.step { flex: 1; display: flex; gap: 10px; align-items: flex-start; padding: 12px; border-radius: 14px; background: var(--surfaceContainer); }
+.step .num { width: 26px; height: 26px; border-radius: 13px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: .78rem; background: var(--surfaceContainerHighest); flex: none; }
+.step.done .num { background: var(--primary); color: var(--onPrimary); }
+.step.now { outline: 2px solid var(--primary); }
+.step.now .num { background: var(--primaryContainer); color: var(--onPrimaryContainer); }
+.step b { display: block; font-size: .8125rem; font-weight: 500; }
+.step span { font-size: .72rem; color: var(--onSurfaceVariant); }
+.term { background: #0b0a0e; border-radius: 14px; padding: 12px 14px; font-size: .75rem; line-height: 1.7; color: #d8d3de; flex: 1; overflow: hidden; }
+.term .p { color: var(--primary); }
+.term .ok { color: #8fd9a8; }
+.term .d { color: #8b8794; }
+.log { font-size: .72rem; line-height: 1.85; }
+.log .lv { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-inline-end: 8px; vertical-align: middle; }
+.swatch { width: 34px; height: 34px; border-radius: 17px; display: inline-flex; align-items: center; justify-content: center; }
+.swatch.on { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--onSurface); }
+.setrow { display: flex; align-items: center; gap: 14px; padding: 11px 0; border-bottom: 1px solid var(--outlineVariant); }
+.setrow:last-child { border-bottom: none; }
+.setrow .lbl { flex: 1; min-width: 0; }
+.setrow .lbl b { display: block; font-size: .8125rem; font-weight: 500; }
+.setrow .lbl span { font-size: .72rem; color: var(--onSurfaceVariant); }
+.bar { display: flex; height: 26px; border-radius: 8px; overflow: hidden; gap: 2px; }
+.bar i { display: block; height: 100%; }
+.legend { display: flex; gap: 12px; flex-wrap: wrap; font-size: .72rem; color: var(--onSurfaceVariant); margin-top: 8px; }
+.legend i { display: inline-block; width: 9px; height: 9px; border-radius: 3px; margin-inline-end: 5px; vertical-align: middle; }
+/* About */
+.hero { position: relative; border-radius: 22px; padding: 22px 24px; overflow: hidden; display: flex; align-items: center; gap: 20px;
+  background: linear-gradient(120deg, var(--primaryContainer), color-mix(in srgb, var(--tertiaryContainer) 85%, var(--surface)) 70%, var(--surfaceContainerHigh)); color: var(--onPrimaryContainer); }
+.hero img { width: 76px; height: 76px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,.35); }
+.hero h2 { font-family: Prixma, Roboto, sans-serif; font-style: italic; font-size: 1.45rem; font-weight: 700; letter-spacing: .1px; direction: ltr; }
+.ar .hero h2 { text-align: right; }
+.hero p { font-size: .8125rem; opacity: .85; margin-top: 4px; }
+.hero .chips { margin-top: 10px; }
+.hero .chip { border-color: color-mix(in srgb, var(--onPrimaryContainer) 35%, transparent); color: var(--onPrimaryContainer); }
+.hero::after { content: ''; position: absolute; inset-inline-end: -60px; top: -80px; width: 280px; height: 280px; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--primary) 30%, transparent), transparent 65%); }
+.dev { display: flex; align-items: center; gap: 16px; }
+.mono-av { width: 64px; height: 64px; border-radius: 20px; background: var(--primary); color: var(--onPrimary); display: flex; align-items: center; justify-content: center; font-size: 1.45rem; font-weight: 700; letter-spacing: .5px; flex: none; }
+.wordmark { font-size: 1.7rem; font-weight: 700; letter-spacing: 3px; line-height: 1; }
+.wordmark + span { font-size: .75rem; color: var(--onSurfaceVariant); }
+.sigmark { width: 52px; height: 52px; border-radius: 16px; flex: none; display: flex; align-items: center; justify-content: center; overflow: hidden;
+  background: linear-gradient(135deg, var(--primaryContainer), #2a2346); box-shadow: 0 8px 22px rgba(0,0,0,.35), inset 0 0 0 1px color-mix(in srgb, var(--primary) 35%, transparent); }
+.sigmark span { font-family: Sig; font-size: 1.35rem; line-height: 1; padding-top: 2px; padding-right: 0; filter: drop-shadow(0 0 .5px #f3eeff) drop-shadow(0 0 .5px #f3eeff); direction: ltr;
+  background: linear-gradient(135deg, #f3eeff, var(--primary) 55%, var(--tertiary)); -webkit-background-clip: text; color: transparent; }
+.signame { font-family: Sig; font-size: 1.55rem; line-height: 1.2; letter-spacing: .5px; direction: ltr; padding: 4px 6px 0 0;
+  background: linear-gradient(100deg, #f3eeff, var(--primary) 50%, var(--tertiary)); -webkit-background-clip: text; color: transparent; filter: drop-shadow(0 0 .4px #f3eeff) drop-shadow(0 0 .4px #f3eeff); }
+.ar .signame { text-align: right; }
+.swoosh { display: block; width: 135px; height: 8px; margin-top: -2px; }
+.ar .swoosh { margin-inline-start: auto; transform: scaleX(-1); }
+.role { font-size: .75rem; color: var(--onSurfaceVariant); display: block; margin-top: 2px; }
+.sig { height: 4px; width: 120px; border-radius: 2px; margin-top: 8px; background: linear-gradient(90deg, var(--primary), var(--tertiary)); }
+.linkrow { display: flex; align-items: center; gap: 12px; padding: 9px 8px; border-radius: 12px; }
+.linkrow .ic { width: 34px; height: 34px; border-radius: 11px; display: flex; align-items: center; justify-content: center; background: var(--secondaryContainer); color: var(--onSecondaryContainer); flex: none; }
+.linkrow .ic svg { width: 17px; height: 17px; }
+.linkrow b { display: block; font-size: .8125rem; font-weight: 500; }
+.linkrow span { font-size: .72rem; color: var(--onSurfaceVariant); }
+.linkrow .go { margin-inline-start: auto; color: var(--onSurfaceVariant); font-size: .9rem; }
+.ar .linkrow .go { transform: scaleX(-1); }
+
+/* ===== Material 3 Expressive (the XGram look): muted grey surfaces, blue / mauve / slate tonal tiles, big rounded shapes ===== */
+.win { border-radius: 18px; }
+.titlebar, .drawer { background: var(--surface); }
+.drawer { width: 228px; padding: 8px 12px 12px; }
+.brand { padding: 8px 10px 14px; } .brand img { width: 38px; height: 38px; border-radius: 12px; }
+.section { font-size: .72rem; padding: 12px 14px 5px; }
+.nav { height: 42px; border-radius: 21px; gap: 12px; font-size: .84rem; margin-bottom: 2px; }
+.nav.on { background: var(--secondaryContainer); color: var(--onSecondaryContainer); font-weight: 700; }
+.nav .badge { background: var(--primaryContainer); color: var(--onPrimaryContainer); height: 18px; line-height: 18px; border-radius: 9px; padding: 0 8px; }
+.devchip { border-radius: 22px; padding: 11px 14px; background: var(--surfaceContainer); }
+.appbar { padding: 18px 26px 14px; }
+.appbar h1 { font-size: 1.65rem; font-weight: 500; letter-spacing: -.2px; }
+.ar .appbar h1 { font-size: 1.5rem; font-weight: 700; }
+.btn { height: 40px; border-radius: 20px; padding: 0 20px; font-weight: 600; }
+.icon-btn { width: 40px; height: 40px; border-radius: 20px; background: var(--surfaceContainerHigh); }
+.outlined { border: 1px solid var(--outline); color: var(--onSurface); }
+.content { gap: 16px; padding: 0 26px 22px; }
+.col { gap: 16px; } .row2 { gap: 12px; }
+.card { border-radius: 28px; padding: 18px 20px; background: var(--surfaceContainer); }
+.card.low { background: var(--surfaceContainer); }
+.card.outl { border: none; background: var(--surfaceContainerLow); }
+.card.high { background: var(--surfaceContainerHigh); }
+.card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 8px; }
+.chip { height: 28px; border-radius: 10px; padding: 0 11px; font-size: .74rem; }
+.chip.ok { background: var(--primaryContainer); color: var(--onPrimaryContainer); }
+.banner { border-radius: 22px; padding: 14px 16px; font-size: .8rem; }
+.banner.warn { background: var(--tertiaryContainer); }
+/* Quick-access tiles: big number on a coloured tile */
+.stat { border-radius: 20px; padding: 10px 14px 10px; min-height: 0; display: flex; flex-direction: column; justify-content: flex-end; background: var(--secondaryContainer); color: var(--onSecondaryContainer); }
+.stat:nth-child(4n+1) { background: var(--primaryContainer); color: var(--onPrimaryContainer); }
+.stat:nth-child(4n+2) { background: var(--tertiaryContainer); color: var(--onTertiaryContainer); }
+.stat:nth-child(4n+4) { background: var(--tertiaryContainer); color: var(--onTertiaryContainer); }
+.stat b { order: 0; font-size: 1.2rem; font-weight: 500; margin: 0 0 1px; line-height: 1.2; white-space: nowrap; }
+.stat small { order: 1; font-size: .74rem; color: inherit; opacity: .85; white-space: nowrap; }
+.li { min-height: 46px; border-radius: 20px; padding: 0 14px; margin-bottom: 6px; background: var(--surfaceContainerHigh); }
+.li.on { background: var(--selected); }
+.cb { border-radius: 50%; width: 20px; height: 20px; border: 2px solid var(--onSurfaceVariant); }
+.cb.on { background: transparent; border-color: var(--primary); }
+.cb.on::after { width: 10px; height: 10px; border: none; border-radius: 50%; background: var(--primary); transform: none; }
+.seg { border: none; gap: 3px; height: 38px; overflow: visible; border-radius: 0; }
+.seg span { border: none !important; background: var(--surfaceContainerHigh); border-radius: 8px; padding: 0 16px; }
+.seg span:first-child { border-start-start-radius: 19px; border-end-start-radius: 19px; }
+.seg span:last-child { border-start-end-radius: 19px; border-end-end-radius: 19px; }
+.seg span.on { background: var(--primary); color: var(--onPrimary); border-radius: 19px; }
+.tabs { border-bottom: none; gap: 6px; margin: 0 26px 14px; }
+.tabs span { border-radius: 20px; padding: 9px 16px; background: var(--surfaceContainer); }
+.tabs span.on { background: var(--secondaryContainer); color: var(--onSecondaryContainer); }
+.tabs span.on::after { display: none; }
+.progress { height: 8px; border-radius: 4px; background: var(--surfaceContainerHighest); }
+.progress i { border-radius: 4px; }
+.table { border-spacing: 0 3px; font-size: .74rem; }
+.table td, .table th { height: 25px; padding: 0 10px; }
+.table th { height: 24px; font-size: .7rem; }
+.table td { background: var(--surfaceContainerHigh); }
+.table td:first-child { border-start-start-radius: 10px; border-end-start-radius: 10px; }
+.table td:last-child { border-start-end-radius: 10px; border-end-end-radius: 10px; }
+.table th { border-bottom: none; }
+.table tr.on td { background: var(--selected); }
+.avatar { width: 46px; height: 46px; border-radius: 0; background: var(--primaryContainer); -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='100.00,50.00 99.95,50.87 99.79,51.74 99.52,52.60 99.16,53.44 98.72,54.26 98.19,55.06 97.60,55.84 96.95,56.60 96.26,57.33 95.55,58.03 94.82,58.71 94.11,59.37 93.41,60.02 92.74,60.66 92.11,61.28 91.54,61.91 91.03,62.55 90.59,63.19 90.23,63.85 89.94,64.54 89.72,65.25 89.58,65.99 89.50,66.77 89.48,67.58 89.51,68.43 89.59,69.31 89.69,70.22 89.81,71.17 89.94,72.14 90.05,73.12 90.15,74.12 90.20,75.12 90.22,76.12 90.17,77.10 90.06,78.05 89.87,78.97 89.61,79.84 89.26,80.67 88.82,81.44 88.30,82.14 87.70,82.77 87.02,83.33 86.27,83.82 85.45,84.24 84.58,84.58 83.66,84.86 82.70,85.07 81.72,85.23 80.73,85.35 79.73,85.43 78.74,85.49 77.76,85.53 76.81,85.58 75.89,85.63 75.01,85.71 74.17,85.83 73.37,85.99 72.62,86.20 71.91,86.47 71.25,86.81 70.63,87.21 70.04,87.69 69.48,88.23 68.94,88.84 68.43,89.51 67.92,90.24 67.41,91.01 66.89,91.81 66.36,92.63 65.82,93.46 65.25,94.28 64.65,95.09 64.02,95.86 63.36,96.58 62.66,97.24 61.92,97.82 61.16,98.32 60.36,98.73 59.53,99.04 58.68,99.24 57.81,99.34 56.93,99.33 56.04,99.22 55.15,99.01 54.26,98.72 53.38,98.34 52.51,97.89 51.65,97.38 50.82,96.83 50.00,96.25 49.20,95.66 48.43,95.06 47.67,94.49 46.93,93.94 46.20,93.43 45.48,92.98 44.77,92.59 44.06,92.27 43.34,92.02 42.62,91.85 41.88,91.76 41.13,91.75 40.35,91.81 39.55,91.93 38.72,92.11 37.86,92.34 36.98,92.60 36.07,92.88 35.13,93.18 34.18,93.46 33.22,93.73 32.24,93.96 31.26,94.14 30.29,94.27 29.33,94.32 28.40,94.30 27.49,94.19 26.61,93.99 25.78,93.69 25.00,93.30 24.27,92.82 23.60,92.25 22.99,91.59 22.44,90.86 21.95,90.06 21.52,89.20 21.14,88.30 20.81,87.36 20.52,86.40 20.27,85.43 20.04,84.46 19.83,83.51 19.62,82.58 19.40,81.68 19.17,80.83 18.91,80.02 18.62,79.26 18.28,78.56 17.89,77.91 17.44,77.32 16.94,76.78 16.36,76.28 15.73,75.82 15.04,75.40 14.29,75.01 13.48,74.63 12.64,74.26 11.76,73.89 10.86,73.52 9.95,73.12 9.04,72.71 8.14,72.26 7.27,71.77 6.45,71.24 5.68,70.67 4.98,70.05 4.35,69.38 3.81,68.66 3.36,67.90 3.02,67.10 2.77,66.26 2.62,65.39 2.58,64.50 2.63,63.58 2.76,62.66 2.99,61.72 3.28,60.79 3.63,59.86 4.02,58.94 4.45,58.03 4.90,57.14 5.35,56.28 5.78,55.43 6.20,54.60 6.57,53.80 6.89,53.01 7.15,52.25 7.34,51.49 7.46,50.74 7.50,50.00 7.46,49.26 7.34,48.51 7.15,47.75 6.89,46.99 6.57,46.20 6.20,45.40 5.78,44.57 5.35,43.72 4.90,42.86 4.45,41.97 4.02,41.06 3.63,40.14 3.28,39.21 2.99,38.28 2.76,37.34 2.63,36.42 2.58,35.50 2.62,34.61 2.77,33.74 3.02,32.90 3.36,32.10 3.81,31.34 4.35,30.62 4.98,29.95 5.68,29.33 6.45,28.76 7.27,28.23 8.14,27.74 9.04,27.29 9.95,26.87 10.86,26.48 11.76,26.11 12.64,25.74 13.48,25.37 14.29,24.99 15.04,24.60 15.73,24.18 16.36,23.72 16.94,23.22 17.44,22.68 17.89,22.09 18.28,21.44 18.62,20.74 18.91,19.98 19.17,19.17 19.40,18.32 19.62,17.42 19.83,16.49 20.04,15.54 20.27,14.57 20.52,13.60 20.81,12.64 21.14,11.70 21.52,10.80 21.95,9.94 22.44,9.14 22.99,8.41 23.60,7.75 24.27,7.18 25.00,6.70 25.78,6.31 26.61,6.01 27.49,5.81 28.40,5.70 29.33,5.68 30.29,5.73 31.26,5.86 32.24,6.04 33.22,6.27 34.18,6.54 35.13,6.82 36.07,7.12 36.98,7.40 37.86,7.66 38.72,7.89 39.55,8.07 40.35,8.19 41.13,8.25 41.88,8.24 42.62,8.15 43.34,7.98 44.06,7.73 44.77,7.41 45.48,7.02 46.20,6.57 46.93,6.06 47.67,5.51 48.43,4.94 49.20,4.34 50.00,3.75 50.82,3.17 51.65,2.62 52.51,2.11 53.38,1.66 54.26,1.28 55.15,0.99 56.04,0.78 56.93,0.67 57.81,0.66 58.68,0.76 59.53,0.96 60.36,1.27 61.16,1.68 61.92,2.18 62.66,2.76 63.36,3.42 64.02,4.14 64.65,4.91 65.25,5.72 65.82,6.54 66.36,7.37 66.89,8.19 67.41,8.99 67.92,9.76 68.43,10.49 68.94,11.16 69.48,11.77 70.04,12.31 70.63,12.79 71.25,13.19 71.91,13.53 72.62,13.80 73.37,14.01 74.17,14.17 75.01,14.29 75.89,14.37 76.81,14.42 77.76,14.47 78.74,14.51 79.73,14.57 80.73,14.65 81.72,14.77 82.70,14.93 83.66,15.14 84.58,15.42 85.45,15.76 86.27,16.18 87.02,16.67 87.70,17.23 88.30,17.86 88.82,18.56 89.26,19.33 89.61,20.16 89.87,21.03 90.06,21.95 90.17,22.90 90.22,23.88 90.20,24.88 90.15,25.88 90.05,26.87 89.94,27.86 89.81,28.83 89.69,29.78 89.59,30.69 89.51,31.57 89.48,32.42 89.50,33.23 89.58,34.01 89.72,34.75 89.94,35.46 90.23,36.15 90.59,36.81 91.03,37.45 91.54,38.09 92.11,38.72 92.74,39.34 93.41,39.98 94.11,40.63 94.82,41.29 95.55,41.97 96.26,42.67 96.95,43.40 97.60,44.16 98.19,44.94 98.72,45.74 99.16,46.56 99.52,47.40 99.79,48.26 99.95,49.13'/%3E%3C/svg%3E") center/100% 100% no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='100.00,50.00 99.95,50.87 99.79,51.74 99.52,52.60 99.16,53.44 98.72,54.26 98.19,55.06 97.60,55.84 96.95,56.60 96.26,57.33 95.55,58.03 94.82,58.71 94.11,59.37 93.41,60.02 92.74,60.66 92.11,61.28 91.54,61.91 91.03,62.55 90.59,63.19 90.23,63.85 89.94,64.54 89.72,65.25 89.58,65.99 89.50,66.77 89.48,67.58 89.51,68.43 89.59,69.31 89.69,70.22 89.81,71.17 89.94,72.14 90.05,73.12 90.15,74.12 90.20,75.12 90.22,76.12 90.17,77.10 90.06,78.05 89.87,78.97 89.61,79.84 89.26,80.67 88.82,81.44 88.30,82.14 87.70,82.77 87.02,83.33 86.27,83.82 85.45,84.24 84.58,84.58 83.66,84.86 82.70,85.07 81.72,85.23 80.73,85.35 79.73,85.43 78.74,85.49 77.76,85.53 76.81,85.58 75.89,85.63 75.01,85.71 74.17,85.83 73.37,85.99 72.62,86.20 71.91,86.47 71.25,86.81 70.63,87.21 70.04,87.69 69.48,88.23 68.94,88.84 68.43,89.51 67.92,90.24 67.41,91.01 66.89,91.81 66.36,92.63 65.82,93.46 65.25,94.28 64.65,95.09 64.02,95.86 63.36,96.58 62.66,97.24 61.92,97.82 61.16,98.32 60.36,98.73 59.53,99.04 58.68,99.24 57.81,99.34 56.93,99.33 56.04,99.22 55.15,99.01 54.26,98.72 53.38,98.34 52.51,97.89 51.65,97.38 50.82,96.83 50.00,96.25 49.20,95.66 48.43,95.06 47.67,94.49 46.93,93.94 46.20,93.43 45.48,92.98 44.77,92.59 44.06,92.27 43.34,92.02 42.62,91.85 41.88,91.76 41.13,91.75 40.35,91.81 39.55,91.93 38.72,92.11 37.86,92.34 36.98,92.60 36.07,92.88 35.13,93.18 34.18,93.46 33.22,93.73 32.24,93.96 31.26,94.14 30.29,94.27 29.33,94.32 28.40,94.30 27.49,94.19 26.61,93.99 25.78,93.69 25.00,93.30 24.27,92.82 23.60,92.25 22.99,91.59 22.44,90.86 21.95,90.06 21.52,89.20 21.14,88.30 20.81,87.36 20.52,86.40 20.27,85.43 20.04,84.46 19.83,83.51 19.62,82.58 19.40,81.68 19.17,80.83 18.91,80.02 18.62,79.26 18.28,78.56 17.89,77.91 17.44,77.32 16.94,76.78 16.36,76.28 15.73,75.82 15.04,75.40 14.29,75.01 13.48,74.63 12.64,74.26 11.76,73.89 10.86,73.52 9.95,73.12 9.04,72.71 8.14,72.26 7.27,71.77 6.45,71.24 5.68,70.67 4.98,70.05 4.35,69.38 3.81,68.66 3.36,67.90 3.02,67.10 2.77,66.26 2.62,65.39 2.58,64.50 2.63,63.58 2.76,62.66 2.99,61.72 3.28,60.79 3.63,59.86 4.02,58.94 4.45,58.03 4.90,57.14 5.35,56.28 5.78,55.43 6.20,54.60 6.57,53.80 6.89,53.01 7.15,52.25 7.34,51.49 7.46,50.74 7.50,50.00 7.46,49.26 7.34,48.51 7.15,47.75 6.89,46.99 6.57,46.20 6.20,45.40 5.78,44.57 5.35,43.72 4.90,42.86 4.45,41.97 4.02,41.06 3.63,40.14 3.28,39.21 2.99,38.28 2.76,37.34 2.63,36.42 2.58,35.50 2.62,34.61 2.77,33.74 3.02,32.90 3.36,32.10 3.81,31.34 4.35,30.62 4.98,29.95 5.68,29.33 6.45,28.76 7.27,28.23 8.14,27.74 9.04,27.29 9.95,26.87 10.86,26.48 11.76,26.11 12.64,25.74 13.48,25.37 14.29,24.99 15.04,24.60 15.73,24.18 16.36,23.72 16.94,23.22 17.44,22.68 17.89,22.09 18.28,21.44 18.62,20.74 18.91,19.98 19.17,19.17 19.40,18.32 19.62,17.42 19.83,16.49 20.04,15.54 20.27,14.57 20.52,13.60 20.81,12.64 21.14,11.70 21.52,10.80 21.95,9.94 22.44,9.14 22.99,8.41 23.60,7.75 24.27,7.18 25.00,6.70 25.78,6.31 26.61,6.01 27.49,5.81 28.40,5.70 29.33,5.68 30.29,5.73 31.26,5.86 32.24,6.04 33.22,6.27 34.18,6.54 35.13,6.82 36.07,7.12 36.98,7.40 37.86,7.66 38.72,7.89 39.55,8.07 40.35,8.19 41.13,8.25 41.88,8.24 42.62,8.15 43.34,7.98 44.06,7.73 44.77,7.41 45.48,7.02 46.20,6.57 46.93,6.06 47.67,5.51 48.43,4.94 49.20,4.34 50.00,3.75 50.82,3.17 51.65,2.62 52.51,2.11 53.38,1.66 54.26,1.28 55.15,0.99 56.04,0.78 56.93,0.67 57.81,0.66 58.68,0.76 59.53,0.96 60.36,1.27 61.16,1.68 61.92,2.18 62.66,2.76 63.36,3.42 64.02,4.14 64.65,4.91 65.25,5.72 65.82,6.54 66.36,7.37 66.89,8.19 67.41,8.99 67.92,9.76 68.43,10.49 68.94,11.16 69.48,11.77 70.04,12.31 70.63,12.79 71.25,13.19 71.91,13.53 72.62,13.80 73.37,14.01 74.17,14.17 75.01,14.29 75.89,14.37 76.81,14.42 77.76,14.47 78.74,14.51 79.73,14.57 80.73,14.65 81.72,14.77 82.70,14.93 83.66,15.14 84.58,15.42 85.45,15.76 86.27,16.18 87.02,16.67 87.70,17.23 88.30,17.86 88.82,18.56 89.26,19.33 89.61,20.16 89.87,21.03 90.06,21.95 90.17,22.90 90.22,23.88 90.20,24.88 90.15,25.88 90.05,26.87 89.94,27.86 89.81,28.83 89.69,29.78 89.59,30.69 89.51,31.57 89.48,32.42 89.50,33.23 89.58,34.01 89.72,34.75 89.94,35.46 90.23,36.15 90.59,36.81 91.03,37.45 91.54,38.09 92.11,38.72 92.74,39.34 93.41,39.98 94.11,40.63 94.82,41.29 95.55,41.97 96.26,42.67 96.95,43.40 97.60,44.16 98.19,44.94 98.72,45.74 99.16,46.56 99.52,47.40 99.79,48.26 99.95,49.13'/%3E%3C/svg%3E") center/100% 100% no-repeat; }
+.avatar svg { width: 21px; height: 21px; }
+.stepper { gap: 12px; }
+.step { border-radius: 24px; padding: 14px; background: var(--surfaceContainer); }
+.step.now { outline: none; background: var(--selected); }
+.step .num { width: 30px; height: 30px; border-radius: 15px; }
+.term { border-radius: 24px; background: #1f1f21; }
+/* Switch: a neat small pill; on = filled with the knob at the end, off = outlined with a small knob at the start */
+.switch { width: 44px; height: 26px; border-radius: 13px; background: var(--primary); border: none; box-sizing: border-box; }
+.switch::after { top: 3px; inset-inline-end: 3px; inset-inline-start: auto; width: 20px; height: 20px; background: var(--onPrimary); }
+.switch.off { background: transparent; border: 2px solid var(--outline); }
+.switch.off::after { top: 4px; inset-inline-start: 4px; inset-inline-end: auto; width: 14px; height: 14px; background: var(--outline); }
+.field { height: 46px; border-radius: 16px; border-color: var(--outline); }
+.field.filled-f { border: none; border-radius: 16px; background: var(--surfaceContainerHigh); }
+.drop { border-radius: 28px; border-color: var(--outline); }
+.drop .avatar { width: 64px; height: 64px; }
+.setrow { padding: 6px 0; border-bottom: none; gap: 12px; }
+.bar { border-radius: 12px; height: 30px; gap: 3px; }
+.linkrow { padding: 11px 10px; border-radius: 20px; margin-bottom: 4px; background: var(--surfaceContainerHigh); }
+.linkrow .ic { width: 40px; height: 40px; border-radius: 20px; }
+/* About hero: a blue tile with the app icon on a scalloped "cookie" */
+.hero { border-radius: 32px; padding: 26px 28px; background: var(--primaryContainer); color: var(--onPrimaryContainer); }
+.hero::after { display: none; }
+.cookie { width: 112px; height: 112px; flex: none; display: flex; align-items: center; justify-content: center; position: relative; }
+.cookie::before { content: ''; position: absolute; inset: 0; background: var(--primaryContainerHigh); -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='100.00,50.00 99.94,50.87 99.75,51.74 99.45,52.59 99.05,53.43 98.56,54.25 98.01,55.05 97.41,55.82 96.78,56.57 96.15,57.31 95.55,58.03 94.99,58.74 94.48,59.46 94.06,60.17 93.72,60.90 93.47,61.65 93.31,62.42 93.24,63.22 93.25,64.05 93.33,64.92 93.46,65.82 93.62,66.75 93.80,67.70 93.96,68.66 94.10,69.63 94.18,70.60 94.20,71.56 94.12,72.48 93.96,73.37 93.68,74.21 93.30,75.00 92.81,75.72 92.22,76.38 91.53,76.97 90.77,77.50 89.93,77.96 89.05,78.37 88.14,78.74 87.22,79.08 86.31,79.41 85.43,79.73 84.59,80.07 83.80,80.43 83.07,80.84 82.41,81.30 81.82,81.82 81.30,82.41 80.84,83.07 80.43,83.80 80.07,84.59 79.73,85.43 79.41,86.31 79.08,87.22 78.74,88.14 78.37,89.05 77.96,89.93 77.50,90.77 76.97,91.53 76.38,92.22 75.72,92.81 75.00,93.30 74.21,93.68 73.37,93.96 72.48,94.12 71.56,94.20 70.60,94.18 69.63,94.10 68.66,93.96 67.70,93.80 66.75,93.62 65.82,93.46 64.92,93.33 64.05,93.25 63.22,93.24 62.42,93.31 61.65,93.47 60.90,93.72 60.17,94.06 59.46,94.48 58.74,94.99 58.03,95.55 57.31,96.15 56.57,96.78 55.82,97.41 55.05,98.01 54.25,98.56 53.43,99.05 52.59,99.45 51.74,99.75 50.87,99.94 50.00,100.00 49.13,99.94 48.26,99.75 47.41,99.45 46.57,99.05 45.75,98.56 44.95,98.01 44.18,97.41 43.43,96.78 42.69,96.15 41.97,95.55 41.26,94.99 40.54,94.48 39.83,94.06 39.10,93.72 38.35,93.47 37.58,93.31 36.78,93.24 35.95,93.25 35.08,93.33 34.18,93.46 33.25,93.62 32.30,93.80 31.34,93.96 30.37,94.10 29.40,94.18 28.44,94.20 27.52,94.12 26.63,93.96 25.79,93.68 25.00,93.30 24.28,92.81 23.62,92.22 23.03,91.53 22.50,90.77 22.04,89.93 21.63,89.05 21.26,88.14 20.92,87.22 20.59,86.31 20.27,85.43 19.93,84.59 19.57,83.80 19.16,83.07 18.70,82.41 18.18,81.82 17.59,81.30 16.93,80.84 16.20,80.43 15.41,80.07 14.57,79.73 13.69,79.41 12.78,79.08 11.86,78.74 10.95,78.37 10.07,77.96 9.23,77.50 8.47,76.97 7.78,76.38 7.19,75.72 6.70,75.00 6.32,74.21 6.04,73.37 5.88,72.48 5.80,71.56 5.82,70.60 5.90,69.63 6.04,68.66 6.20,67.70 6.38,66.75 6.54,65.82 6.67,64.92 6.75,64.05 6.76,63.22 6.69,62.42 6.53,61.65 6.28,60.90 5.94,60.17 5.52,59.46 5.01,58.74 4.45,58.03 3.85,57.31 3.22,56.57 2.59,55.82 1.99,55.05 1.44,54.25 0.95,53.43 0.55,52.59 0.25,51.74 0.06,50.87 0.00,50.00 0.06,49.13 0.25,48.26 0.55,47.41 0.95,46.57 1.44,45.75 1.99,44.95 2.59,44.18 3.22,43.43 3.85,42.69 4.45,41.97 5.01,41.26 5.52,40.54 5.94,39.83 6.28,39.10 6.53,38.35 6.69,37.58 6.76,36.78 6.75,35.95 6.67,35.08 6.54,34.18 6.38,33.25 6.20,32.30 6.04,31.34 5.90,30.37 5.82,29.40 5.80,28.44 5.88,27.52 6.04,26.63 6.32,25.79 6.70,25.00 7.19,24.28 7.78,23.62 8.47,23.03 9.23,22.50 10.07,22.04 10.95,21.63 11.86,21.26 12.78,20.92 13.69,20.59 14.57,20.27 15.41,19.93 16.20,19.57 16.93,19.16 17.59,18.70 18.18,18.18 18.70,17.59 19.16,16.93 19.57,16.20 19.93,15.41 20.27,14.57 20.59,13.69 20.92,12.78 21.26,11.86 21.63,10.95 22.04,10.07 22.50,9.23 23.03,8.47 23.62,7.78 24.28,7.19 25.00,6.70 25.79,6.32 26.63,6.04 27.52,5.88 28.44,5.80 29.40,5.82 30.37,5.90 31.34,6.04 32.30,6.20 33.25,6.38 34.18,6.54 35.08,6.67 35.95,6.75 36.78,6.76 37.58,6.69 38.35,6.53 39.10,6.28 39.83,5.94 40.54,5.52 41.26,5.01 41.97,4.45 42.69,3.85 43.43,3.22 44.18,2.59 44.95,1.99 45.75,1.44 46.57,0.95 47.41,0.55 48.26,0.25 49.13,0.06 50.00,0.00 50.87,0.06 51.74,0.25 52.59,0.55 53.43,0.95 54.25,1.44 55.05,1.99 55.82,2.59 56.57,3.22 57.31,3.85 58.03,4.45 58.74,5.01 59.46,5.52 60.17,5.94 60.90,6.28 61.65,6.53 62.42,6.69 63.22,6.76 64.05,6.75 64.92,6.67 65.82,6.54 66.75,6.38 67.70,6.20 68.66,6.04 69.63,5.90 70.60,5.82 71.56,5.80 72.48,5.88 73.37,6.04 74.21,6.32 75.00,6.70 75.72,7.19 76.38,7.78 76.97,8.47 77.50,9.23 77.96,10.07 78.37,10.95 78.74,11.86 79.08,12.78 79.41,13.69 79.73,14.57 80.07,15.41 80.43,16.20 80.84,16.93 81.30,17.59 81.82,18.18 82.41,18.70 83.07,19.16 83.80,19.57 84.59,19.93 85.43,20.27 86.31,20.59 87.22,20.92 88.14,21.26 89.05,21.63 89.93,22.04 90.77,22.50 91.53,23.03 92.22,23.62 92.81,24.28 93.30,25.00 93.68,25.79 93.96,26.63 94.12,27.52 94.20,28.44 94.18,29.40 94.10,30.37 93.96,31.34 93.80,32.30 93.62,33.25 93.46,34.18 93.33,35.08 93.25,35.95 93.24,36.78 93.31,37.58 93.47,38.35 93.72,39.10 94.06,39.83 94.48,40.54 94.99,41.26 95.55,41.97 96.15,42.69 96.78,43.43 97.41,44.18 98.01,44.95 98.56,45.75 99.05,46.57 99.45,47.41 99.75,48.26 99.94,49.13'/%3E%3C/svg%3E") center/100% 100% no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='100.00,50.00 99.94,50.87 99.75,51.74 99.45,52.59 99.05,53.43 98.56,54.25 98.01,55.05 97.41,55.82 96.78,56.57 96.15,57.31 95.55,58.03 94.99,58.74 94.48,59.46 94.06,60.17 93.72,60.90 93.47,61.65 93.31,62.42 93.24,63.22 93.25,64.05 93.33,64.92 93.46,65.82 93.62,66.75 93.80,67.70 93.96,68.66 94.10,69.63 94.18,70.60 94.20,71.56 94.12,72.48 93.96,73.37 93.68,74.21 93.30,75.00 92.81,75.72 92.22,76.38 91.53,76.97 90.77,77.50 89.93,77.96 89.05,78.37 88.14,78.74 87.22,79.08 86.31,79.41 85.43,79.73 84.59,80.07 83.80,80.43 83.07,80.84 82.41,81.30 81.82,81.82 81.30,82.41 80.84,83.07 80.43,83.80 80.07,84.59 79.73,85.43 79.41,86.31 79.08,87.22 78.74,88.14 78.37,89.05 77.96,89.93 77.50,90.77 76.97,91.53 76.38,92.22 75.72,92.81 75.00,93.30 74.21,93.68 73.37,93.96 72.48,94.12 71.56,94.20 70.60,94.18 69.63,94.10 68.66,93.96 67.70,93.80 66.75,93.62 65.82,93.46 64.92,93.33 64.05,93.25 63.22,93.24 62.42,93.31 61.65,93.47 60.90,93.72 60.17,94.06 59.46,94.48 58.74,94.99 58.03,95.55 57.31,96.15 56.57,96.78 55.82,97.41 55.05,98.01 54.25,98.56 53.43,99.05 52.59,99.45 51.74,99.75 50.87,99.94 50.00,100.00 49.13,99.94 48.26,99.75 47.41,99.45 46.57,99.05 45.75,98.56 44.95,98.01 44.18,97.41 43.43,96.78 42.69,96.15 41.97,95.55 41.26,94.99 40.54,94.48 39.83,94.06 39.10,93.72 38.35,93.47 37.58,93.31 36.78,93.24 35.95,93.25 35.08,93.33 34.18,93.46 33.25,93.62 32.30,93.80 31.34,93.96 30.37,94.10 29.40,94.18 28.44,94.20 27.52,94.12 26.63,93.96 25.79,93.68 25.00,93.30 24.28,92.81 23.62,92.22 23.03,91.53 22.50,90.77 22.04,89.93 21.63,89.05 21.26,88.14 20.92,87.22 20.59,86.31 20.27,85.43 19.93,84.59 19.57,83.80 19.16,83.07 18.70,82.41 18.18,81.82 17.59,81.30 16.93,80.84 16.20,80.43 15.41,80.07 14.57,79.73 13.69,79.41 12.78,79.08 11.86,78.74 10.95,78.37 10.07,77.96 9.23,77.50 8.47,76.97 7.78,76.38 7.19,75.72 6.70,75.00 6.32,74.21 6.04,73.37 5.88,72.48 5.80,71.56 5.82,70.60 5.90,69.63 6.04,68.66 6.20,67.70 6.38,66.75 6.54,65.82 6.67,64.92 6.75,64.05 6.76,63.22 6.69,62.42 6.53,61.65 6.28,60.90 5.94,60.17 5.52,59.46 5.01,58.74 4.45,58.03 3.85,57.31 3.22,56.57 2.59,55.82 1.99,55.05 1.44,54.25 0.95,53.43 0.55,52.59 0.25,51.74 0.06,50.87 0.00,50.00 0.06,49.13 0.25,48.26 0.55,47.41 0.95,46.57 1.44,45.75 1.99,44.95 2.59,44.18 3.22,43.43 3.85,42.69 4.45,41.97 5.01,41.26 5.52,40.54 5.94,39.83 6.28,39.10 6.53,38.35 6.69,37.58 6.76,36.78 6.75,35.95 6.67,35.08 6.54,34.18 6.38,33.25 6.20,32.30 6.04,31.34 5.90,30.37 5.82,29.40 5.80,28.44 5.88,27.52 6.04,26.63 6.32,25.79 6.70,25.00 7.19,24.28 7.78,23.62 8.47,23.03 9.23,22.50 10.07,22.04 10.95,21.63 11.86,21.26 12.78,20.92 13.69,20.59 14.57,20.27 15.41,19.93 16.20,19.57 16.93,19.16 17.59,18.70 18.18,18.18 18.70,17.59 19.16,16.93 19.57,16.20 19.93,15.41 20.27,14.57 20.59,13.69 20.92,12.78 21.26,11.86 21.63,10.95 22.04,10.07 22.50,9.23 23.03,8.47 23.62,7.78 24.28,7.19 25.00,6.70 25.79,6.32 26.63,6.04 27.52,5.88 28.44,5.80 29.40,5.82 30.37,5.90 31.34,6.04 32.30,6.20 33.25,6.38 34.18,6.54 35.08,6.67 35.95,6.75 36.78,6.76 37.58,6.69 38.35,6.53 39.10,6.28 39.83,5.94 40.54,5.52 41.26,5.01 41.97,4.45 42.69,3.85 43.43,3.22 44.18,2.59 44.95,1.99 45.75,1.44 46.57,0.95 47.41,0.55 48.26,0.25 49.13,0.06 50.00,0.00 50.87,0.06 51.74,0.25 52.59,0.55 53.43,0.95 54.25,1.44 55.05,1.99 55.82,2.59 56.57,3.22 57.31,3.85 58.03,4.45 58.74,5.01 59.46,5.52 60.17,5.94 60.90,6.28 61.65,6.53 62.42,6.69 63.22,6.76 64.05,6.75 64.92,6.67 65.82,6.54 66.75,6.38 67.70,6.20 68.66,6.04 69.63,5.90 70.60,5.82 71.56,5.80 72.48,5.88 73.37,6.04 74.21,6.32 75.00,6.70 75.72,7.19 76.38,7.78 76.97,8.47 77.50,9.23 77.96,10.07 78.37,10.95 78.74,11.86 79.08,12.78 79.41,13.69 79.73,14.57 80.07,15.41 80.43,16.20 80.84,16.93 81.30,17.59 81.82,18.18 82.41,18.70 83.07,19.16 83.80,19.57 84.59,19.93 85.43,20.27 86.31,20.59 87.22,20.92 88.14,21.26 89.05,21.63 89.93,22.04 90.77,22.50 91.53,23.03 92.22,23.62 92.81,24.28 93.30,25.00 93.68,25.79 93.96,26.63 94.12,27.52 94.20,28.44 94.18,29.40 94.10,30.37 93.96,31.34 93.80,32.30 93.62,33.25 93.46,34.18 93.33,35.08 93.25,35.95 93.24,36.78 93.31,37.58 93.47,38.35 93.72,39.10 94.06,39.83 94.48,40.54 94.99,41.26 95.55,41.97 96.15,42.69 96.78,43.43 97.41,44.18 98.01,44.95 98.56,45.75 99.05,46.57 99.45,47.41 99.75,48.26 99.94,49.13'/%3E%3C/svg%3E") center/100% 100% no-repeat; }
+.cookie img { position: relative; width: 74px; height: 74px; }
+.hero .chip { border-color: color-mix(in srgb, var(--onPrimaryContainer) 40%, transparent); }
+.hero .btn.filled, .hero .filled { background: var(--primary); color: var(--onPrimary); }
+/* IFOKNR's mark and name keep the brand violet whatever the page colours */
+.sigmark { width: 56px; height: 56px; border-radius: 17px; background: linear-gradient(135deg, #483f77, #2a2346); box-shadow: 0 8px 22px rgba(0,0,0,.35), inset 0 0 0 1px rgba(202,190,255,.35); }
+.sigmark span { background: linear-gradient(135deg, #f3eeff, #cabeff 55%, #edb8cc); -webkit-background-clip: text; }
+.signame { background: linear-gradient(100deg, #f3eeff, #cabeff 50%, #edb8cc); -webkit-background-clip: text; }
+
+/* Compact stats: a slim tonal strip, label then value on one line */
+.stat { flex: 1; flex-direction: row; align-items: center; justify-content: space-between; gap: 6px; padding: 7px 11px; border-radius: 12px; min-height: 0; }
+.stat small { order: 0; font-size: .7rem; opacity: .8; }
+.stat b { order: 1; font-size: .86rem !important; font-weight: 600; margin: 0; line-height: 1.3; }
+.stat { position: relative; }
+.stat .progress { position: absolute; left: 12px; right: 12px; bottom: 4px; height: 3px; margin: 0; background: rgba(255,255,255,.16); }
+.stat:has(.progress) { padding-bottom: 10px; }
+.stat { min-width: 0; overflow: hidden; }
+.stat b, .stat small { flex: none; }
+.row2:has(> .stat) { gap: 8px; }
+/* The phone's own card: slimmer */
+.card.low[style*="display:flex"] { padding: 9px 14px; border-radius: 20px; }
+.card.low[style*="display:flex"] .avatar { width: 36px; height: 36px; }
+.card.low[style*="display:flex"] .avatar svg { width: 17px; height: 17px; }
+.card.low[style*="display:flex"] > div > div:first-child { font-size: .84rem !important; }
+.card.low[style*="display:flex"] .chip { height: 24px; font-size: .7rem; }
+</style>
+</head>
+<body>
+<div class="win" id="win"></div>
+<script>
+const q = new URLSearchParams(location.search);
+const page = q.get('page') || 'device', AR = q.get('lang') === 'ar';
+const S = JSON.parse(atob(q.get('s')));
+const rs = document.documentElement.style;
+for (const [k, v] of Object.entries(S)) rs.setProperty('--' + k, v);
+rs.setProperty('--k', q.get('k') || '1');
+if (AR) { document.body.className = 'ar'; document.documentElement.dir = 'rtl'; }
+const T = (en, ar) => AR ? ar : en;
+const I = {
+  device: 'M7,2 H17 A2,2 0 0 1 19,4 V20 A2,2 0 0 1 17,22 H7 A2,2 0 0 1 5,20 V4 A2,2 0 0 1 7,2 Z M10,18 H14',
+  phone: 'M7,2 H17 A2,2 0 0 1 19,4 V20 A2,2 0 0 1 17,22 H7 A2,2 0 0 1 5,20 V4 A2,2 0 0 1 7,2 Z M9,7 H15 M9,11 H15 M9,15 H12.5',
+  flash: 'M13,2 L4,14 H11 L10,22 L19,10 H12 Z',
+  payload: 'M21,8 L12,3 L3,8 V16 L12,21 L21,16 Z M3,8 L12,13 L21,8 M12,13 V21',
+  logs: 'M4,5 H20 M4,12 H15 M4,19 H11',
+  terminal: 'M5,4 H19 A2,2 0 0 1 21,6 V18 A2,2 0 0 1 19,20 H5 A2,2 0 0 1 3,18 V6 A2,2 0 0 1 5,4 Z M7,9 L10,12 L7,15 M12.5,15 H17',
+  layers: 'M12,3 L21,7.5 L12,12 L3,7.5 Z M3,12 L12,16.5 L21,12 M3,16.5 L12,21 L21,16.5',
+  bricks: 'M3.5,4 H20.5 V20 H3.5 Z M3.5,9.3 H20.5 M3.5,14.7 H20.5 M10,4 V9.3 M14.5,9.3 V14.7 M8,14.7 V20',
+  samsung: 'M7,2 H17 A2,2 0 0 1 19,4 V20 A2,2 0 0 1 17,22 H7 A2,2 0 0 1 5,20 V4 A2,2 0 0 1 7,2 Z M12,6.5 V13.5 M9,10.5 L12,13.5 L15,10.5 M10,18 H14',
+  backup: 'M3,5 H21 V9 H3 Z M5,9 V19 H19 V9 M10,13 H14',
+  root: 'M8,3.5 A4.5,4.5 0 1 1 7.99,3.5 Z M11.2,11.2 L20,20 M17.5,17.5 L20,15 M14.8,14.8 L17,12.6',
+  about: 'M12,2 A10,10 0 1 1 11.99,2 Z M12,11 V17 M12,7 V8',
+  settings: 'M12,8.5 A3.5,3.5 0 1 1 11.99,8.5 Z M12,2 V5 M12,19 V22 M2,12 H5 M19,12 H22 M4.9,4.9 L7,7 M17,17 L19.1,19.1 M4.9,19.1 L7,17 M17,7 L19.1,4.9',
+  folder: 'M3,6 A1,1 0 0 1 4,5 H9 L11,7 H20 A1,1 0 0 1 21,8 V18 A1,1 0 0 1 20,19 H4 A1,1 0 0 1 3,18 Z',
+  file: 'M6,3 H14 L19,8 V21 H6 Z M14,3 V8 H19',
+  check: 'M5,12.5 L10,17.5 L19.5,7',
+  down: 'M12,3 V15 M7,10.5 L12,15.5 L17,10.5 M5,20 H19',
+  reboot: 'M20,12 A8,8 0 1 1 17.7,6.3 M20,4 V8.5 H15.5',
+  warn: 'M12,3 L22,20 H2 Z M12,10 V14 M12,17 V17.5',
+  send: 'M3,11 L21,3 L14,21 L11,13 Z M11,13 L21,3',
+  github: 'M12,1.5 A10.5,10.5 0 0 0 8.7,22 C9.2,22.1 9.4,21.8 9.4,21.5 V19.6 C6.5,20.2 5.9,18.3 5.9,18.3 C5.4,17.1 4.7,16.8 4.7,16.8 C3.8,16.1 4.8,16.2 4.8,16.2 C5.8,16.3 6.4,17.3 6.4,17.3 C7.3,18.9 8.9,18.4 9.5,18.1 C9.6,17.5 9.9,17 10.2,16.8 C7.8,16.5 5.4,15.6 5.4,11.6 C5.4,10.5 5.8,9.6 6.4,8.9 C6.3,8.6 6,7.6 6.5,6.2 C6.5,6.2 7.4,5.9 9.4,7.3 A10,10 0 0 1 14.6,7.3 C16.6,5.9 17.5,6.2 17.5,6.2 C18,7.6 17.7,8.6 17.6,8.9 C18.2,9.6 18.6,10.5 18.6,11.6 C18.6,15.6 16.2,16.5 13.8,16.8 C14.2,17.1 14.6,17.8 14.6,18.8 V21.5 C14.6,21.8 14.8,22.1 15.3,22 A10.5,10.5 0 0 0 12,1.5 Z',
+  globe: 'M12,2 A10,10 0 1 1 11.99,2 Z M2,12 H22 M12,2 C15,5 15,19 12,22 C9,19 9,5 12,2 Z',
+  group: 'M8,11 A3,3 0 1 1 7.99,11 Z M16,9 A2.5,2.5 0 1 1 15.99,9 Z M2.5,20 C3,16.5 13,16.5 13.5,20 M13,15.5 C15,14 20.5,14.5 21.5,18',
+  search: 'M10.5,4 A6.5,6.5 0 1 1 10.49,4 Z M15.5,15.5 L20,20',
+  sparkle: 'M12,3 L13.8,10.2 L21,12 L13.8,13.8 L12,21 L10.2,13.8 L3,12 L10.2,10.2 Z',
+  scale: 'M4,20 L10,4 L16,20 M6.3,14 H13.7 M16,12 L19,20 M17.2,16.5 H21',
+};
+const svg = (p, sw = 1.8) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round"><path d="${p}"/></svg>`;
+const fsvg = p => `<svg viewBox="0 0 24 24" fill="currentColor"><path d="${p}"/></svg>`;
+const ck = svg(I.check, 2.4);
+const help = `<span class="icon-btn">${AR ? '؟' : '?'}</span>`;
+const bar = (h1, p, actions = '') => `<div class="appbar"><div><h1>${h1}</h1><p>${p}</p></div><div class="sp"></div>${actions}${help}</div>`;
+
+const navs = [
+  [null, T('Phone', 'الجوال')],
+  ['device', T('Device', 'الجهاز')], ['phone', T('Phone', 'الجوال')], ['flash', T('Flash', 'التفليش')],
+  [null, T('Images', 'الصور')],
+  ['payload', T('Payload Dumper', 'مستخرج Payload')], ['layers', T('Image Tools', 'أدوات الصور')], ['bricks', T('Build Super', 'بناء Super')],
+  [null, T('Tools', 'الأدوات')],
+  ['samsung', T('Samsung', 'سامسونج')], ['backup', T('Backup', 'النسخ الاحتياطي')], ['root', T('Root', 'روت')],
+  ['terminal', T('Terminal', 'الطرفية')], ['logs', T('Logs', 'السجل')],
+  [null, ''],
+  ['settings', T('Settings', 'الإعدادات')], ['about', T('About', 'حول')],
+];
+let nav = '';
+for (const [k, label] of navs) {
+  if (!k) { nav += label ? `<div class="section">${label}</div>` : '<div style="height:6px"></div>'; continue; }
+  nav += `<div class="nav ${k === page ? 'on' : ''}">${svg(I[k])}<span>${label}</span>${k === 'settings' && page !== 'settings' ? `<span class="badge">${T('NEW', 'جديد')}</span>` : ''}</div>`;
+}
+
+const P = {};
+
+P.device = () => bar(T('Device', 'الجهاز'), T('The phone in fastboot: its slots, partitions and what it allows.', 'الجوال في وضع fastboot: السلوتات والأقسام والمسموح فيه.'),
+  `<button class="btn outlined">${T('USB check', 'فحص USB')}</button><button class="btn tonal">${svg(I.reboot)}${T('Reboot', 'إعادة تشغيل')}</button>`) + `
+  <div class="content" style="grid-template-columns: minmax(0,1fr) calc(330px * var(--k))">
+    <div class="col">
+      <div class="card low" style="display:flex; align-items:center; gap:12px">
+        <div class="avatar">${svg(I.device)}</div>
+        <div style="flex:1"><div style="font-size:.9rem; font-weight:500">Pixel 8 Pro · husky</div><div class="note mono">FBE0SAMPLE01 · fastbootd</div></div>
+        <span class="chip ok">${T('Unlocked', 'مفتوح')}</span><span class="chip">${T('Slot', 'السلوت')} a</span>
+      </div>
+      <div class="row2">
+        <div class="stat"><small>${T('Current slot', 'السلوت الحالي')}</small><b>a</b></div>
+        <div class="stat"><small>Super</small><b>8.00 GB</b></div>
+        <div class="stat"><small>${T('Free in super', 'المتاح في super')}</small><b>1.42 GB</b></div>
+        <div class="stat"><small>${T('Partitions', 'الأقسام')}</small><b>74</b></div>
+      </div>
+      <div class="card outl" style="padding:6px 10px">
+        <table class="table">
+          <tr><th>${T('Partition', 'القسم')}</th><th>${T('Size', 'الحجم')}</th><th>${T('Type', 'النوع')}</th><th>${T('Logical', 'منطقي')}</th></tr>
+          ${[['boot_a', '64.00 MB', 'raw', '—'], ['init_boot_a', '8.00 MB', 'raw', '—'], ['vendor_boot_a', '64.00 MB', 'raw', '—'], ['dtbo_a', '16.00 MB', 'raw', '—'], ['system_a', '2.74 GB', 'ext4', '✓'], ['vendor_a', '812.30 MB', 'ext4', '✓'], ['product_a', '3.02 GB', 'ext4', '✓'], ['vbmeta_a', '64.00 KB', 'raw', '—'], ['modem_a', '256.00 MB', 'raw', '—']]
+            .map(r => `<tr><td class="mono">${r[0]}</td><td class="mono">${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join('')}
+        </table>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <h3>${T('Flash options', 'خيارات التفليش')}</h3>
+        ${[[T('Flash both slots', 'فلّش السلوتين'), 0], [T('Check boot images first', 'افحص صور الإقلاع أول'), 1], [T('Ask before critical partitions', 'اسأل قبل الأقسام الحساسة'), 1]]
+          .map(x => `<div class="setrow"><div class="lbl"><b>${x[0]}</b></div><span class="switch ${x[1] ? '' : 'off'}"></span></div>`).join('')}
+      </div>
+      <div class="card">
+        <h3>${T('Quick actions', 'إجراءات سريعة')}</h3>
+        <div class="grid2">
+          <button class="btn tonal">${T('Boot once…', 'إقلاع مرة…')}</button><button class="btn tonal">${T('Switch slot', 'بدّل السلوت')}</button>
+          <button class="btn outlined">${T('To recovery', 'للريكفري')}</button><button class="btn errorbtn">${T('Erase…', 'مسح…')}</button>
+        </div>
+      </div>
+      <div class="banner warn">${svg(I.about)}<div><b>${T('Super has room', 'Super فيه مساحة')}</b>${T('1.42 GB free: a GSI of up to that size fits.', '1.42 جيجا فاضية: أي GSI لين هالحجم يركب.')}</div></div>
+    </div>
+  </div>`;
+
+P.phone = () => bar(T('Phone', 'الجوال'), T('The phone running Android, read over adb.', 'الجوال وهو شغّال على أندرويد، عن طريق adb.'),
+  `<button class="btn outlined">${T('Copy report', 'انسخ التقرير')}</button><button class="btn tonal">${svg(I.down)}${T('Save to PC', 'احفظ في الكمبيوتر')}</button>`) + `
+  <div class="content" style="grid-template-columns: 1fr 1fr">
+    <div class="col">
+      <div class="card low" style="display:flex; align-items:center; gap:12px">
+        <div class="avatar">${svg(I.phone)}</div>
+        <div style="flex:1"><div style="font-size:.9rem; font-weight:500">Xiaomi 13T Pro · corot</div><div class="note">Android 14 · HyperOS 1.0.6</div></div>
+        <span class="chip ok">KernelSU 1.0.5</span>
+      </div>
+      <div class="row2">
+        <div class="stat"><small>${T('Battery', 'البطارية')}</small><b>82%</b><div class="progress"><i style="width:82%"></i></div></div>
+        <div class="stat"><small>${T('Storage', 'التخزين')}</small><b>94 / 256 GB</b><div class="progress"><i style="width:37%"></i></div></div>
+        <div class="stat"><small>RAM</small><b>12 GB</b><div class="progress"><i style="width:58%"></i></div></div>
+      </div>
+      <div class="card" style="flex:1">
+        <h3>${T('System', 'النظام')}</h3>
+        <div class="kv">
+          <span>${T('Chip', 'المعالج')}</span><span class="mono">mt6985 · arm64-v8a</span>
+          <span>${T('Security patch', 'التصحيح الأمني')}</span><span class="mono">2026-09-05</span>
+          <span>${T('Kernel', 'الكيرنل')}</span><span class="mono">6.1.75-android14-11</span>
+          <span>KMI</span><span class="mono">android14-6.1</span>
+          <span>${T('Slot', 'السلوت')}</span><span class="mono">_a · A/B · dynamic</span>
+          <span>${T('Bootloader', 'البوتلودر')}</span><span>${T('Unlocked', 'مفتوح')}</span>
+          <span>SELinux</span><span>Enforcing</span>
+          <span>AVB</span><span>orange</span>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <h3>${T('Ready to flash', 'جاهزية التفليش')}</h3>
+        ${[[T('Bootloader unlocked: modified images boot', 'البوتلودر مفتوح: الصور المعدّلة تقلع'), 'ok'], [T('Root access granted to the app', 'صلاحية الروت متاحة للتطبيق'), 'ok'], [T('Battery 82%: above the 50% minimum', 'البطارية 82%: فوق الحد الأدنى 50%'), 'ok'], [T('No backup from today', 'ما فيه نسخة احتياطية من اليوم'), 'warn']]
+          .map(x => `<div class="li"><span class="dot" style="${x[1] === 'warn' ? 'background:var(--tertiary); box-shadow:none' : ''}"></span><span class="n">${x[0]}</span></div>`).join('')}
+      </div>
+      <div class="card" style="flex:1">
+        <h3>${T('Root modules', 'إضافات الروت')}<span class="sp"></span><small>4</small></h3>
+        ${[['Fastboot Studio Companion', 'v2.5.1', 1], ['NexTZygisk', 'v1.0.6', 1], ['NextSUSFS', 'v0.0.13', 1], ['NEXTCORE', 'v2.0.0', 0]]
+          .map(x => `<div class="li"><span class="n">${x[0]} <span class="s mono">${x[1]}</span></span><span class="switch ${x[2] ? '' : 'off'}" style="transform:scale(.85)"></span></div>`).join('')}
+      </div>
+    </div>
+  </div>`;
+
+P.flash = () => bar(T('Flash', 'التفليش'), T('Pick images for partitions; each is checked against the phone first.', 'اختر الصور للأقسام، وكل وحدة تنفحص على الجوال قبل الكتابة.'),
+  `<span class="chip sel mono">FBE0SAMPLE01</span><button class="btn outlined">${svg(I.folder)}${T('Add images', 'أضف صور')}</button>`) + `
+  <div class="content" style="grid-template-columns: minmax(0,1fr) calc(320px * var(--k))">
+    <div class="col">
+      <div class="card" style="flex:1">
+        <h3>${T('To flash', 'للتفليش')}<span class="sp"></span><small>${T('3 images · 78.1 MB', '3 صور · 78.1 ميجا')}</small></h3>
+        ${[['init_boot_a', 'magisk_patched-28100.img', '8.00 MB', `<span class="chip warn">${T('Rooted · Magisk', 'مروّت · Magisk')}</span>`], ['vendor_boot_a', 'vendor_boot.img', '64.00 MB', `<span class="chip ok">${T('Checked', 'مفحوص')} ✓</span>`], ['vbmeta_a', 'vbmeta.img', '8.00 KB', `<span class="chip ok">${T('Checked', 'مفحوص')} ✓</span>`]]
+          .map(x => `<div class="li on" style="min-height:48px; margin-bottom:6px"><span class="tag mono" style="min-width:110px">${x[0]}</span><span class="n mono">${x[1]}</span><span class="s mono">${x[2]}</span>${x[3]}</div>`).join('')}
+        <div class="banner warn" style="margin-top:10px">${svg(I.warn)}<div><b>${T('init_boot_a carries Magisk', 'init_boot_a فيه Magisk')}</b>${T('That is right to root the phone. To remove root, flash the stock image from the same firmware.', 'هذا صح إذا تبي تروّت. عشان تشيل الروت فلّش الصورة الأصلية من نفس الروم.')}</div></div>
+        <div style="flex:1"></div>
+      </div>
+      <div class="card low">
+        <div style="display:flex; align-items:center; gap:10px"><b style="font-size:.8125rem; font-weight:500">${T('Writing vendor_boot_a', 'جاري كتابة vendor_boot_a')}</b><span class="sp" style="flex:1"></span><span class="note mono">41.2 / 64.0 MB · 18.4 MB/s</span></div>
+        <div class="progress" style="height:6px; margin-top:8px"><i style="width:64%"></i></div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <h3>${T('Options', 'الخيارات')}</h3>
+        <div class="setrow"><div class="lbl"><b>${T('Both slots', 'السلوتين')}</b><span>${T('Physical partitions only', 'الأقسام الفعلية بس')}</span></div><span class="switch off"></span></div>
+        <div class="setrow"><div class="lbl"><b>${T('Reboot when done', 'أعد التشغيل بعد ما يخلص')}</b></div><span class="switch"></span></div>
+      </div>
+      <div class="card">
+        <h3>${T('Slot', 'السلوت')}</h3>
+        <div class="seg" style="width:100%"><span class="on" style="flex:1; justify-content:center">${ck.replace('<svg', '<svg width="14" height="14"')} ${T('Current a', 'الحالي a')}</span><span style="flex:1; justify-content:center">${T('Other b', 'الثاني b')}</span></div>
+      </div>
+      <div style="flex:1"></div>
+      <button class="btn filled" style="height:42px">${svg(I.flash)}${T('Flash 3 images', 'فلّش 3 صور')}</button>
+      <div class="grid2"><button class="btn tonal">${T('Boot once', 'إقلاع مرة')}</button><button class="btn outlined">${T('Cancel', 'إلغاء')}</button></div>
+    </div>
+  </div>`;
+
+P.payload = () => bar(T('Payload Dumper', 'مستخرج Payload'), T('Open a payload.bin or an OTA zip to inspect it and extract images.', 'افتح payload.bin أو ملف OTA عشان تفحصه وتطلّع الصور.'),
+  `<span class="chip sel mono">sample-ota.zip</span><button class="btn outlined">${svg(I.folder)}${T('Open', 'افتح')}</button><button class="btn text">${T('Remove', 'إزالة')}</button>`) + `
+  <div class="tabs"><span>${T('Basic properties', 'الخصائص الأساسية')}</span><span class="on">${T('Partitions', 'الأقسام')}</span><span>${T('Dynamic partitions', 'الأقسام الديناميكية')}</span></div>
+  <div class="content" style="grid-template-columns: minmax(0,1fr) calc(300px * var(--k))">
+    <div class="card outl" style="padding:4px 8px">
+      <table class="table">
+        <tr><th></th><th>${T('Partition', 'القسم')}</th><th>${T('Size', 'الحجم')}</th><th>${T('Operations', 'العمليات')}</th><th>SHA-256</th></tr>
+        ${[['boot', '64.00 MB', 12, 1], ['init_boot', '8.00 MB', 3, 1], ['vendor_boot', '64.00 MB', 9, 1], ['dtbo', '16.00 MB', 2, 0], ['system', '2.74 GB', 188, 0], ['vendor', '812.30 MB', 61, 0], ['product', '3.02 GB', 205, 0], ['vbmeta', '8.00 KB', 1, 1], ['vbmeta_system', '4.00 KB', 1, 0]]
+          .map(r => `<tr class="${r[3] ? 'on' : ''}"><td><span class="cb ${r[3] ? 'on' : ''}"></span></td><td class="mono">${r[0]}</td><td class="mono">${r[1]}</td><td>${r[2]}</td><td>${r[3] ? `<span class="chip ok">${T('match', 'مطابق')} ✓</span>` : '<span class="note">—</span>'}</td></tr>`).join('')}
+      </table>
+    </div>
+    <div class="col">
+      <div class="card">
+        <h3>${T('Payload', 'Payload')}</h3>
+        <div class="kv" style="grid-template-columns: 100px 1fr">
+          <span>${T('Version', 'الإصدار')}</span><span>2</span><span>${T('Data', 'البيانات')}</span><span class="mono">167.81 MB</span>
+          <span>${T('Type', 'النوع')}</span><span>${T('Full OTA', 'تحديث كامل')}</span><span>${T('Compression', 'الضغط')}</span><span>zstd · xz · bz2</span>
+        </div>
+      </div>
+      <div class="card">
+        <h3>${T('Save to', 'احفظ في')}</h3>
+        <div class="field mono">${svg(I.folder).replace('<svg', '<svg width="16" height="16"')}D:\\OTA\\sample-ota</div>
+      </div>
+      <div style="flex:1"></div>
+      <div class="card low"><div class="note">${T('Extracting 4 of 4 · SHA-256 checked', 'جاري استخراج 4 من 4 · SHA-256 مفحوص')}</div><div class="progress" style="height:6px"><i style="width:100%"></i></div><div class="note">${T('Done in 2.1 s', 'خلص في 2.1 ث')}</div></div>
+      <button class="btn filled" style="height:42px">${svg(I.down)}${T('Extract 4 selected', 'طلّع 4 محددة')}</button>
+    </div>
+  </div>`;
+
+P.layers = () => bar(T('Image Tools', 'أدوات الصور'), T('Inspect, convert and unpack Android images.', 'افحص وحوّل وفك صور أندرويد.'),
+  `<button class="btn outlined">${svg(I.file)}${T('Open image', 'افتح صورة')}</button>`) + `
+  <div class="tabs"><span class="on">${T('Inspect', 'فحص')}</span><span>${T('Sparse ↔ raw', 'Sparse ↔ raw')}</span><span>${T('Super unpack', 'فك Super')}</span><span>${T('Qualcomm pieces', 'قطع كوالكوم')}</span></div>
+  <div class="content" style="grid-template-columns: 1fr 1fr">
+    <div class="col">
+      <div class="card low" style="display:flex; align-items:center; gap:12px">
+        <div class="avatar">${svg(I.file)}</div>
+        <div style="flex:1; min-width:0"><div style="font-size:.9rem; font-weight:500" class="mono">init_boot.img</div><div class="note">${T('Android boot image v4 · 8.00 MB', 'صورة إقلاع v4 · 8.00 ميجا')}</div></div>
+        <span class="chip warn">${T('Rooted · Magisk 28.1', 'مروّت · Magisk 28.1')}</span>
+      </div>
+      <div class="card" style="flex:1">
+        <h3>${T('Details', 'التفاصيل')}</h3>
+        <div class="kv">
+          <span>${T('Header', 'الهيدر')}</span><span>v4</span>
+          <span>${T('Kernel', 'الكيرنل')}</span><span>${T('none (ramdisk only)', 'ما فيه (ramdisk بس)')}</span>
+          <span>Ramdisk</span><span class="mono">lz4_legacy · 4.12 MB</span>
+          <span>${T('Patch level', 'التصحيح')}</span><span class="mono">2026-09</span>
+          <span>OS</span><span>Android 14</span>
+          <span>${T('Root', 'الروت')}</span><span>Magisk 28.1 (28100)</span>
+          <span>AVB footer</span><span>${T('yes · hash', 'موجود · hash')}</span>
+          <span>SHA-256</span><span class="mono">3010c1…0948</span>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="drop" style="flex:1">
+        <div class="avatar">${svg(I.layers)}</div>
+        <b style="font-size:.9rem; font-weight:500; color:var(--onSurface)">${T('Drop an image here', 'اسحب صورة هنا')}</b>
+        <span class="note">boot · init_boot · vendor_boot · super · sparse · rawprogram</span>
+      </div>
+      <div class="card">
+        <h3>${T('Actions', 'إجراءات')}</h3>
+        <div class="grid2">
+          <button class="btn tonal">${T('Unpack ramdisk', 'فك الـ ramdisk')}</button><button class="btn tonal">${T('Make sparse', 'حوّل sparse')}</button>
+          <button class="btn outlined">${T('Copy SHA-256', 'انسخ SHA-256')}</button><button class="btn outlined">${T('Flash it…', 'فلّشها…')}</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+
+P.bricks = () => bar(T('Build Super', 'بناء Super'), T('Build a super image from partition images, lpmake-compatible.', 'ابنِ صورة super من صور الأقسام، متوافق مع lpmake.'),
+  `<button class="btn outlined">${T('Import super', 'استورد super')}</button>`) + `
+  <div class="content" style="grid-template-columns: minmax(0,1fr) calc(330px * var(--k))">
+    <div class="col">
+      <div class="card">
+        <h3>${T('Space', 'المساحة')}<span class="sp"></span><small>${T('6.58 of 8.00 GB', '6.58 من 8.00 جيجا')}</small></h3>
+        <div class="bar"><i style="flex:274; background:var(--primary)"></i><i style="flex:81; background:var(--tertiary)"></i><i style="flex:302; background:color-mix(in srgb, var(--primary) 55%, var(--surface))"></i><i style="flex:35; background:var(--secondary)"></i><i style="flex:108; background:var(--surfaceContainerHighest)"></i></div>
+        <div class="legend"><span><i style="background:var(--primary)"></i>system 2.74 GB</span><span><i style="background:var(--tertiary)"></i>vendor 812 MB</span><span><i style="background:color-mix(in srgb, var(--primary) 55%, var(--surface))"></i>product 3.02 GB</span><span><i style="background:var(--secondary)"></i>odm 352 MB</span><span><i style="background:var(--surfaceContainerHighest)"></i>${T('free', 'فاضي')} 1.42 GB</span></div>
+      </div>
+      <div class="card outl" style="flex:1; padding:4px 8px">
+        <table class="table">
+          <tr><th>${T('Partition', 'القسم')}</th><th>${T('Image', 'الصورة')}</th><th>${T('Size', 'الحجم')}</th><th>${T('Group', 'المجموعة')}</th></tr>
+          ${[['system_a', 'system.img', '2.74 GB'], ['vendor_a', 'vendor.img', '812.30 MB'], ['product_a', 'product.img', '3.02 GB'], ['odm_a', 'odm.img', '352.00 MB'], ['system_dlkm_a', 'system_dlkm.img', '12.00 MB'], ['vendor_dlkm_a', 'vendor_dlkm.img', '48.00 MB']]
+            .map(r => `<tr><td class="mono">${r[0]}</td><td class="mono">${r[1]}</td><td class="mono">${r[2]}</td><td class="mono">qti_dynamic_partitions_a</td></tr>`).join('')}
+        </table>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <h3>${T('Layout', 'التقسيم')}</h3>
+        <div class="seg" style="width:100%; margin-bottom:10px"><span class="on" style="flex:1; justify-content:center">Virtual A/B</span><span style="flex:1; justify-content:center">A/B</span><span style="flex:1; justify-content:center">${T('Single', 'واحد')}</span></div>
+        <div class="kv" style="grid-template-columns: 110px 1fr">
+          <span>${T('Device size', 'حجم الجهاز')}</span><span class="mono">8.00 GB</span><span>${T('Metadata', 'الميتاداتا')}</span><span class="mono">65536 × 3</span><span>${T('Block', 'البلوك')}</span><span class="mono">4096</span>
+        </div>
+      </div>
+      <div class="card">
+        <h3>${T('Output', 'المخرج')}</h3>
+        <div class="seg" style="width:100%"><span class="on" style="flex:1; justify-content:center">Sparse</span><span style="flex:1; justify-content:center">Raw</span></div>
+      </div>
+      <div class="banner">${ck.replace('<svg', '<svg width="19" height="19"')}<div><b>${T('Everything fits', 'كل شي يركب')}</b>${T('1.42 GB stays free in super.', 'يبقى 1.42 جيجا فاضي في super.')}</div></div>
+      <div style="flex:1"></div>
+      <button class="btn filled" style="height:42px">${svg(I.bricks)}${T('Build super.img', 'ابنِ super.img')}</button>
+    </div>
+  </div>`;
+
+P.samsung = () => bar(T('Samsung', 'سامسونج'), T('Open firmware, check it suits your phone, take out what you need.', 'افتح الروم، وتأكد إنه يناسب جوالك، وطلّع اللي تحتاجه.'),
+  `<span class="chip sel mono">S918BXXU3BWK5</span><button class="btn tonal">${svg(I.samsung)}${T('Download mode', 'وضع التحميل')}</button><button class="btn outlined">${svg(I.folder)}${T('Open firmware', 'افتح الروم')}</button>`) + `
+  <div class="content" style="grid-template-columns: minmax(0,1fr) calc(330px * var(--k))">
+    <div class="col">
+      <div class="card">
+        <h3>${T('Firmware files', 'ملفات الروم')}<span class="sp"></span><span class="chip ok">${ck.replace('<svg', '<svg width="12" height="12"')} MD5 ${T('all match', 'كلها مطابقة')}</span></h3>
+        ${[['AP', 'AP_S918BXXU3BWK5_CL...tar.md5', '42.08 MB'], ['BL', 'BL_S918BXXU3BWK5_CL...tar.md5', '771.11 KB'], ['CP', 'CP_S918BXXU3BWK5_CP...tar.md5', '1.00 MB'], ['CSC', 'CSC_OXM_S918BOXM3BW...tar.md5', '74.60 KB'], ['HOME_CSC', 'HOME_CSC_OXM_S918BO...tar.md5', '74.61 KB']]
+          .map(f => `<div class="li"><span class="tag">${f[0]}</span><span class="n mono">${f[1]}</span><span class="s mono">${f[2]}</span><span class="chip ok">MD5 ✓</span></div>`).join('')}
+      </div>
+      <div class="row2" style="flex:1">
+        <div class="card" style="flex:1">
+          <h3>${T('About this firmware', 'عن الروم')}</h3>
+          <div class="kv" style="grid-template-columns: 116px 1fr">
+            <span>${T('Model', 'الموديل')}</span><span>SM-S918B</span><span>${T('Build (PDA)', 'النسخة (PDA)')}</span><span class="mono">S918BXXU3BWK5</span>
+            <span>${T('Bootloader binary', 'نسخة البوتلودر')}</span><span>3</span><span>Android</span><span>14</span><span>CSC</span><span>OXM</span>
+          </div>
+        </div>
+        <div class="card" style="flex:1.1">
+          <h3>${T('Against your phone', 'مقارنة بجوالك')}<span class="sp"></span><span class="btn text" style="height:26px">${T('Check again', 'افحص مرة ثانية')}</span></h3>
+          <div class="banner">${ck.replace('<svg', '<svg width="19" height="19"')}<div><b>${T('This firmware suits your phone', 'هالروم يناسب جوالك')}</b>${T('Flash AP, BL, CP and HOME_CSC to keep your data.', 'فلّش AP و BL و CP و HOME_CSC عشان تبقى بياناتك.')}</div></div>
+          <div class="chips" style="margin-top:10px"><span class="chip">Knox 0x0 · ${T('intact', 'سليم')}</span><span class="chip">${T('Binary', 'البوتلودر')} 3 = 3</span><span class="chip">OXM</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card" style="flex:1; display:flex; flex-direction:column">
+        <h3>${T('Inside', 'المحتوى')}</h3>
+        <div class="seg" style="margin-bottom:8px"><span class="on">${ck.replace('<svg', '<svg width="14" height="14"')}${T('Boot images', 'صور الإقلاع')}</span><span>${T('All', 'الكل')}</span><span>${T('None', 'ولا شي')}</span></div>
+        ${[['boot.img.lz4', '80.08 KB', 1], ['init_boot.img.lz4', '6.12 MB', 1], ['vbmeta.img.lz4', '4.02 KB', 1], ['recovery.img.lz4', '2.00 MB', 0], ['super.img.lz4', '31.4 MB', 0]]
+          .map(x => `<div class="li ${x[2] ? 'on' : ''}"><span class="cb ${x[2] ? 'on' : ''}"></span><span class="n mono">${x[0]}</span><span class="s mono">${x[1]}</span></div>`).join('')}
+        <div style="flex:1"></div>
+        <button class="btn filled" style="width:100%; margin-bottom:8px">${svg(I.down)}${T('Extract selected (undoes lz4)', 'طلّع المحدد (يفك lz4)')}</button>
+        <div class="grid2"><button class="btn tonal">${T('Root with Magisk', 'روت بـ Magisk')}</button><button class="btn tonal">${T('Check Magisk file', 'افحص ملف Magisk')}</button><button class="btn outlined">${T('Tar for Odin', 'tar لأودين')}</button><button class="btn outlined">${T('Open folder', 'افتح المجلد')}</button></div>
+        <div class="progress" style="margin-top:12px"><i style="width:100%"></i></div><div class="note">${T('Done in 0.1 s · 3 images taken out', 'خلص في 0.1 ث · طلعت 3 صور')}</div>
+      </div>
+    </div>
+  </div>`;
+
+P.backup = () => bar(T('Backup', 'النسخ الاحتياطي'), T('Save partitions and files from the phone to this computer.', 'احفظ الأقسام والملفات من الجوال لهالكمبيوتر.'),
+  `<span class="chip ok">${T('recovery · root shell', 'ريكفري · روت')}</span>`) + `
+  <div class="tabs"><span class="on">${T('Partitions', 'الأقسام')}</span><span>${T('Files', 'الملفات')}</span><span>${T('My backups', 'نسخي')}</span></div>
+  <div class="content" style="grid-template-columns: minmax(0,1fr) calc(320px * var(--k))">
+    <div class="card outl" style="padding:4px 8px">
+      <table class="table">
+        <tr><th></th><th>${T('Partition', 'القسم')}</th><th>${T('Size', 'الحجم')}</th><th>${T('State', 'الحالة')}</th></tr>
+        ${[['boot_a', '64.00 MB', 'saved'], ['boot_b', '64.00 MB', 'saved'], ['init_boot_a', '8.00 MB', 'saved'], ['dtbo_a', '16.00 MB', 'run'], ['vbmeta_a', '64.00 KB', 'wait'], ['persist', '32.00 MB', 'wait'], ['modemst1', '2.00 MB', 'wait'], ['modemst2', '2.00 MB', 'wait'], ['frp', '512.00 KB', 'off']]
+          .map(r => `<tr class="${r[2] !== 'off' ? 'on' : ''}"><td><span class="cb ${r[2] !== 'off' ? 'on' : ''}"></span></td><td class="mono">${r[0]}</td><td class="mono">${r[1]}</td><td>${r[2] === 'saved' ? `<span class="chip ok">${T('Saved', 'انحفظ')} ✓</span>` : r[2] === 'run' ? `<div class="progress" style="width:120px"><i style="width:55%"></i></div>` : r[2] === 'wait' ? `<span class="note">${T('waiting', 'ينتظر')}</span>` : ''}</td></tr>`).join('')}
+      </table>
+    </div>
+    <div class="col">
+      <div class="card">
+        <h3>${T('Quick picks', 'اختيارات سريعة')}</h3>
+        <div class="chips"><span class="chip sel">${ck.replace('<svg', '<svg width="12" height="12"')}${T('Critical', 'الحساسة')}</span><span class="chip">${T('Boot images', 'صور الإقلاع')}</span><span class="chip">IMEI (modemst)</span><span class="chip">${T('All', 'الكل')}</span></div>
+      </div>
+      <div class="card">
+        <h3>${T('Save to', 'احفظ في')}</h3>
+        <div class="field mono" style="font-size:.72rem">${svg(I.folder).replace('<svg', '<svg width="15" height="15"')}…\\Backups\\Sample_A64_20261027</div>
+        <div class="note" style="margin-top:8px">${T('Each image is saved with its SHA-256 in SHA256SUMS.', 'كل صورة تنحفظ مع SHA-256 في SHA256SUMS.')}</div>
+      </div>
+      <div style="flex:1"></div>
+      <div class="card low"><div class="note">${T('3 of 8 · dtbo_a', '3 من 8 · dtbo_a')}</div><div class="progress" style="height:6px"><i style="width:44%"></i></div></div>
+      <button class="btn filled" style="height:42px">${svg(I.backup)}${T('Back up 8 selected', 'انسخ 8 محددة')}</button>
+    </div>
+  </div>`;
+
+P.root = () => bar(T('Root', 'روت'), T('Patch the boot image on the phone and flash it to the right partition.', 'عدّل صورة الإقلاع على الجوال وفلّشها في القسم الصح.')) + `
+  <div class="content" style="grid-template-rows: auto 1fr; grid-template-columns: 1fr 1fr">
+    <div class="stepper" style="grid-column: 1 / 3">
+      <div class="step done"><span class="num">✓</span><div><b>${T('Pick the image', 'اختر الصورة')}</b><span class="mono">init_boot.img · 8 MB</span></div></div>
+      <div class="step now"><span class="num">2</span><div><b>${T('Patch on the phone', 'عدّلها على الجوال')}</b><span>${T('Waiting for KernelSU…', 'ينتظر KernelSU…')}</span></div></div>
+      <div class="step"><span class="num">3</span><div><b>${T('Flash it', 'فلّشها')}</b><span>init_boot_a</span></div></div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <h3>${T('Root with', 'الروت بـ')}</h3>
+        <div class="seg" style="width:100%"><span style="flex:1; justify-content:center">Magisk</span><span class="on" style="flex:1; justify-content:center">${ck.replace('<svg', '<svg width="14" height="14"')}KernelSU</span><span style="flex:1; justify-content:center">APatch</span></div>
+        <div class="note" style="margin-top:10px">${T('KernelSU patches init_boot for GKI 2.0 kernels (android14-6.1 here). The app finds the patched file and takes it back.', 'KernelSU يعدّل init_boot لكيرنلات GKI 2.0 (هنا android14-6.1). التطبيق يلقى الملف المعدّل ويرجّعه.')}</div>
+      </div>
+      <div class="card" style="flex:1">
+        <h3>${T('The phone', 'الجوال')}</h3>
+        <div class="kv"><span>${T('Model', 'الموديل')}</span><span>Xiaomi 13T Pro</span><span>KMI</span><span class="mono">android14-6.1</span><span>${T('Partition', 'القسم')}</span><span class="mono">init_boot_a</span><span>${T('Bootloader', 'البوتلودر')}</span><span>${T('Unlocked', 'مفتوح')}</span></div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card" style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:10px">
+        <div class="avatar" style="width:64px; height:64px; border-radius:20px">${svg(I.phone).replace('<svg', '<svg width="30" height="30"')}</div>
+        <b style="font-size:.95rem; font-weight:500">${T('Open KernelSU on the phone', 'افتح KernelSU على الجوال')}</b>
+        <span class="note" style="max-width:340px">${T('Install → Select a file → pick init_boot.img in Download/FastbootStudio. The app picks up the patched image by itself.', 'تثبيت ← اختر ملف ← اختر init_boot.img في Download/FastbootStudio. التطبيق ياخذ الصورة المعدّلة لحاله.')}</span>
+        <div class="progress" style="width:240px"><i style="width:35%"></i></div>
+      </div>
+      <div class="grid2"><button class="btn outlined">${T('Cancel', 'إلغاء')}</button><button class="btn filled">${T('I patched it', 'عدّلتها')}</button></div>
+    </div>
+  </div>`;
+
+P.terminal = () => bar(T('Terminal', 'الطرفية'), T('Run adb and fastboot commands with the tools in the app.', 'شغّل أوامر adb و fastboot بالأدوات اللي في التطبيق.')) + `
+  <div class="content" style="grid-template-rows: auto 1fr auto">
+    <div class="chips">${['fastboot devices', 'fastboot getvar all', 'fastboot reboot bootloader', 'adb devices', 'adb reboot recovery', 'adb shell getprop'].map((c, i) => `<span class="chip ${i === 1 ? 'sel' : ''} mono">${c}</span>`).join('')}</div>
+    <div class="term mono">
+      <div><span class="p">❯</span> fastboot devices</div>
+      <div>FBE0SAMPLE01&nbsp;&nbsp;&nbsp;&nbsp;fastboot</div>
+      <div><span class="p">❯</span> fastboot getvar all</div>
+      <div class="d">(bootloader) version-bootloader:husky-1.4-12101558</div>
+      <div class="d">(bootloader) current-slot:a</div>
+      <div class="d">(bootloader) is-userspace:yes</div>
+      <div class="d">(bootloader) super-partition-name:super</div>
+      <div class="d">(bootloader) max-download-size:0x10000000</div>
+      <div class="d">(bootloader) partition-size:init_boot_a:0x800000</div>
+      <div class="d">(bootloader) partition-size:system_a:0xAF6C0000</div>
+      <div class="d">(bootloader) unlocked:yes</div>
+      <div class="ok">all: Done · Finished. Total time: 0.042s</div>
+      <div><span class="p">❯</span> <span style="border-inline-start:2px solid var(--primary)">&nbsp;</span></div>
+    </div>
+    <div style="display:flex; gap:10px"><div class="field filled-f mono" style="flex:1"><span class="p" style="color:var(--primary)">❯</span>fastboot </div><button class="btn filled" style="height:38px">${svg(I.send)}${T('Run', 'شغّل')}</button><button class="btn outlined" style="height:38px">${T('Clear', 'امسح')}</button></div>
+  </div>`;
+
+P.logs = () => bar(T('Logs', 'السجل'), T('Everything the app did, for you or for anyone helping you.', 'كل شي سواه التطبيق، لك أو لأي أحد يساعدك.'),
+  `<button class="btn outlined">${T('Copy', 'انسخ')}</button><button class="btn tonal">${svg(I.down)}${T('Save', 'احفظ')}</button><button class="btn text">${T('Clear', 'امسح')}</button>`) + `
+  <div class="content" style="grid-template-rows: auto 1fr">
+    <div style="display:flex; gap:10px; align-items:center"><div class="field" style="width:320px">${svg(I.search).replace('<svg', '<svg width="16" height="16"')}${T('Search the log', 'دوّر في السجل')}</div>
+      <div class="chips"><span class="chip sel">${ck.replace('<svg', '<svg width="12" height="12"')}${T('All', 'الكل')}</span><span class="chip">${T('Errors', 'الأخطاء')}</span><span class="chip">${T('Flash', 'التفليش')}</span><span class="chip">USB</span><span class="chip">Odin</span></div></div>
+    <div class="card outl log mono" style="overflow:hidden">
+      ${[['11:42:01', 'p', 'usb: 1 device, Google Pixel 8 Pro (fastbootd)'], ['11:42:03', 'p', 'flash: init_boot_a ← magisk_patched-28100.img (8.00 MB)'], ['11:42:03', 't', 'check: init_boot_a carries Magisk 28.1; asked before flashing'], ['11:42:05', 'p', 'flash: init_boot_a OKAY in 0.41 s'], ['11:42:05', 'p', 'flash: vendor_boot_a ← vendor_boot.img (64.00 MB)'], ['11:42:09', 'p', 'flash: vendor_boot_a OKAY in 3.62 s'], ['11:43:20', 'e', 'odin: COM9: the port is in use by another program (5)'], ['11:43:41', 'p', 'odin: handshake LOKE'], ['11:43:41', 'p', 'odin: session, protocol 4, LZ4 (0x48000)'], ['11:43:42', 'p', 'odin: PIT, 4224 bytes'], ['11:43:42', 'p', 'odin: restart Normal'], ['11:44:10', 'p', 'samsung: 5 files, MD5 matches'], ['11:44:12', 't', 'samsung: Knox 0x0 on an unlocked bootloader'], ['11:45:02', 'p', 'backup: 8 partitions saved, SHA256SUMS written']]
+        .map(l => `<div><span class="lv" style="background:${l[1] === 'e' ? 'var(--error)' : l[1] === 't' ? 'var(--tertiary)' : 'var(--primary)'}"></span><span style="color:var(--onSurfaceVariant)">${l[0]}</span>&nbsp;&nbsp;${l[2]}</div>`).join('')}
+    </div>
+  </div>`;
+
+const sizes = [[T('Small', 'صغير'), .9], [T('Default', 'افتراضي'), 1], [T('Large', 'كبير'), 1.12], [T('Larger', 'أكبر'), 1.25]];
+const curK = Number(q.get('k') || '1');
+P.settings = () => bar(T('Settings', 'الإعدادات'), T('Language, look and updates.', 'اللغة والشكل والتحديثات.')) + `
+  <div class="content" style="grid-template-columns: 1fr 1fr">
+    <div class="col">
+      <div class="card">
+        <h3>${T('Look', 'الشكل')}</h3>
+        <div class="setrow"><div class="lbl"><b>${T('Theme', 'المظهر')}</b></div><div class="seg"><span class="on">${T('Dark', 'داكن')}</span><span>${T('Light', 'فاتح')}</span><span>${T('As Windows', 'مثل ويندوز')}</span></div></div>
+        <div class="setrow"><div class="lbl"><b>${T('Color', 'اللون')}</b><span>${T('Every color of the app comes from it', 'كل ألوان التطبيق تطلع منه')}</span></div>
+          <div style="display:flex; gap:8px">${['#3DD6C4', '#7C5CFF', '#4F8CFF', '#F08A24', '#E85D9A'].map((c, i) => `<span class="swatch ${i === 1 ? 'on' : ''}" style="background:${c}"></span>`).join('')}<span class="swatch" style="border:1px dashed var(--outline); color:var(--onSurfaceVariant); font-size:.62rem; width:auto; padding:0 8px; border-radius:17px">Windows</span></div></div>
+        <div class="setrow" style="flex-wrap:wrap"><div class="lbl"><b>${T('Text size', 'حجم الخط')}</b><span>${T('All pages follow it right away', 'كل الصفحات تتغير على طول')}</span></div>
+          <div class="seg">${sizes.map(s => `<span class="${s[1] === curK ? 'on' : ''}">${s[1] === curK ? ck.replace('<svg', '<svg width="13" height="13"') : ''}${s[0]}</span>`).join('')}</div>
+          <div class="card high" style="width:100%; margin-top:10px; padding:10px 12px; display:flex; align-items:center; gap:12px">
+            <span style="font-size:1.6rem; font-weight:500; color:var(--primary)">Aa</span>
+            <div><b style="font-size:.8125rem; font-weight:500">${T('This is how text looks', 'هذا شكل الخط')}</b><div class="note">${T('Flash, back up and root, safely.', 'فلّش وخذ نسخة احتياطية وروّت، بأمان.')}</div></div>
+          </div>
+        </div>
+        <div class="setrow"><div class="lbl"><b>${T('Drawing', 'طريقة الرسم')}</b><span>${T('Software stops flicker on some drivers', 'البرمجي يمنع الوميض مع بعض التعريفات')}</span></div><div class="seg"><span class="on">${T('Software', 'برمجي')}</span><span>${T('Graphics card', 'كرت الشاشة')}</span></div></div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <h3>${T('Language', 'اللغة')}</h3>
+        <div class="chips">${[['English', !AR], ['العربية', AR], ['简体中文', 0], ['日本語', 0], ['한국어', 0]].map(l => `<span class="chip ${l[1] ? 'sel' : ''}" style="height:30px; padding:0 12px; font-size:.78rem">${l[1] ? ck.replace('<svg', '<svg width="12" height="12"') : ''}${l[0]}</span>`).join('')}</div>
+      </div>
+      <div class="card">
+        <h3>${T('Updates', 'التحديثات')}</h3>
+        <div class="setrow"><div class="lbl"><b>${T('Check for updates on start', 'افحص التحديثات عند التشغيل')}</b><span>${T('Once a day, from GitHub', 'مرة باليوم، من GitHub')}</span></div><span class="switch"></span></div>
+        <div class="setrow"><div class="lbl"><b>v2.9.0</b><span>${T('You have the latest version', 'عندك آخر نسخة')}</span></div><button class="btn tonal">${T('Check now', 'افحص الحين')}</button></div>
+      </div>
+      <div class="card">
+        <h3>${T('Help', 'المساعدة')}</h3>
+        <div class="setrow"><div class="lbl"><b>${T('Welcome tour', 'جولة الترحيب')}</b><span>${T('The four first-start steps', 'الخطوات الأربع لأول مرة')}</span></div><button class="btn outlined">${T('Show again', 'اعرضها')}</button></div>
+        <div class="setrow"><div class="lbl"><b>${T("What's new", 'الجديد')}</b><span>${T('The changes in this version', 'تغييرات هالنسخة')}</span></div><button class="btn outlined">${T('Open', 'افتح')}</button></div>
+      </div>
+    </div>
+  </div>`;
+
+P.about = () => `
+  <div class="content" style="padding-top:18px; grid-template-rows: auto 1fr; grid-template-columns: 1.15fr 1fr">
+    <div class="hero" style="grid-column: 1 / 3">
+      <img src="icon-themed.png">
+      <div style="position:relative; z-index:1; flex:1">
+        <h2>Fastboot Studio</h2>
+        <p>${T('Flash, back up and root Android phones from Windows, safely.', 'فلّش وخذ نسخة احتياطية وروّت جوالك من الويندوز، بأمان.')}</p>
+        <div class="chips"><span class="chip">v2.9.0</span><span class="chip">MIT</span><span class="chip">${T('Free & open source', 'مجاني ومفتوح المصدر')}</span></div>
+      </div>
+      <div style="position:relative; z-index:1; display:flex; gap:8px"><button class="btn filled">${T('Check for updates', 'افحص التحديثات')}</button>${help}</div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <div class="dev">
+          <div class="sigmark"><span>IF</span></div>
+          <div><div class="signame">IFOKNR</div><svg class="swoosh" viewBox="0 0 220 16" preserveAspectRatio="none"><path d="M4 11 C 60 2, 120 2, 216 7" fill="none" stroke="url(#sw)" stroke-width="2.4" stroke-linecap="round"/><defs><linearGradient id="sw"><stop offset="0" stop-color="#cabeff"/><stop offset="1" stop-color="#edb8cc" stop-opacity=".2"/></linearGradient></defs></svg><span class="role">${T('Developer', 'المطوّر')}</span></div>
+        </div>
+        <div style="margin-top:12px">
+          ${[[I.send, 'Telegram', '@IFOKNR1'], [I.group, T('Telegram group', 'قروب التيليجرام'), 't.me/BeNeXTBrO'], [I.github, 'GitHub', 'github.com/ifoknr'], [I.globe, T('All my tools', 'كل أدواتي'), 'ifoknr.com']]
+            .map(x => `<div class="linkrow"><span class="ic">${x[0] === I.github ? fsvg(x[0]) : svg(x[0])}</span><div><b>${x[1]}</b><span class="mono">${x[2]}</span></div><span class="go">›</span></div>`).join('')}
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <h3>${T('Built on', 'مبني على')}</h3>
+        <div class="linkrow" style="padding:4px 0"><span class="ic">${svg(I.sparkle)}</span><div><b>Fastboot Enhance · LibXZR</b><span>${T('MIT License · © 2021 LibXZR', 'رخصة MIT · © 2021 LibXZR')}</span></div></div>
+        <div class="chips" style="margin-top:8px"><span class="chip">${T('Original project', 'المشروع الأصلي')}</span><span class="chip">${T('Thread', 'الموضوع')}</span><span class="chip">${T('License', 'الرخصة')}</span></div>
+      </div>
+      <div class="card" style="flex:1">
+        <h3>${T('Inside', 'من الداخل')}</h3>
+        <div class="kv" style="grid-template-columns: 110px 1fr">
+          <span>${T('Payload', 'Payload')}</span><span>zstd · xz · bzip2</span>
+          <span>${T('Checks', 'الفحوصات')}</span><span>SHA-256 · MD5 · AVB</span>
+          <span>${T('Tools', 'الأدوات')}</span><span>platform-tools 37.0.1</span>
+          <span>Samsung</span><span>${T('Odin protocol v4', '<bdi>Odin</bdi> بروتوكول <bdi>v4</bdi>')}</span>
+        </div>
+      </div>
+      <div class="note" style="text-align:center">${T('Made by IFOKNR', 'صُنع بواسطة IFOKNR')} · 2026</div>
+    </div>
+  </div>`;
+
+const ICON_OF = { device: 'device', phone: 'phone', flash: 'flash', payload: 'payload', layers: 'layers', bricks: 'bricks', samsung: 'samsung', backup: 'backup', root: 'root', terminal: 'terminal', logs: 'logs', settings: 'settings', about: 'about' };
+document.getElementById('win').innerHTML = `
+  <div class="titlebar"><span style="direction:ltr">Fastboot Studio v2.9</span><span class="sp"></span><span class="cap">—</span><span class="cap">▢</span><span class="cap">✕</span></div>
+  <div class="body">
+    <div class="drawer">
+      <div class="brand"><img src="icon-themed.png"><div><b>Fastboot Studio</b><span>v2.9.0</span></div></div>
+      ${nav}
+      <div class="foot"><div class="devchip"><span class="dot"></span><span>${T('1 device in fastboot', 'جهاز واحد في fastboot')}</span></div></div>
+    </div>
+    <div class="main">${P[page]()}</div>
+  </div>`;
+document.querySelectorAll('.hero > img').forEach(i => { const c = document.createElement('div'); c.className = 'cookie'; i.replaceWith(c); c.appendChild(i); });
+const fit = () => document.querySelectorAll('.stat b, .stat small').forEach(e => { let f = parseFloat(getComputedStyle(e).fontSize); while (e.scrollWidth > e.clientWidth + 1 && f > 9) { f -= .5; e.style.fontSize = f + 'px'; } });
+window.ready = Promise.all([document.fonts.ready, ...[...document.images].map(i => i.decode().catch(() => {}))]).then(fit);
+</script>
+</body>
+</html>
