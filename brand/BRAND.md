@@ -27,8 +27,15 @@ On an About page: the mark, then the name, then "Developer" under it.
 | NextCore | speed gauge with a bolt | orange `#FDBA74` → pink `#F43F5E` | `icons/nextcore.svg`; launcher layers in `nextcore/` |
 | Companion | neon phone with a puzzle piece | light teal `#5EEAD4`, `#B8F5EA` | `icons/companion.svg` |
 
-App icons are never violet. Violet is IFOKNR's own colour (mark, name) and the colour of the
-Material 3 pages of Fastboot Studio from v2.9 and of Fastboot Studio Mobile's new design.
+App icons are never violet: violet is IFOKNR's own colour (mark and name), and it stays violet
+whatever the colours of the page around it.
+
+## App pages (planned, not built yet)
+Fastboot Studio from v2.9 and Fastboot Studio Mobile's new design follow Material 3 Expressive
+in muted colours: dark grey surfaces (`#2a2a2c`, containers `#353537` and `#3d3d40`), tonal fills
+in blue `#2e4d9d`, mauve `#4f4053` and slate `#3f455a`, a selected card `#414a6b`, and light
+periwinkle `#a8c4ff` for buttons, switches and radios. Stats are slim strips (label and value on
+one line), never big tiles. The samples are on the `design-m3-expressive` branch of this repository.
 
 ## Rules
 
