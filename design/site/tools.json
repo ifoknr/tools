@@ -1,0 +1,295 @@
+[
+  {
+    "id": "nextzygisk",
+    "name": [
+      "Next",
+      "Zygisk"
+    ],
+    "icon": "assets/img/tools/nextzygisk.svg?v=2",
+    "repo": "ifoknr/NexTZygisk",
+    "group": "hide",
+    "layer": "zygote",
+    "accent": "#3ee0a0",
+    "version": "v1.0.6",
+    "asset": "release\\.zip$",
+    "license": "AGPL-3.0",
+    "base": {
+      "name": "ReZygisk",
+      "by": "PerformanC",
+      "url": "https://github.com/PerformanC/ReZygisk"
+    },
+    "needs": [
+      "KernelSU",
+      "ReSukiSU",
+      "Magisk",
+      "APatch",
+      "Android 7.1+"
+    ],
+    "ar": {
+      "tagline": "Zygisk مستقل لكل مدراء الروت.",
+      "about": "يشغّل وحدات Zygisk مثل LSPosed، NextWheel، Play Integrity Fix، ويخفي الروت عن التطبيقات اللي تختارها.",
+      "points": [
+        "فتح أسرع للتطبيقات: الإجابة تجي من الذاكرة بدل قاعدة البيانات",
+        "أكثر من 12 إصلاح في الخدمة والمراقبة والكود داخل Zygote",
+        "لوحة تحكم داخل مدير الروت: الحالة والوحدات والإخفاء"
+      ]
+    },
+    "en": {
+      "tagline": "Standalone Zygisk for every root manager.",
+      "about": "Runs Zygisk modules such as LSPosed, Play Integrity Fix and NextWheel, and hides root from the apps you choose.",
+      "points": [
+        "Faster app launches: answers come from memory, not the database",
+        "More than a dozen fixes in the daemon, monitor and Zygote code",
+        "A dashboard in your root manager: status, modules and hiding"
+      ]
+    }
+  },
+  {
+    "id": "nextwheel",
+    "name": [
+      "Next",
+      "Wheel"
+    ],
+    "icon": "assets/img/tools/nextwheel.svg?v=2",
+    "repo": "ifoknr/NextWheel",
+    "group": "hide",
+    "layer": "apps",
+    "accent": "#3ee0a0",
+    "version": "v0.0.16",
+    "asset": "\\.zip$",
+    "license": "AGPL-3.0",
+    "base": {
+      "name": "Treat Wheel",
+      "by": "ThePedroo",
+      "url": "https://github.com/ThePedroo"
+    },
+    "needs": [
+      "NextZygisk / ReZygisk 508+",
+      "Magisk",
+      "KernelSU",
+      "APatch",
+      "Android 7.1+"
+    ],
+    "ar": {
+      "tagline": "طبقة التطبيقات: يخفي Zygisk والروت داخل التطبيقات.",
+      "about": "مبني ليشتغل مع NextZygisk. خفيف وما يترك أثر، ومعه لوحة حية توضّح إذا الإخفاء شغّال أو توقف.",
+      "points": [
+        "لوحة حية: الإخفاء شغّال، انهار، أو Zygisk وقف",
+        "يشتغل مع NextZygisk أو ReZygisk",
+        "واجهة بـ 11 لغة منها العربي، للجوال والتابلت"
+      ]
+    },
+    "en": {
+      "tagline": "The app layer: hides Zygisk and root inside apps.",
+      "about": "Built to work with NextZygisk. Light and traceless, with a live dashboard that shows whether hiding works or stopped.",
+      "points": [
+        "Live dashboard: working, crashed, or Zygisk stopped",
+        "Works with NextZygisk and ReZygisk",
+        "WebUI in 11 languages including Arabic, for phones and tablets"
+      ]
+    }
+  },
+  {
+    "id": "nextsusfs",
+    "name": [
+      "Next",
+      "SUSFS"
+    ],
+    "icon": "assets/img/tools/nextsusfs.svg?v=2",
+    "repo": "ifoknr/NextSUSFS",
+    "group": "hide",
+    "layer": "kernel",
+    "accent": "#3ee0a0",
+    "version": "v0.0.10",
+    "asset": "\\.zip$",
+    "license": "AGPL-3.0",
+    "base": null,
+    "uses": {
+      "name": "susfs4ksu",
+      "by": "simonpunk",
+      "url": "https://gitlab.com/simonpunk/susfs4ksu"
+    },
+    "needs": [
+      "KernelSU / Next / ReSukiSU / SukiSU",
+      "SuSFS v2"
+    ],
+    "ar": {
+      "tagline": "إخفاء الروت من مستوى النواة مع SuSFS.",
+      "about": "يخفي المسارات ونقاط الربط وخرائط الذاكرة والخصائص عن التطبيقات، وكل الإعدادات في واجهة وحدة.",
+      "points": [
+        "يخفي منظومة NEXT لحاله مع كل إقلاع",
+        "أكثر من 40 إعداد في 7 صفحات، وقوائم إخفاء خاصة فيك",
+        "أدوات الفحص داخل الواجهة: Native Detector وغيره"
+      ]
+    },
+    "en": {
+      "tagline": "Kernel-level root hiding with SuSFS.",
+      "about": "Hides paths, mounts, memory maps and properties from apps, with every option in one WebUI.",
+      "points": [
+        "Hides the NEXT stack automatically at every boot",
+        "40+ settings across 7 pages, plus your own hide lists",
+        "Detector apps one tap away to check the result"
+      ]
+    }
+  },
+  {
+    "id": "nextcore",
+    "name": [
+      "NEXT",
+      "CORE"
+    ],
+    "icon": "assets/img/tools/nextcore.svg?v=2",
+    "repo": "ifoknr/NEXTCORE",
+    "group": "perf",
+    "accent": "#ff6b2c",
+    "version": "v2.0.0",
+    "asset": "\\.(zip|apk)$",
+    "license": "Apache-2.0",
+    "base": {
+      "name": "AZenith / Encore Tweaks",
+      "by": "Zexshia · Rem01Gaming",
+      "url": "https://github.com/ifoknr/NEXTCORE/blob/main/NOTICE.md"
+    },
+    "needs": [
+      "KernelSU",
+      "APatch",
+      "Magisk",
+      "Android 10+"
+    ],
+    "ar": {
+      "tagline": "أداء مستدام وملفات ألعاب تلقائية، والحماية الحرارية تبقى شغّالة.",
+      "about": "يتعرّف على معالجك مع كل إقلاع ويطبّق اللي يناسبه بأمان، ويبدّل الوضع لحاله لما تفتح لعبة. ومعه تطبيق لإدارته.",
+      "points": [
+        "دعم كامل لمعالجات MediaTek، Snapdragon، Exynos، Tensor، Unisoc",
+        "ما يقفل ملفات النواة ولا يلمس خدمات الحرارة",
+        "مراقب عائم: 20 قراءة، والإطارات من SurfaceFlinger مباشرة"
+      ]
+    },
+    "en": {
+      "tagline": "Sustained performance and automatic game profiles, with thermal protection kept on.",
+      "about": "Reads your SoC on every boot, applies what fits it safely, and switches profiles when a game opens. Comes with an app.",
+      "points": [
+        "Full support for MediaTek, Snapdragon, Exynos, Tensor and Unisoc",
+        "Never locks kernel nodes or touches thermal services",
+        "Floating monitor: 20 readings, FPS straight from SurfaceFlinger"
+      ]
+    }
+  },
+  {
+    "id": "fastbootstudio",
+    "name": [
+      "Fastboot ",
+      "Studio"
+    ],
+    "icon": "assets/img/tools/fastbootstudio.svg?v=3",
+    "repo": "ifoknr/FastbootStudio",
+    "group": "pc",
+    "accent": "#3dd6c4",
+    "version": "v2.7.1",
+    "asset": "\\.zip$",
+    "license": "MIT",
+    "base": {
+      "name": "Fastboot Enhance",
+      "by": "LibXZR",
+      "url": "https://github.com/libxzr/FastbootEnhance"
+    },
+    "needs": [
+      "Windows 10 / 11",
+      "x64"
+    ],
+    "winget": "winget install IFOKNR.FastbootStudio",
+    "ar": {
+      "tagline": "أداة أندرويد المتكاملة لويندوز.",
+      "about": "فلاش وتحديثات OTA وملفات payload والأقسام والنسخ الاحتياطي والروت في تطبيق واحد، مع فحوصات تمنع الأخطاء اللي تخرّب الجوال.",
+      "points": [
+        "روت بـ Magisk أو KernelSU أو APatch في أربع خطوات، وفحص صورة boot قبل التفليش",
+        "يفلّش payload.bin من ملف OTA مباشرة، ويحسب مساحة super ويسوي الأقسام الناقصة",
+        "صفحة الجوال مع إضافة Companion، نسخ احتياطي، طرفية، أدوات صور، وعربي كامل"
+      ]
+    },
+    "en": {
+      "tagline": "The Android toolbox for Windows.",
+      "about": "Flashing, OTA payloads, partitions, backups and root in one app, with safety checks that stop the mistakes that brick phones.",
+      "points": [
+        "Root with Magisk, KernelSU or APatch in four steps; boot images checked before flashing",
+        "Flashes payload.bin straight from an OTA zip; checks super space, creates missing partitions",
+        "Phone page with the Companion module, backups, terminal, image tools, full Arabic"
+      ]
+    },
+    "xda": "https://xdaforums.com/t/tool-windows-fastboot-studio-fastboot-ota-flasher-root-helper-phone-info-payload-dumper-super-builder-backups.4804685/"
+  },
+  {
+    "id": "companion",
+    "name": [
+      "Fastboot Studio ",
+      "Companion"
+    ],
+    "icon": "assets/img/tools/companion.svg?v=2",
+    "repo": "ifoknr/FastbootStudio-Companion",
+    "group": "pc",
+    "accent": "#3dd6c4",
+    "needs": [
+      "KernelSU",
+      "Magisk",
+      "APatch"
+    ],
+    "ar": {
+      "tagline": "موديول روت يكمّل Fastboot Studio من داخل الجوال.",
+      "about": "يقرأ الجهاز والأقسام وحالة الإقلاع من داخل الجوال، ويسوي نسخ احتياطية، ويكشف التعارض بين المودات، ويرسل كل هذا لـ Fastboot Studio على الكمبيوتر. قراءة فقط: ما يكتب على أي قسم.",
+      "points": [
+        "حالة AVB من البوت لودر نفسه، ويكشف مود الإخفاء اللي يغيّرها",
+        "يكشف التعارض بين المودات: نفس الملف، مجلد مستبدل، خاصية مكررة",
+        "نسخ احتياطي للأقسام من الجوال، وواجهة للجوال والتابلت بالوضع الليلي والنهاري"
+      ]
+    },
+    "en": {
+      "tagline": "A root module that brings Fastboot Studio onto the phone.",
+      "about": "Reads the device, its partitions and its boot state from the phone itself, makes backups, finds conflicts between root modules, and hands it all to Fastboot Studio on the PC. Read-only: it never writes to a partition.",
+      "points": [
+        "The AVB state from the bootloader itself, and the hiding module that changes it",
+        "Finds conflicts between modules: the same file, a replaced folder, a property set twice",
+        "Partition backups on the phone; a WebUI for phones and tablets, day and night"
+      ]
+    },
+    "version": "v2.5.1",
+    "asset": "\\.zip$",
+    "license": "MIT"
+  },
+  {
+    "id": "mobile",
+    "name": [
+      "Fastboot Studio ",
+      "Mobile"
+    ],
+    "icon": "assets/img/tools/mobile.svg?v=3",
+    "repo": "ifoknr/FastbootStudio-Mobile",
+    "group": "pc",
+    "accent": "#3dd6c4",
+    "needs": [
+      "Android 8+",
+      "Root",
+      "OTG"
+    ],
+    "ar": {
+      "tagline": "Fastboot Studio على الجوال نفسه: فلّش بأمان بدون كمبيوتر.",
+      "about": "فلّش صورة boot أو ملف كيرنل AnyKernel3 من الجوال، ورجّع نسخة احتياطية بضغطتين، أو أنقذ جوال ثاني بكيبل OTG. كل ملف ينفحص قبل الكتابة: من أي جوال جاء، ونوع الصورة، والكيرنل، وبصمة SHA-256.",
+      "points": [
+        "فحص قبل كل تفليش: الملف الغلط أو المتلاعب فيه أو كيرنل سلسلة ثانية ينرفض",
+        "نسخة احتياطية قبل الكتابة، ونفس مجلدات برنامج الويندز والـ Companion",
+        "OTG: فلّش جوال ثاني في وضع fastboot بالكيبل، بدون روت"
+      ]
+    },
+    "en": {
+      "tagline": "Fastboot Studio on the phone itself: flash safely, no PC needed.",
+      "about": "Flash a boot image or an AnyKernel3 kernel zip on the phone, restore a backup in two taps, or rescue another phone over an OTG cable. Every file is checked before it is written: which phone it came from, the kind of image, its kernel and its SHA-256.",
+      "points": [
+        "A check before every flash: a wrong or tampered file, or a kernel of another series, is refused",
+        "A backup before writing, in the same folders as the Windows app and the Companion",
+        "OTG: flash another phone in fastboot mode over a cable, no root needed"
+      ]
+    },
+    "version": "v1.0.0",
+    "asset": "\\.apk$",
+    "license": "MIT"
+  }
+]
