@@ -25,7 +25,7 @@
       changes: 'التغييرات', needs: 'يحتاج', beta: 'بيتا', soon: 'قريباً', sendMe: 'أرسله لي في المحادثة',
       uploaded: 'انرفع', fileType: 'نوع الملف', privateNote: 'الملف يوصلك من البوت @{bot} في المحادثة.',
       credit: 'قائمة البرامج من <a href="{url}">{name}</a> (رخصة {lic}، {copy}). أدوات IFOKNR من <a href="https://ifoknr.com">ifoknr.com</a>.',
-      updated: 'آخر تحديث للقائمة {d}', lang: 'EN', loadFail: 'ما قدرت أحمّل المكتبة', retry: 'حاول مرة ثانية'
+      updated: 'آخر تحديث للقائمة {d}', theme: 'الوضع الفاتح أو الداكن', lang: 'EN', loadFail: 'ما قدرت أحمّل المكتبة', retry: 'حاول مرة ثانية'
     },
     en: {
       title: 'Tools library', sub: '{n} root apps and modules', search: 'Search: Magisk, hide root, battery…',
@@ -41,7 +41,7 @@
       changes: 'Changes', needs: 'Needs', beta: 'Beta', soon: 'Soon', sendMe: 'Send it to me in the chat',
       uploaded: 'Added', fileType: 'File type', privateNote: 'The file comes from the bot @{bot} in the chat.',
       credit: 'App list from <a href="{url}">{name}</a> ({lic} license, {copy}). IFOKNR tools from <a href="https://ifoknr.com">ifoknr.com</a>.',
-      updated: 'List updated {d}', lang: 'ع', loadFail: 'The library did not load', retry: 'Try again'
+      updated: 'List updated {d}', theme: 'Light or dark theme', lang: 'ع', loadFail: 'The library did not load', retry: 'Try again'
     }
   };
   var ROOT_NAMES = { magisk: 'Magisk', kernelsu: 'KernelSU', apatch: 'APatch', lsposed: 'LSPosed' };
@@ -88,8 +88,19 @@
     x: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
     chev: '<svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>',
     back: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>',
-    dl: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10.5l5 5 5-5M5 20h14"/></svg>'
+    dl: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10.5l5 5 5-5M5 20h14"/></svg>',
+    theme: '<svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg>' +
+      '<svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M20 14.2A8 8 0 0 1 9.8 4a8 8 0 1 0 10.2 10.2z"/></svg>'
   };
+  // IFOKNR's mark and name, and the tools' names, are drawn as outlines (assets/img), one file per theme.
+  function themed(src, cls, alt) {
+    return '<img class="' + cls + ' dark-only" src="' + src.replace('{t}', 'dark') + '" alt="' + esc(alt || '') + '">' +
+      '<img class="' + cls + ' light-only" src="' + src.replace('{t}', 'light') + '" alt="">';
+  }
+  function mark(cls) {
+    return '<img class="' + cls + ' dark-only" src="/assets/img/ifoknr-mark.svg?v=4" alt=""><img class="' + cls + ' light-only" src="/assets/img/ifoknr-mark-light.svg?v=4" alt="">';
+  }
+  function toolTitle(tool, cls) { return themed('/assets/img/names/' + esc(tool.id) + '-{t}.svg', cls, toolName(tool)); }
   function haptic() { try { tg && tg.HapticFeedback && tg.HapticFeedback.selectionChanged(); } catch (e) {} }
   function toast(msg) {
     var el = document.createElement('div'); el.className = 'toast'; el.textContent = msg;
@@ -238,10 +249,11 @@
         tool.version ? '<span class="tag ver ltr">' + esc(tool.version) + '</span>' : '') +
       '<span class="tag me">IFOKNR</span>';
     return '<button class="item" data-go="#/t/' + esc(tool.id) + '">' + toolAvatar(tool) +
-      '<span class="t"><span class="nm"><b class="ltr">' + esc(toolName(tool)) + '</b></span>' +
+      '<span class="t"><span class="nm ltr">' + toolTitle(tool, 'tname') + '</span>' +
       (txt.tagline ? '<p>' + esc(txt.tagline) + '</p>' : '') + '<span class="meta">' + meta + '</span></span>' + ICON.chev + '</button>';
   }
   var LAYERS = ['apps', 'zygote', 'kernel'];
+  var WIDE = { fastbootstudio: 1, nextcore: 1 }; // landscape videos
   var FBS = ['fastbootstudio', 'mobile', 'companion'];
   function toolSections() {
     var hide = state.tools.filter(function (x) { return x.group === 'hide'; })
@@ -250,9 +262,9 @@
       .sort(function (a, b) { return FBS.indexOf(a.id) - FBS.indexOf(b.id); });
     var rest = state.tools.filter(function (x) { return x.group !== 'hide' && x.group !== 'pc'; });
     var h = '';
-    if (hide.length) h += '<div class="sec col"><h2>🛡️ ' + t('stack') + '</h2><span>' + t('stackSub') + '</span></div><div class="list">' + hide.map(toolRow).join('') + '</div>';
-    if (fbs.length) h += '<div class="sec col"><h2>⚡ ' + t('fbs') + '</h2><span>' + t('fbsSub') + '</span></div><div class="list">' + fbs.map(toolRow).join('') + '</div>';
-    if (rest.length) h += '<div class="sec"><h2>🔥 ' + t('perf') + '</h2></div><div class="list">' + rest.map(toolRow).join('') + '</div>';
+    if (hide.length) h += '<div class="sec col"><h2>' + t('stack') + '</h2><span>' + t('stackSub') + '</span></div><div class="list">' + hide.map(toolRow).join('') + '</div>';
+    if (fbs.length) h += '<div class="sec col"><h2>' + t('fbs') + '</h2><span>' + t('fbsSub') + '</span></div><div class="list">' + fbs.map(toolRow).join('') + '</div>';
+    if (rest.length) h += '<div class="sec"><h2>' + t('perf') + '</h2></div><div class="list">' + rest.map(toolRow).join('') + '</div>';
     return h;
   }
   function privRow(p) {
@@ -281,14 +293,16 @@
   }
   function credit() {
     var s = state.data.source;
-    return '<div class="credit">' + t('credit', { url: esc(s.url), name: esc(s.name), lic: esc(s.license), copy: esc(s.copyright) }) +
+    return '<div class="credit"><div class="dev">' + mark('mk') + themed('/assets/img/ifoknr-{t}.svg', 'sig', 'IFOKNR') + '</div>' + t('credit', { url: esc(s.url), name: esc(s.name), lic: esc(s.license), copy: esc(s.copyright) }) +
       '<br>' + t('updated', { d: esc(date(state.data.updated)) }) + '</div>';
   }
 
   // ---------- views ----------
   function home() {
-    var d = state.data, h = '<div class="top"><img class="logo" src="/app/icon.svg" alt=""><div class="title"><h1>' + t('title') +
-      '</h1><p>' + t('sub', { n: num(d.items.length) }) + '</p></div><button class="pill-btn" data-lang>' + t('lang') + '</button></div>' + searchBox();
+    var d = state.data, h = '<div class="top">' + mark('logo') +
+      '<div class="title">' + themed('/assets/img/ifoknr-{t}.svg', 'sig', 'IFOKNR') + '<h1>' + t('title') + '</h1><p>' + t('sub', { n: num(d.items.length) }) + '</p></div>' +
+      (inTelegram ? '' : '<button class="pill-btn round" data-theme aria-label="' + t('theme') + '">' + ICON.theme + '</button>') +
+      '<button class="pill-btn" data-lang>' + t('lang') + '</button></div>' + searchBox();
     if (state.q.trim()) {
       var found = applyFilters(search(state.q));
       return h + filterBar() + '<div class="sec"><h2>' + t('results', { n: num(found.length) }) + '</h2></div>' + list(found);
@@ -337,10 +351,11 @@
     var tl = state.tools.filter(function (x) { return x.id === id; })[0];
     if (!tl) return home();
     var rel = state.rel[id] || {}, txt = tl[state.lang] || tl.en || {}, repo = tl.repo ? 'https://github.com/' + tl.repo : '';
-    var h = header('', '') + '<div class="hero">' + toolAvatar(tl, 'lg') + '<h1 class="ltr">' + esc(toolName(tl)) + '</h1>' +
+    var h = header('', '') + '<div class="hero"><div class="cookie">' + toolAvatar(tl, 'lg') + '</div><h1 class="ltr">' + toolTitle(tl, 'bigname') + '</h1>' +
       '<div class="by">' + t('by', { who: 'IFOKNR' }) + '</div><div class="tags"><span class="tag me">IFOKNR</span>' +
       (rel.v ? '<span class="tag ver ltr">' + esc(rel.v) + '</span>' : '') + (rel.pre || tl.beta ? '<span class="tag me">' + t('beta') + '</span>' : '') +
       (tl.license ? '<span class="tag foss">' + t('foss') + '</span>' : '') + '</div></div>';
+    h += '<div class="shot' + (WIDE[id] ? ' wide' : '') + '"><video src="/assets/media/' + esc(id) + '.mp4" poster="/assets/media/' + esc(id) + '.jpg" muted loop playsinline autoplay preload="metadata" aria-hidden="true"></video></div>';
     h += '<div class="desc">' + esc(txt.about || txt.tagline || '') + ((txt.points || []).length ? '<ul>' + txt.points.map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ul>' : '') + '</div>';
     h += '<div class="facts">' + fact(t('version'), rel.v && esc(rel.v), true) + fact(t('released'), rel.t && esc(date(rel.t))) +
       fact(t('size'), rel.size && size(rel.size), true) + fact(t('needs'), (tl.needs || []).map(esc).join(' · '), true) + fact(t('license'), tl.license && esc(tl.license), true) + '</div>';
@@ -409,6 +424,11 @@
       try { localStorage.setItem('lib-lang', state.lang); } catch (x) {}
       applyLang(); haptic(); return render(true);
     }
+    if (el.hasAttribute('data-theme')) {
+      var light = !document.documentElement.classList.contains('light');
+      try { localStorage.setItem('theme', light ? 'light' : 'dark'); } catch (x) {}
+      haptic(); return applyTheme();
+    }
     if (el.hasAttribute('data-foss')) { state.filter.foss = !state.filter.foss; state.shown = PAGE; haptic(); return render(true); }
     if (el.dataset.root !== undefined) { state.filter.root = state.filter.root === el.dataset.root ? '' : el.dataset.root; state.shown = PAGE; haptic(); return render(true); }
     if (el.dataset.sec !== undefined) { state.filter.sec = Number(el.dataset.sec); state.shown = PAGE; haptic(); return render(true); }
@@ -434,7 +454,10 @@
     document.title = 'IFOKNR · ' + t('title');
   }
   function applyTheme() {
-    var light = tg && inTelegram ? tg.colorScheme === 'light' : window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+    var saved = null;
+    try { saved = localStorage.getItem('theme'); } catch (e) {}
+    var light = tg && inTelegram ? tg.colorScheme === 'light' :
+      saved === 'light' || saved === 'dark' ? saved === 'light' : window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
     document.documentElement.classList.toggle('light', !!light);
     if (tg && inTelegram) {
       var bg = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim();
