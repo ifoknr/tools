@@ -38,22 +38,22 @@ h1,h2,h3,p{margin:0}
 .sig-light{display:none}[data-theme=light] .sig-dark{display:none}[data-theme=light] .sig-light{display:block}
 
 /* shell: a navigation rail beside the page, like the Windows app */
-.shell{display:grid;grid-template-columns:268px minmax(0,1fr);min-height:100vh;background:linear-gradient(to left,var(--surf) 268px,transparent 268px)}
-[dir=ltr] .shell{background:linear-gradient(to right,var(--surf) 268px,transparent 268px)}
+.shell{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:100vh;background:linear-gradient(to left,var(--surf) 300px,transparent 300px)}
+[dir=ltr] .shell{background:linear-gradient(to right,var(--surf) 300px,transparent 300px)}
 .rail{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:6px;padding:18px 14px;background:var(--surf);overflow:auto}
 .brand{display:flex;align-items:center;gap:10px;padding:4px 8px 14px}
 .brand .mark{width:38px;height:38px;border-radius:12px}
 .brand-name img{height:17px;width:auto}
 .menu{display:flex;flex-direction:column;gap:2px}
-.menu .label{font-size:11.5px;font-weight:500;color:var(--tx3);padding:14px 14px 4px;letter-spacing:.02em}
-.nav{display:flex;align-items:center;gap:12px;min-height:44px;padding:6px 12px;border-radius:999px;color:var(--tx2);font-weight:500;transition:background .15s}
+.menu .label{font-size:13px;font-weight:500;color:var(--tx3);padding:14px 14px 4px;letter-spacing:.02em}
+.nav{display:flex;align-items:center;gap:14px;min-height:52px;padding:7px 14px;font-size:15.5px;border-radius:999px;color:var(--tx2);font-weight:500;transition:background .15s}
 .nav:hover{background:var(--c2)}
 .nav.on{background:var(--sel);color:var(--on-sl)}
-.nav .ic{width:28px;height:28px;border-radius:9px;flex:none;object-fit:cover}
-.nav svg.ic{padding:4px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.nav .nm{height:13px;width:auto}
+.nav .ic{width:36px;height:36px;border-radius:11px;flex:none;object-fit:cover}
+.nav svg.ic{padding:6px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nav .nm{height:16px;width:auto}
 .nav .nm-light{display:none}[data-theme=light] .nav .nm-dark{display:none}[data-theme=light] .nav .nm-light{display:block}
-.nav .ver{margin-inline-start:auto;font-size:11px;color:var(--tx3);font-family:Roboto}
+.nav .ver{margin-inline-start:auto;font-size:12.5px;color:var(--tx3);font-family:Roboto}
 .rail-foot{margin-top:auto;display:flex;gap:8px;align-items:center;padding:12px 6px 2px}
 .appbar{display:none}
 .icon-btn{width:40px;height:40px;border-radius:999px;display:grid;place-items:center;background:var(--c2);flex:none}
