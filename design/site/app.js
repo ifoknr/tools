@@ -109,7 +109,7 @@
   }
 
   function foot() {
-    return `<footer class="foot"><div class="dev"><img class="mark" src="img/ifoknr-mark.svg" alt=""><div><img class="sig sig-dark" src="img/ifoknr-dark.svg" alt="IFOKNR"><img class="sig sig-light" src="img/ifoknr-light.svg" alt=""><small>${s("dev")}</small></div></div>
+    return `<footer class="foot"><div class="dev"><img class="mark sig-dark" src="img/ifoknr-mark.svg" alt=""><img class="mark sig-light" src="img/ifoknr-mark-light.svg" alt=""><div><img class="sig sig-dark" src="img/ifoknr-dark.svg" alt="IFOKNR"><img class="sig sig-light" src="img/ifoknr-light.svg" alt=""><small>${s("dev")}</small></div></div>
       <div class="links"><a class="pill-btn tonal small" href="https://t.me/IFOKNR1">${SV.tg}@IFOKNR1</a><a class="pill-btn outlined small" href="https://t.me/BeNeXTBrO">${s("telegram")}</a><a class="pill-btn outlined small" href="https://github.com/ifoknr">${SV.gh}GitHub</a></div></footer>`;
   }
 
