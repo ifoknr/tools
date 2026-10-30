@@ -4,143 +4,41 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>IFOKNR Tools</title>
-  <meta name="description" content="IFOKNR — Android tools: NextZygisk, NextWheel, NextSUSFS, NextCore, Fastboot Studio.">
-  <meta name="theme-color" content="#0e1116">
+  <meta name="description" content="IFOKNR — Android tools: Fastboot Studio, NextZygisk, NextWheel, NextSUSFS, NextCore.">
+  <meta name="theme-color" content="#202022">
   <meta property="og:title" content="IFOKNR Tools">
-  <meta property="og:description" content="Root hiding, performance and flashing tools for Android.">
-  <link rel="icon" href="assets/img/favicon.svg?v=4" type="image/svg+xml">
+  <meta property="og:description" content="Flashing, root hiding and performance tools for Android.">
+  <link rel="icon" href="assets/img/favicon.svg?v=5" type="image/svg+xml">
   <link rel="stylesheet" href="assets/style.css">
   <script src="assets/boot.js"></script>
 </head>
 <body>
-  <a class="skip" href="#tools" data-i18n="skip"></a>
-
-  <header class="top">
-    <div class="wrap top-row">
-      <a class="brand" href="#" aria-label="IFOKNR">
-        <img class="brand-mark" src="assets/img/ifoknr-mark.svg?v=3" alt="">
-        <span class="brand-name"><img class="sig sig-dark" src="assets/img/ifoknr-dark.svg?v=2" alt="IFOKNR"><img class="sig sig-light" src="assets/img/ifoknr-light.svg?v=2" alt="IFOKNR"></span>
-      </a>
-      <nav class="top-nav" aria-label="Main">
-        <a href="#tools" data-i18n="nav_tools"></a>
-        <a href="#stack" data-i18n="nav_stack"></a>
-        <a href="https://t.me/IFOKNR1" target="_blank" rel="noopener" data-i18n="nav_contact"></a>
-      </nav>
-      <div class="top-actions">
-        <button class="icon-btn" id="lang-btn" type="button" aria-label="Language">
-          <span class="lang-label"></span>
-        </button>
-        <button class="icon-btn" id="theme-btn" type="button" aria-label="Theme">
-          <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg>
-          <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.2A8 8 0 0 1 9.8 4a8 8 0 1 0 10.2 10.2z"/></svg>
-        </button>
+  <a class="skip" href="#page" data-i18n="skip"></a>
+  <div class="shell">
+    <aside class="rail" aria-label="Menu" data-i18n-label="menu">
+      <a class="brand" href="#home" aria-label="IFOKNR"><img class="mark sig-dark" src="assets/img/ifoknr-mark.svg?v=4" alt=""><img class="mark sig-light" src="assets/img/ifoknr-mark-light.svg?v=4" alt=""><span class="brand-name"><img class="sig sig-dark" src="assets/img/ifoknr-dark.svg?v=4" alt=""><img class="sig sig-light" src="assets/img/ifoknr-light.svg?v=4" alt=""></span></a>
+      <nav class="menu" id="menu"></nav>
+      <div class="rail-foot">
+        <button class="pill-btn tonal small" type="button" data-act="lang"></button>
+        <button class="icon-btn" type="button" data-act="theme" aria-label="Theme" data-i18n-label="theme"><svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.2A8 8 0 0 1 9.8 4a8 8 0 1 0 10.2 10.2z"/></svg></button>
       </div>
-    </div>
-  </header>
+    </aside>
 
-  <main>
-    <section class="hero">
-      <div class="wrap hero-grid">
-        <div class="hero-text">
-          <p class="eyebrow" data-i18n="eyebrow"></p>
-          <h1 data-i18n="hero_title"></h1>
-          <p class="lead" data-i18n="hero_lead"></p>
-          <div class="hero-cta">
-            <a class="btn btn-primary" href="#tools" data-i18n="cta_tools"></a>
-            <a class="btn btn-ghost" href="https://t.me/IFOKNR1" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.5 4.2 2.9 11.4c-1.3.5-1.3 1.2-.2 1.6l4.8 1.5 1.8 5.6c.2.6.4.8.9.8.4 0 .6-.2.9-.5l2.3-2.2 4.7 3.5c.9.5 1.5.2 1.7-.8l3.1-14.6c.3-1.3-.5-1.9-1.4-1.5zM9 14.2l9-5.7c.4-.3.8-.1.5.2l-7.4 6.7-.3 3.1L9 14.2z"/></svg>
-              <span>Telegram</span>
-            </a>
-            <a class="btn btn-ghost" href="https://github.com/ifoknr" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.3-3.4-1.3-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.4 1.1 2.9.8.1-.6.4-1.1.6-1.3-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.8 1a9.6 9.6 0 0 1 5 0c1.9-1.3 2.8-1 2.8-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.4 4.7-4.6 5 .4.3.7.9.7 1.9V21c0 .3.2.6.7.5A10 10 0 0 0 12 2z"/></svg>
-              <span>GitHub</span>
-            </a>
-          </div>
-          <dl class="stats">
-            <div><dt data-i18n="stat_tools"></dt><dd id="stat-tools">6</dd></div>
-            <div><dt data-i18n="stat_downloads"></dt><dd id="stat-downloads">—</dd></div>
-            <div><dt data-i18n="stat_updated"></dt><dd id="stat-updated">—</dd></div>
-          </dl>
-        </div>
+    <header class="appbar">
+      <a class="brand" href="#home" aria-label="IFOKNR"><img class="mark sig-dark" src="assets/img/ifoknr-mark.svg?v=4" alt=""><img class="mark sig-light" src="assets/img/ifoknr-mark-light.svg?v=4" alt=""><span class="brand-name"><img class="sig sig-dark" src="assets/img/ifoknr-dark.svg?v=4" alt=""><img class="sig sig-light" src="assets/img/ifoknr-light.svg?v=4" alt=""></span></a>
+      <div class="appbar-actions">
+        <button class="icon-btn" type="button" data-act="theme" aria-label="Theme" data-i18n-label="theme"><svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.2A8 8 0 0 1 9.8 4a8 8 0 1 0 10.2 10.2z"/></svg></button>
+        <button class="icon-btn" type="button" data-act="menu" aria-label="Menu" data-i18n-label="menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      </div>
+    </header>
 
-        <div class="stack-visual" aria-hidden="true">
-          <div class="layer" data-layer="apps"><b>NextWheel</b><small data-i18n="layer_apps"></small><i class="ok"></i></div>
-          <div class="layer" data-layer="zygote"><b>NextZygisk</b><small data-i18n="layer_zygote"></small><i class="ok"></i></div>
-          <div class="layer" data-layer="kernel"><b>NextSUSFS</b><small data-i18n="layer_kernel"></small><i class="ok"></i></div>
-        </div>
-      </div>
-    </section>
+    <main id="page" tabindex="-1"></main>
+  </div>
 
-    <section class="section" id="tools" aria-labelledby="tools-title">
-      <div class="wrap">
-        <div class="section-head">
-          <h2 id="tools-title" data-i18n="tools_title"></h2>
-          <div class="filters" role="group" aria-label="Filter">
-            <button type="button" class="chip" data-filter="all" data-i18n="f_all" aria-pressed="true"></button>
-            <button type="button" class="chip" data-filter="hide" data-i18n="f_hide" aria-pressed="false"></button>
-            <button type="button" class="chip" data-filter="perf" data-i18n="f_perf" aria-pressed="false"></button>
-            <button type="button" class="chip" data-filter="pc" data-i18n="f_pc" aria-pressed="false"></button>
-          </div>
-        </div>
-        <div class="grid" id="grid"></div>
-        <p class="note" id="api-note" hidden data-i18n="api_note"></p>
-      </div>
-    </section>
+  <div class="scrim" data-act="close"></div>
+  <div class="sheet" role="dialog" aria-label="Menu" data-i18n-label="menu"><div class="grab"></div><nav class="menu" id="menu-sheet"></nav><div class="sheet-foot"><button class="pill-btn tonal" type="button" data-act="lang"></button></div></div>
 
-    <section class="section section-alt" id="stack" aria-labelledby="stack-title">
-      <div class="wrap">
-        <div class="section-head">
-          <h2 id="stack-title" data-i18n="stack_title"></h2>
-        </div>
-        <p class="lead narrow" data-i18n="stack_lead"></p>
-        <ol class="stack-table">
-          <li><span class="tier" data-i18n="layer_apps"></span><a href="#tool-nextwheel">NextWheel</a><span data-i18n="stack_apps"></span></li>
-          <li><span class="tier" data-i18n="layer_zygote"></span><a href="#tool-nextzygisk">NextZygisk</a><span data-i18n="stack_zygote"></span></li>
-          <li><span class="tier" data-i18n="layer_kernel"></span><a href="#tool-nextsusfs">NextSUSFS</a><span data-i18n="stack_kernel"></span></li>
-        </ol>
-        <p class="warn" data-i18n="stack_warn"></p>
-      </div>
-    </section>
-  </main>
-
-  <footer class="foot">
-    <div class="wrap foot-row">
-      <p><span data-i18n="foot_by"></span> <a class="sig-link" href="https://github.com/ifoknr" target="_blank" rel="noopener"><img class="sig sig-dark" src="assets/img/ifoknr-dark.svg?v=2" alt="IFOKNR"><img class="sig sig-light" src="assets/img/ifoknr-light.svg?v=2" alt="IFOKNR"></a> · <a href="https://t.me/IFOKNR1" target="_blank" rel="noopener">@IFOKNR1</a></p>
-      <p class="muted" data-i18n="foot_credit"></p>
-    </div>
-  </footer>
-
-  <template id="card-tpl">
-    <article class="card">
-      <div class="card-head">
-        <div class="logo"></div>
-        <div class="title">
-          <h3></h3>
-          <p class="tagline"></p>
-        </div>
-      </div>
-      <p class="about"></p>
-      <ul class="points"></ul>
-      <ul class="needs"></ul>
-      <div class="meta">
-        <span class="version"></span>
-        <span class="date"></span>
-        <span class="dl"></span>
-      </div>
-      <div class="winget" hidden>
-        <code></code>
-        <button type="button" class="copy"></button>
-      </div>
-      <div class="actions">
-        <a class="btn btn-primary download" target="_blank" rel="noopener"></a>
-        <a class="btn btn-ghost source" target="_blank" rel="noopener"></a>
-        <a class="btn btn-ghost changes" target="_blank" rel="noopener"></a>
-      </div>
-      <p class="credit"></p>
-    </article>
-  </template>
-
-  <!-- The image build puts tools.json here, which saves the page a trip to the server; empty, app.js fetches it. -->
+  <noscript><p class="noscript">IFOKNR Tools: <a href="https://github.com/ifoknr">github.com/ifoknr</a> · <a href="https://t.me/BeNeXTBrO">t.me/BeNeXTBrO</a></p></noscript>
   <script type="application/json" id="tools-data">
 </script>
   <script src="assets/app.js"></script>
