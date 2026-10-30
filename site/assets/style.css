@@ -59,7 +59,8 @@ h1,h2,h3,p{margin:0}
 .icon-btn{width:40px;height:40px;border-radius:999px;display:grid;place-items:center;background:var(--c2);flex:none}
 .icon-btn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 
-main{padding:22px 28px 60px;max-width:1180px;width:100%}
+main{padding:22px 28px 60px;max-width:1320px;width:100%;margin-inline:auto}
+@media (min-width:1800px){main{max-width:1480px}}
 
 /* buttons: pills */
 .pill-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 22px;border-radius:999px;font-weight:500;font-size:14px;white-space:nowrap;transition:filter .15s,transform .1s}
