@@ -1,111 +1,91 @@
 (function () {
   "use strict";
-
-  var STRINGS = {
-    ar: {
-      skip: "انتقل للأدوات",
-      nav_tools: "الأدوات",
-      nav_stack: "منظومة NEXT",
-      nav_contact: "تواصل",
-      eyebrow: "أدوات أندرويد مفتوحة المصدر",
-      hero_title: "أدوات IFOKNR لإخفاء الروت والأداء والفلاش",
-      hero_lead: "موديولات روت لإخفاء الروت من الطبقات الثلاث، وموديول أداء آمن لأي معالج، وتطبيق ويندوز وتطبيق للجوال يفلّشون ويحمون جوالك من الأخطاء. كل أداة هنا مجانية ومفتوحة المصدر.",
-      cta_tools: "تصفّح الأدوات",
-      stat_tools: "أدوات",
-      stat_downloads: "تحميل",
-      stat_updated: "آخر تحديث",
-      tools_title: "الأدوات",
-      f_all: "الكل",
-      f_hide: "إخفاء الروت",
-      f_perf: "الأداء",
-      f_pc: "Fastboot Studio",
-      layer_apps: "التطبيقات",
-      layer_zygote: "Zygote",
-      layer_kernel: "النواة",
-      download: "تحميل",
-      download_v: "تحميل {v}",
-      releases: "الإصدارات",
-      source: "المصدر",
-      changes: "التغييرات",
-      soon: "قريباً",
-      beta: "تجريبي",
-      soon_btn: "تحت التطوير",
-      downloads: "{n} تحميل",
-      copy: "نسخ",
-      copied: "تم",
-      based_on: "مبني على {name} من {by}.",
-      uses: "يستخدم {name} من {by}.",
-      license: "الترخيص: {l}",
-      api_note: "ما قدرنا نوصل لـ GitHub الحين، فالإصدارات المعروضة قد تكون أقدم من الحقيقية.",
-      stack_title: "منظومة NEXT",
-      stack_lead: "ثلاث موديولات تشتغل مع بعض، كل وحدة تخفي الروت من طبقة. تقدر تركّب وحدة لحالها، لكن الثلاث مع بعض يعطونك أقوى إخفاء، وكل وحدة تعرض حالة الباقي في لوحتها.",
-      stack_apps: "يخفي Zygisk وبيئة الروت داخل التطبيقات",
-      stack_zygote: "Zygisk مستقل يحمّل NextWheel ووحداتك",
-      stack_kernel: "يخفي الآثار من النواة نفسها مع SuSFS",
-      stack_warn: "مشاريع شخصية، واستخدامها على مسؤوليتك. قبل التثبيت تأكد إن عندك طريقة تقلع فيها بدون موديولات (الوضع الآمن).",
-      foot_by: "تطوير",
-      foot_credit: "الأدوات المبنية على مشاريع ثانية تذكر أصحابها وتراخيصهم في صفحاتها.",
-      lang_btn: "EN",
-      months: ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"],
-    },
-    en: {
-      skip: "Skip to tools",
-      nav_tools: "Tools",
-      nav_stack: "NEXT stack",
-      nav_contact: "Contact",
-      eyebrow: "Open-source Android tools",
-      hero_title: "IFOKNR tools for root hiding, performance and flashing",
-      hero_lead: "Root modules that hide root at all three layers, a performance module that is safe on any SoC, and a Windows app and a phone app that flash your phone and guard it against mistakes. Every tool here is free and open source.",
-      cta_tools: "Browse the tools",
-      stat_tools: "Tools",
-      stat_downloads: "Downloads",
-      stat_updated: "Last update",
-      tools_title: "Tools",
-      f_all: "All",
-      f_hide: "Root hiding",
-      f_perf: "Performance",
-      f_pc: "Fastboot Studio",
-      layer_apps: "Apps",
-      layer_zygote: "Zygote",
-      layer_kernel: "Kernel",
-      download: "Download",
-      download_v: "Download {v}",
-      releases: "Releases",
-      source: "Source",
-      changes: "Changelog",
-      soon: "Coming soon",
-      beta: "Beta",
-      soon_btn: "In development",
-      downloads: "{n} downloads",
-      copy: "Copy",
-      copied: "Copied",
-      based_on: "Based on {name} by {by}.",
-      uses: "Uses {name} by {by}.",
-      license: "License: {l}",
-      api_note: "GitHub could not be reached right now, so the versions shown may be older than the latest.",
-      stack_title: "The NEXT stack",
-      stack_lead: "Three modules that work together, each hiding root at one layer. Each installs on its own, but all three give the strongest hiding, and each shows the others' status in its dashboard.",
-      stack_apps: "Hides Zygisk and the root environment inside apps",
-      stack_zygote: "Standalone Zygisk that loads NextWheel and your modules",
-      stack_kernel: "Hides traces from the kernel itself with SuSFS",
-      stack_warn: "Personal projects, use at your own risk. Before installing, make sure you have a way to boot without modules (safe mode).",
-      foot_by: "Made by",
-      foot_credit: "Tools built on other projects credit their authors and licenses on their pages.",
-      lang_btn: "ع",
-      months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-    },
-  };
-
-  var CACHE_KEY = "releases-v3";
+  var CACHE_KEY = "releases-v2";
   var CACHE_MS = 60 * 60 * 1000; // GitHub allows 60 unauthenticated requests an hour per visitor.
   var root = document.documentElement;
+  var TOOLS = []; // from tools.json, shared with the Telegram bot
+  var byId = {};
   var releases = {}; // repo -> { tag, date, url, asset, downloads }
   var apiFailed = false;
-  var TOOLS = []; // from tools.json, shared with the Telegram bot
+
+  var ORDER = ["fastbootstudio", "mobile", "companion", "nextzygisk", "nextwheel", "nextsusfs", "nextcore"];
+  var WIDE = { fastbootstudio: "laptop", nextcore: "banner" };
+  var KIND = { fastbootstudio: "win", mobile: "apk" };
+  var GROUPS = [["pc", "g_pc"], ["hide", "g_hide"], ["perf", "g_perf"]];
+  var LAYERS = [["nextwheel", "layer_apps"], ["nextzygisk", "layer_zygote"], ["nextsusfs", "layer_kernel"]];
+
+  var S = {
+    ar: {
+      home: "الرئيسية", g_pc: "Fastboot Studio", g_hide: "إخفاء الروت", g_perf: "الأداء", links: "روابط", menu: "القائمة", theme: "الوضع الفاتح أو الداكن",
+      skip: "تخطَّ إلى المحتوى",
+      eyebrow: "مجانية ومفتوحة المصدر",
+      h1: "أدوات أندرويد للفلاش، وإخفاء الروت، والأداء",
+      lead: "تطبيق ويندوز وتطبيق جوال يفلّشون جوالك ويحمونه من الأخطاء، وموديولات تخفي الروت من الطبقات الثلاث، وموديول أداء آمن لأي معالج.",
+      browse: "تصفّح الأدوات", tools: "الأدوات", downloads: "التحميلات", updated: "آخر تحديث", latest: "أحدث إصدار",
+      sec_pc: "الفلاش والجوال", sec_pc_d: "على الكمبيوتر، على الجوال، ومن داخل الروت",
+      sec_hide: "منظومة NEXT", sec_hide_d: "ثلاث طبقات تخفي الروت، كل وحدة تعرض حالة الباقي",
+      sec_perf: "الأداء", sec_perf_d: "أداء ثابت بدون ما تلمس الحماية الحرارية",
+      details: "التفاصيل", download: "تحميل", download_v: "تحميل {v}", source: "المصدر", changes: "التغييرات",
+      version: "الإصدار", date: "التاريخ", dls: "التحميلات", license: "الترخيص", n_dls: "تحميل",
+      what: "وش يسوي", needs: "يحتاج", install: "التثبيت", built: "مبني على {n} من {b}.", uses: "يستخدم {n} من {b}.",
+      layer_apps: "التطبيقات", layer_zygote: "Zygote", layer_kernel: "النواة",
+      st_mod: ["حمّل ملف zip من زر التحميل", "ركّبه من مدير الروت: KernelSU أو Magisk أو APatch", "أعد تشغيل الجوال، وافتح الواجهة من مدير الروت"],
+      st_win: ["ثبّته بأمر واحد من winget، أو حمّل ملف zip", "شغّل Fastboot Studio ووصّل جوالك", "اتبع صفحة الترحيب: اللغة، الصفحات، والفحص"],
+      st_apk: ["حمّل ملف APK، أو تابع التحديثات من Obtainium", "اسمح بصلاحية الروت أول ما تفتحه", "للجوال الثاني: وصّله بكيبل OTG"],
+      copy: "نسخ", copied: "تم النسخ", prev: "السابق", next: "التالي", back: "كل الأدوات",
+      dev: "المطوّر", telegram: "قروب تلقرام",
+      lang: "English",
+      months: ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"]
+    },
+    en: {
+      home: "Home", g_pc: "Fastboot Studio", g_hide: "Root hiding", g_perf: "Performance", links: "Links", menu: "Menu", theme: "Light or dark theme",
+      skip: "Skip to content",
+      eyebrow: "Free and open source",
+      h1: "Android tools for flashing, root hiding and performance",
+      lead: "A Windows app and a phone app that flash your phone and guard it against mistakes, modules that hide root at all three layers, and a performance module that is safe on any SoC.",
+      browse: "Browse the tools", tools: "Tools", downloads: "Downloads", updated: "Last update", latest: "Newest release",
+      sec_pc: "Flashing and the phone", sec_pc_d: "On the PC, on the phone, and from inside root",
+      sec_hide: "The NEXT stack", sec_hide_d: "Three layers of root hiding; each shows the others' status",
+      sec_perf: "Performance", sec_perf_d: "Steady performance without touching thermal protection",
+      details: "Details", download: "Download", download_v: "Download {v}", source: "Source", changes: "Changelog",
+      version: "Version", date: "Date", dls: "Downloads", license: "License", n_dls: "downloads",
+      what: "What it does", needs: "Needs", install: "Install", built: "Based on {n} by {b}.", uses: "Uses {n} by {b}.",
+      layer_apps: "Apps", layer_zygote: "Zygote", layer_kernel: "Kernel",
+      st_mod: ["Download the zip with the button above", "Install it in your root manager: KernelSU, Magisk or APatch", "Restart, then open its WebUI from the root manager"],
+      st_win: ["Install with one winget command, or download the zip", "Run Fastboot Studio and connect your phone", "Follow the welcome steps: language, pages, check"],
+      st_apk: ["Download the APK, or follow updates with Obtainium", "Allow root when it first opens", "For a second phone: connect it with an OTG cable"],
+      copy: "Copy", copied: "Copied", prev: "Previous", next: "Next", back: "All tools",
+      dev: "Developer", telegram: "Telegram group",
+      lang: "عربي",
+      months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+    }
+  };
+
+  var SV = {
+    home: '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11.5 12 5l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5h-5v5H5a1 1 0 0 1-1-1z"/></svg>',
+    tg: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 4-18 7.2 6 2.1L19 7l-8 8 .5 5 3-3.5 4 3z"/></svg>',
+    gh: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-4 1.3-4-2-6-2.5m12 5v-3.4a3 3 0 0 0-.8-2.3c2.7-.3 5.5-1.3 5.5-6a4.7 4.7 0 0 0-1.3-3.2 4.4 4.4 0 0 0-.1-3.2s-1-.3-3.3 1.3a11.3 11.3 0 0 0-6 0C6.7 2.6 5.7 2.9 5.7 2.9a4.4 4.4 0 0 0-.1 3.2A4.7 4.7 0 0 0 4.3 9.3c0 4.7 2.8 5.7 5.5 6a3 3 0 0 0-.8 2.3V21"/></svg>',
+    dl: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19h14"/></svg>',
+    arrow: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>',
+    ck: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>',
+    list: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6h14M5 12h14M5 18h9"/></svg>'
+  };
 
   function store(key, value) {
     try { if (value === undefined) return localStorage.getItem(key); localStorage.setItem(key, value); } catch (e) { return null; }
   }
+  function lang() { return root.lang === "en" ? "en" : "ar"; }
+  function s(k) { return S[lang()][k]; }
+  function fill(str, o) { return str.replace(/\{(\w+)\}/g, function (_, k) { return o[k]; }); }
+  function esc(v) { return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) { return "&#" + c.charCodeAt(0) + ";"; }); }
+  function txt(t) { return t[lang()] || t.en; }
+  function num(n) { return Number(n || 0).toLocaleString("en-US"); }
+  function date(iso) {
+    var d = new Date(iso);
+    if (!iso || isNaN(d)) return "—";
+    return d.getDate() + " " + s("months")[d.getMonth()] + " " + d.getFullYear();
+  }
+  function short(tag) { return String(tag || "").replace(/-\d+$/, ""); }
 
   // True when version a is newer than b ("v2.5.1" > "v2.5.0", "v1.0.5-601" > "v1.0.5").
   function newer(a, b) {
@@ -122,170 +102,178 @@
     return TOOLS.some(function (tool) { var r = data[tool.repo]; return r && newer(tool.version, r.tag); });
   }
 
-  function lang() { return root.lang === "en" ? "en" : "ar"; }
-  function t(key, vars) {
-    var s = STRINGS[lang()][key];
-    if (vars) for (var k in vars) s = s.replace("{" + k + "}", vars[k]);
-    return s;
+  // Before GitHub answers, a tool shows the version tools.json names.
+  function rel(t) {
+    var r = releases[t.repo];
+    if (r && !newer(t.version, r.tag)) return r;
+    return { tag: t.version, date: "", downloads: r ? r.downloads : 0, url: "https://github.com/" + t.repo + "/releases/latest", asset: null };
   }
-  function number(n) {
-    return new Intl.NumberFormat(lang() === "ar" ? "ar-SA-u-nu-latn" : "en", { notation: n >= 10000 ? "compact" : "standard", maximumFractionDigits: 1 }).format(n);
+  function icon(t) { return esc(t.icon); }
+  function nm(t, cls) {
+    return '<img class="' + cls + " " + cls + '-dark" src="assets/img/names/' + t.id + '-dark.svg" alt="' + esc(t.name.join("")) + '">' +
+      '<img class="' + cls + " " + cls + '-light" src="assets/img/names/' + t.id + '-light.svg" alt="">';
   }
-  function date(iso) {
-    var d = new Date(iso);
-    if (isNaN(d)) return "";
-    return d.getDate() + " " + t("months")[d.getMonth()] + " " + d.getFullYear();
+  function vid(t) {
+    return '<video src="assets/media/' + t.id + '.mp4" poster="assets/media/' + t.id + '.jpg" muted loop playsinline preload="metadata" aria-hidden="true"></video>';
   }
+  function ext(href, cls, body) { return '<a class="' + cls + '" href="' + esc(href) + '" target="_blank" rel="noopener">' + body + "</a>"; }
 
-  function el(tag, cls, text) {
-    var e = document.createElement(tag);
-    if (cls) e.className = cls;
-    if (text != null) e.textContent = text;
-    return e;
-  }
-
-  function render() {
-    document.querySelectorAll("[data-i18n]").forEach(function (n) { n.textContent = t(n.getAttribute("data-i18n")); });
-    document.querySelector(".lang-label").textContent = t("lang_btn");
-    document.getElementById("lang-btn").setAttribute("aria-label", lang() === "ar" ? "English" : "العربية");
-
-    var grid = document.getElementById("grid");
-    var tpl = document.getElementById("card-tpl");
-    grid.textContent = "";
-    var totalDownloads = 0, newest = null, anyLive = false;
-
-    TOOLS.forEach(function (tool) {
-      var text = tool[lang()];
-      var rel = tool.repo ? releases[tool.repo] : null;
-      var card = tpl.content.firstElementChild.cloneNode(true);
-      card.id = "tool-" + tool.id;
-      card.dataset.group = tool.group;
-      card.style.setProperty("--tool", tool.accent);
-      if (tool.soon) card.classList.add("soon");
-
-      var logo = card.querySelector(".logo");
-      if (tool.icon) {
-        var img = el("img");
-        img.src = tool.icon; img.alt = ""; img.width = 52; img.height = 52; img.loading = "lazy";
-        logo.appendChild(img);
-      } else {
-        logo.textContent = tool.name[0].charAt(0).toUpperCase() + tool.name[1].charAt(0).toUpperCase();
-      }
-
-      // The name in the Prixma Bold Italic lettering, drawn as outlines (one picture per theme).
-      var h = card.querySelector("h3");
-      h.setAttribute("aria-label", tool.name[0] + tool.name[1]);
-      ["dark", "light"].forEach(function (theme) {
-        var name = el("img", "name name-" + theme);
-        name.src = "assets/img/names/" + tool.id + "-" + theme + ".svg";
-        name.alt = theme === "dark" ? tool.name[0] + tool.name[1] : "";
-        h.appendChild(name);
+  function menu(cur) {
+    var h = '<a class="nav' + (cur === "home" ? " on" : "") + '" href="#home"' + (cur === "home" ? ' aria-current="page"' : "") + ">" + SV.home + "<span>" + s("home") + "</span></a>";
+    GROUPS.forEach(function (g) {
+      h += '<div class="label">' + s(g[1]) + "</div>";
+      TOOLS.filter(function (x) { return x.group === g[0]; }).forEach(function (t) {
+        var on = cur === t.id;
+        h += '<a class="nav' + (on ? " on" : "") + '" href="#' + t.id + '"' + (on ? ' aria-current="page"' : "") + '><img class="ic" src="' + icon(t) + '" alt="">' + nm(t, "nm") + '<span class="ver">' + esc(short(rel(t).tag)) + "</span></a>";
       });
-      card.querySelector(".tagline").textContent = text.tagline;
-      card.querySelector(".about").textContent = text.about;
-      var points = card.querySelector(".points");
-      text.points.forEach(function (p) { points.appendChild(el("li", null, p)); });
-      var needs = card.querySelector(".needs");
-      (tool.needs || []).forEach(function (n) { needs.appendChild(el("li", null, n)); });
-
-      var version = card.querySelector(".version");
-      var download = card.querySelector(".download");
-      var source = card.querySelector(".source");
-      var changes = card.querySelector(".changes");
-
-      if (tool.soon) {
-        version.textContent = t("soon");
-        download.textContent = t("soon_btn");
-        download.setAttribute("aria-disabled", "true");
-        download.removeAttribute("href");
-        source.remove();
-        changes.remove();
-      } else {
-        var repoUrl = "https://github.com/" + tool.repo;
-        // tools.json is updated with every release, so it wins over older release data.
-        if (rel && newer(tool.version, rel.tag)) rel = { downloads: rel.downloads };
-        var live = !!(rel && rel.tag);
-        var v = live ? rel.tag : tool.version;
-        // A pre-release (the Companion while it is in beta) says so next to its version.
-        version.textContent = v + ((live ? rel.pre : tool.beta) ? " · " + t("beta") : "");
-        if (live) { version.classList.add("live"); anyLive = true; }
-        if (rel && rel.date) {
-          card.querySelector(".date").textContent = date(rel.date);
-          if (!newest || rel.date > newest) newest = rel.date;
-        }
-        if (rel && rel.downloads) {
-          card.querySelector(".dl").textContent = t("downloads", { n: number(rel.downloads) });
-          totalDownloads += rel.downloads;
-        }
-        download.href = rel && rel.asset ? rel.asset : repoUrl + "/releases/latest";
-        download.textContent = t("download_v", { v: v });
-        source.href = repoUrl;
-        source.textContent = t("source");
-        changes.href = rel && rel.url ? rel.url : repoUrl + "/releases";
-        changes.textContent = t("changes");
-        if (tool.xda) {
-          var xda = el("a", "btn btn-ghost xda", "XDA");
-          xda.href = tool.xda; xda.target = "_blank"; xda.rel = "noopener";
-          card.querySelector(".actions").appendChild(xda);
-        }
-      }
-
-      if (tool.winget) {
-        var box = card.querySelector(".winget");
-        box.hidden = false;
-        box.querySelector("code").textContent = tool.winget;
-        var copy = box.querySelector(".copy");
-        copy.textContent = t("copy");
-        copy.addEventListener("click", function () {
-          var done = function () { copy.textContent = t("copied"); setTimeout(function () { copy.textContent = t("copy"); }, 1500); };
-          if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(tool.winget).then(done, function () {});
-          else {
-            var range = document.createRange(); range.selectNodeContents(box.querySelector("code"));
-            var sel = getSelection(); sel.removeAllRanges(); sel.addRange(range);
-            try { document.execCommand("copy"); done(); } catch (e) {}
-          }
-        });
-      }
-
-      var credit = [];
-      if (tool.base) credit.push(t("based_on", { name: tool.base.name, by: tool.base.by }));
-      if (tool.uses) credit.push(t("uses", { name: tool.uses.name, by: tool.uses.by }));
-      if (tool.license) credit.push(t("license", { l: tool.license }));
-      card.querySelector(".credit").textContent = credit.join(" ");
-
-      grid.appendChild(card);
     });
-
-    document.getElementById("stat-tools").textContent = TOOLS.length;
-    document.getElementById("stat-downloads").textContent = totalDownloads ? number(totalDownloads) : "—";
-    document.getElementById("stat-updated").textContent = newest ? date(newest) : "—";
-    document.getElementById("api-note").hidden = !(apiFailed && !anyLive);
-    applyFilter();
+    h += '<div class="label">' + s("links") + "</div>" +
+      ext("https://t.me/BeNeXTBrO", "nav", SV.tg.replace("<svg", '<svg class="ic"') + "<span>" + s("telegram") + "</span>") +
+      ext("https://github.com/ifoknr", "nav", SV.gh.replace("<svg", '<svg class="ic"') + "<span>GitHub</span>");
+    return h;
   }
 
-  // Filters
-  var filter = "all";
-  function applyFilter() {
-    document.querySelectorAll(".chip").forEach(function (c) { c.setAttribute("aria-pressed", String(c.dataset.filter === filter)); });
-    document.querySelectorAll(".card").forEach(function (c) { c.hidden = filter !== "all" && c.dataset.group !== filter; });
+  function card(t) {
+    var r = rel(t), wide = WIDE[t.id];
+    var media = wide ? '<div class="' + wide + '">' + vid(t) + "</div>" : vid(t);
+    return '<article class="tcard' + (wide ? " feature" : "") + '">' +
+      '<a class="tmedia ' + (wide || "portrait") + '" href="#' + t.id + '" tabindex="-1" aria-hidden="true">' + media + "</a>" +
+      '<div class="tbody">' +
+        '<div class="thead"><img class="ic" src="' + icon(t) + '" alt=""><div>' + nm(t, "tname") + "<small>" + esc(short(r.tag)) + " · " + num(r.downloads) + " " + s("n_dls") + "</small></div></div>" +
+        '<p class="ttag">' + esc(txt(t).tagline) + "</p>" +
+        (wide ? '<p class="tab">' + esc(txt(t).about) + "</p>" : "") +
+        '<div class="tfoot"><a class="pill-btn tonal small" href="#' + t.id + '">' + s("details") + "</a>" + ext(r.asset || r.url, "pill-btn filled small", SV.dl + s("download")) + "</div>" +
+      "</div></article>";
   }
-  document.querySelectorAll(".chip").forEach(function (c) {
-    c.addEventListener("click", function () { filter = c.dataset.filter; applyFilter(); });
-  });
 
-  // Language and theme
-  document.getElementById("lang-btn").addEventListener("click", function () {
-    var next = lang() === "ar" ? "en" : "ar";
-    root.lang = next;
-    root.dir = next === "ar" ? "rtl" : "ltr";
-    store("lang", next);
-    render();
+  function stack(cur) {
+    return '<div class="stack">' + LAYERS.map(function (l, i) {
+      var t = byId[l[0]];
+      if (!t) return "";
+      return '<a class="layer' + (cur === t.id ? " on" : "") + '" href="#' + t.id + '"><span class="n">' + (i + 1) + "</span><div><b>" + esc(t.name.join("")) + "</b><small>" + s(l[1]) + '</small></div><span class="ver">' + esc(short(rel(t).tag)) + "</span></a>";
+    }).join("") + "</div>";
+  }
+
+  function foot() {
+    return '<footer class="foot"><div class="dev"><img class="mark sig-dark" src="assets/img/ifoknr-mark.svg?v=4" alt=""><img class="mark sig-light" src="assets/img/ifoknr-mark-light.svg?v=4" alt="">' +
+      '<div><img class="sig sig-dark" src="assets/img/ifoknr-dark.svg?v=4" alt="IFOKNR"><img class="sig sig-light" src="assets/img/ifoknr-light.svg?v=4" alt=""><small>' + s("dev") + "</small></div></div>" +
+      '<div class="links">' + ext("https://t.me/IFOKNR1", "pill-btn tonal small", SV.tg + "@IFOKNR1") + ext("https://t.me/BeNeXTBrO", "pill-btn outlined small", s("telegram")) + ext("https://github.com/ifoknr", "pill-btn outlined small", SV.gh + "GitHub") + "</div></footer>";
+  }
+
+  function home() {
+    var total = 0, last = null;
+    TOOLS.forEach(function (t) {
+      var r = rel(t);
+      total += r.downloads || 0;
+      if (r.date && (!last || r.date > last.r.date)) last = { t: t, r: r };
+    });
+    var sec = function (g, h, d) {
+      return '<section class="section" id="' + (g === "hide" ? "stack" : "sec-" + g) + '"><div class="sec-head"><div><h2>' + s(h) + "</h2><p>" + s(d) + "</p></div></div>" +
+        (g === "hide" ? stack() : "") +
+        '<div class="grid g-' + g + '">' + TOOLS.filter(function (t) { return t.group === g; }).map(card).join("") + "</div></section>";
+    };
+    var fbs = byId.fastbootstudio, mob = byId.mobile;
+    return '<section class="hero"><div>' +
+        '<div class="eyebrow"><span class="chip blue">' + s("eyebrow") + '</span><span class="chip">' + TOOLS.length + " " + s("tools") + "</span></div>" +
+        "<h1>" + s("h1") + '</h1><p class="lead">' + s("lead") + "</p>" +
+        '<div class="cta"><a class="pill-btn filled" href="#tools">' + SV.list + s("browse") + "</a>" + ext("https://t.me/BeNeXTBrO", "pill-btn tonal", SV.tg + "Telegram") + ext("https://github.com/ifoknr", "pill-btn outlined", SV.gh + "GitHub") + "</div></div>" +
+        '<div class="reel" aria-hidden="true">' + (fbs ? '<div class="laptop">' + vid(fbs) + "</div>" : "") + (mob ? '<div class="phone">' + vid(mob) + "</div>" : "") + "</div>" +
+      "</section>" +
+      '<div class="strips"><div class="strip"><span>' + s("tools") + "</span><b>" + TOOLS.length + '</b></div><div class="strip"><span>' + s("downloads") + "</span><b>" + num(total) + "</b></div>" +
+        '<div class="strip"><span>' + s("updated") + "</span><b>" + (last ? date(last.r.date) : "—") + '</b></div><div class="strip"><span>' + s("latest") + "</span><b>" + (last ? esc(last.t.name.join("") + " " + short(last.r.tag)) : "—") + "</b></div></div>" +
+      '<div id="tools"></div>' +
+      sec("pc", "sec_pc", "sec_pc_d") + sec("hide", "sec_hide", "sec_hide_d") + sec("perf", "sec_perf", "sec_perf_d") + foot();
+  }
+
+  function tool(t) {
+    var r = rel(t), x = txt(t), i = TOOLS.indexOf(t), kind = KIND[t.id] || "mod";
+    var prev = TOOLS[(i - 1 + TOOLS.length) % TOOLS.length], next = TOOLS[(i + 1) % TOOLS.length];
+    var link = function (o) { return '<a href="' + esc(o.url) + '" target="_blank" rel="noopener">' + esc(o.name) + "</a>"; };
+    var credit = t.base ? fill(s("built"), { n: link(t.base), b: esc(t.base.by) }) : t.uses ? fill(s("uses"), { n: link(t.uses), b: esc(t.uses.by) }) : "";
+    if (t.base && t.uses) credit += " " + fill(s("uses"), { n: link(t.uses), b: esc(t.uses.by) });
+    var shape = WIDE[t.id] || "phone";
+    return '<a class="back" href="#home">' + SV.arrow + s("back") + "</a>" +
+      '<section class="thero' + (WIDE[t.id] ? "" : " portrait") + '">' +
+        '<div><div class="cookie"><img src="' + icon(t) + '" alt=""></div><h1 class="bigname-h">' + nm(t, "bigname") + "</h1>" +
+          '<p class="tl">' + esc(x.tagline) + '</p><p class="ab">' + esc(x.about) + "</p>" +
+          '<div class="cta">' + ext(r.asset || r.url, "pill-btn filled", SV.dl + fill(s("download_v"), { v: esc(short(r.tag)) })) +
+            ext("https://github.com/" + t.repo + "/releases", "pill-btn tonal", s("changes")) +
+            ext("https://github.com/" + t.repo, "pill-btn outlined", SV.gh + s("source")) +
+            (t.xda ? ext(t.xda, "pill-btn outlined", "XDA") : "") + "</div></div>" +
+        '<div class="media" aria-hidden="true"><div class="' + shape + '">' + vid(t) + "</div></div>" +
+      "</section>" +
+      '<div class="strips"><div class="strip"><span>' + s("version") + "</span><b>" + esc(r.tag) + '</b></div><div class="strip"><span>' + s("date") + "</span><b>" + date(r.date) + "</b></div>" +
+        '<div class="strip"><span>' + s("dls") + "</span><b>" + num(r.downloads) + '</b></div><div class="strip"><span>' + s("license") + "</span><b>" + esc(t.license) + "</b></div></div>" +
+      '<div class="cols">' +
+        '<div class="card"><h2>' + s("what") + "</h2>" + x.points.map(function (p) { return '<div class="feat"><span class="ck">' + SV.ck + "</span><span>" + esc(p) + "</span></div>"; }).join("") + "</div>" +
+        '<div class="stackc">' +
+          '<div class="card"><h2>' + s("install") + "</h2>" + s("st_" + kind).map(function (st, k) { return '<div class="step"><span class="n">' + (k + 1) + "</span><span>" + st + "</span></div>"; }).join("") +
+            (t.winget ? '<div class="code"><code>' + esc(t.winget) + '</code><button class="pill-btn tonal small" type="button" data-act="copy" data-copy="' + esc(t.winget) + '">' + s("copy") + "</button></div>" : "") + "</div>" +
+          '<div class="card"><h2>' + s("needs") + '</h2><div class="chips">' + (t.needs || []).map(function (n) { return '<span class="chip">' + esc(n) + "</span>"; }).join("") + "</div>" +
+            (credit ? '<p class="muted credit">' + credit + "</p>" : "") + "</div>" +
+        "</div>" +
+      "</div>" +
+      (t.group === "hide" ? '<section class="section"><div class="sec-head"><div><h2>' + s("sec_hide") + "</h2><p>" + s("sec_hide_d") + "</p></div></div>" + stack(t.id) + "</section>" : "") +
+      '<nav class="pager" aria-label="' + s("tools") + '"><a href="#' + prev.id + '"><img class="i" src="' + icon(prev) + '" alt=""><div><small>' + s("prev") + "</small>" + esc(prev.name.join("")) + "</div></a>" +
+        '<a class="next" href="#' + next.id + '"><div><small>' + s("next") + "</small>" + esc(next.name.join("")) + '</div><img class="i" src="' + icon(next) + '" alt=""></a></nav>' +
+      foot();
+  }
+
+  // Videos play only while on screen; with reduced motion they stay on their poster.
+  var still = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var io = "IntersectionObserver" in window ? new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) { var p = e.target.play(); if (p) p.catch(function () {}); } else e.target.pause(); });
+  }, { threshold: 0.2 }) : null;
+
+  var shown = null;
+  function render(fresh) {
+    var id = location.hash.slice(1).replace(/^tool-/, ""); // old links: #tool-nextcore
+    var t = byId[id];
+    var cur = t ? id : "home";
+    document.querySelectorAll("[data-i18n]").forEach(function (n) { n.textContent = s(n.getAttribute("data-i18n")); });
+    document.querySelectorAll("[data-i18n-label]").forEach(function (n) { n.setAttribute("aria-label", s(n.getAttribute("data-i18n-label"))); });
+    document.getElementById("menu").innerHTML = menu(cur);
+    document.getElementById("menu-sheet").innerHTML = menu(cur);
+    document.querySelectorAll("[data-act=lang]").forEach(function (b) { b.textContent = s("lang"); });
+    document.title = t ? t.name.join("") + " · IFOKNR Tools" : "IFOKNR Tools";
+    var page = document.getElementById("page");
+    var y = window.scrollY;
+    page.innerHTML = t ? tool(t) : home();
+    if (fresh) window.scrollTo(0, y); // new release data: stay where the reader is
+    else if (id && document.getElementById(id) && !t) document.getElementById(id).scrollIntoView();
+    else if (shown !== null) window.scrollTo(0, 0);
+    shown = cur;
+    document.body.classList.remove("open");
+    if (io && !still) document.querySelectorAll("video").forEach(function (v) { io.observe(v); });
+  }
+
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest("[data-act]");
+    if (!a) {
+      if (e.target.closest(".sheet a")) document.body.classList.remove("open");
+      return;
+    }
+    var act = a.getAttribute("data-act");
+    if (act === "lang") {
+      var next = lang() === "ar" ? "en" : "ar";
+      root.lang = next; root.dir = next === "ar" ? "rtl" : "ltr";
+      store("lang", next);
+      render(true);
+    } else if (act === "theme") {
+      var theme = root.getAttribute("data-theme") === "light" ? "dark" : "light";
+      root.setAttribute("data-theme", theme);
+      store("theme", theme);
+    } else if (act === "menu") {
+      document.body.classList.add("open");
+    } else if (act === "close") {
+      document.body.classList.remove("open");
+    } else if (act === "copy") {
+      var done = function () { a.textContent = s("copied"); setTimeout(function () { a.textContent = s("copy"); }, 1500); };
+      if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(a.getAttribute("data-copy")).then(done, function () {});
+    }
   });
-  document.getElementById("theme-btn").addEventListener("click", function () {
-    var next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
-    root.setAttribute("data-theme", next);
-    store("theme", next);
-  });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") document.body.classList.remove("open"); });
+  window.addEventListener("hashchange", function () { render(false); });
 
   // Releases from GitHub: all releases of each repo, to count downloads across versions.
   function summarize(tool, list) {
@@ -305,14 +293,13 @@
     try { cached = JSON.parse(store(CACHE_KEY) || "null"); } catch (e) {}
     if (cached && Date.now() - cached.at < CACHE_MS && !outdated(cached.data)) {
       releases = cached.data;
-      render();
+      render(false);
       return;
     }
     if (cached) releases = cached.data;
-    render();
+    render(false);
 
-    var tools = TOOLS.filter(function (x) { return x.repo; });
-    Promise.all(tools.map(function (tool) {
+    Promise.all(TOOLS.filter(function (x) { return x.repo; }).map(function (tool) {
       // The site's own copy first (shared by every visitor, so GitHub's hourly limit is never
       // reached), then GitHub itself, for a server that does not have it.
       function ask(url, headers) {
@@ -329,19 +316,19 @@
       pairs.forEach(function (p) { if (p[1]) fresh[p[0]] = p[1]; });
       releases = fresh;
       if (!apiFailed) store(CACHE_KEY, JSON.stringify({ at: Date.now(), data: fresh }));
-      render();
+      render(true);
     });
+  }
+
+  function start(list) {
+    TOOLS = list.slice().sort(function (a, b) { return ORDER.indexOf(a.id) - ORDER.indexOf(b.id); });
+    TOOLS.forEach(function (t) { byId[t.id] = t; });
+    load();
   }
 
   // tools.json inside the page when the image put it there (one request less), otherwise fetched.
   var inline = null;
   try { inline = JSON.parse(document.getElementById("tools-data").textContent); } catch (e) {}
-  if (Array.isArray(inline) && inline.length) {
-    TOOLS = inline;
-    load();
-  } else {
-    fetch("assets/tools.json", { cache: "no-cache" })
-      .then(function (r) { return r.json(); })
-      .then(function (list) { TOOLS = list; load(); });
-  }
+  if (Array.isArray(inline) && inline.length) start(inline);
+  else fetch("assets/tools.json", { cache: "no-cache" }).then(function (r) { return r.json(); }).then(start);
 })();

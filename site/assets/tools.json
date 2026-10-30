@@ -5,12 +5,12 @@
       "Next",
       "Zygisk"
     ],
-    "icon": "assets/img/tools/nextzygisk.svg?v=2",
+    "icon": "assets/img/tools/nextzygisk.svg?v=4",
     "repo": "ifoknr/NexTZygisk",
     "group": "hide",
     "layer": "zygote",
     "accent": "#3ee0a0",
-    "version": "v1.0.6",
+    "version": "v1.0.7",
     "asset": "release\\.zip$",
     "license": "AGPL-3.0",
     "base": {
@@ -50,12 +50,12 @@
       "Next",
       "Wheel"
     ],
-    "icon": "assets/img/tools/nextwheel.svg?v=2",
+    "icon": "assets/img/tools/nextwheel.svg?v=4",
     "repo": "ifoknr/NextWheel",
     "group": "hide",
     "layer": "apps",
     "accent": "#3ee0a0",
-    "version": "v0.0.16",
+    "version": "v0.0.18",
     "asset": "\\.zip$",
     "license": "AGPL-3.0",
     "base": {
@@ -95,12 +95,12 @@
       "Next",
       "SUSFS"
     ],
-    "icon": "assets/img/tools/nextsusfs.svg?v=2",
+    "icon": "assets/img/tools/nextsusfs.svg?v=4",
     "repo": "ifoknr/NextSUSFS",
     "group": "hide",
     "layer": "kernel",
     "accent": "#3ee0a0",
-    "version": "v0.0.10",
+    "version": "v0.0.14",
     "asset": "\\.zip$",
     "license": "AGPL-3.0",
     "base": null,
@@ -138,11 +138,11 @@
       "NEXT",
       "CORE"
     ],
-    "icon": "assets/img/tools/nextcore.svg?v=2",
+    "icon": "assets/img/tools/nextcore.svg?v=4",
     "repo": "ifoknr/NEXTCORE",
     "group": "perf",
     "accent": "#ff6b2c",
-    "version": "v2.0.0",
+    "version": "v2.0.1",
     "asset": "\\.(zip|apk)$",
     "license": "Apache-2.0",
     "base": {
@@ -181,11 +181,11 @@
       "Fastboot ",
       "Studio"
     ],
-    "icon": "assets/img/tools/fastbootstudio.svg?v=3",
+    "icon": "assets/img/tools/fastbootstudio.svg?v=4",
     "repo": "ifoknr/FastbootStudio",
     "group": "pc",
     "accent": "#3dd6c4",
-    "version": "v2.7.1",
+    "version": "v2.8.0",
     "asset": "\\.zip$",
     "license": "MIT",
     "base": {
@@ -224,7 +224,7 @@
       "Fastboot Studio ",
       "Companion"
     ],
-    "icon": "assets/img/tools/companion.svg?v=2",
+    "icon": "assets/img/tools/companion.svg?v=4",
     "repo": "ifoknr/FastbootStudio-Companion",
     "group": "pc",
     "accent": "#3dd6c4",
@@ -251,7 +251,7 @@
         "Partition backups on the phone; a WebUI for phones and tablets, day and night"
       ]
     },
-    "version": "v2.5.1",
+    "version": "v2.5.2",
     "asset": "\\.zip$",
     "license": "MIT"
   },
@@ -261,7 +261,7 @@
       "Fastboot Studio ",
       "Mobile"
     ],
-    "icon": "assets/img/tools/mobile.svg?v=3",
+    "icon": "assets/img/tools/mobile.svg?v=4",
     "repo": "ifoknr/FastbootStudio-Mobile",
     "group": "pc",
     "accent": "#3dd6c4",
@@ -288,7 +288,7 @@
         "OTG: flash another phone in fastboot mode over a cable, no root needed"
       ]
     },
-    "version": "v1.0.0",
+    "version": "v1.1.0",
     "asset": "\\.apk$",
     "license": "MIT"
   }
