@@ -1,7 +1,7 @@
 # IFOKNR brand
 
-Fixed by IFOKNR on 28 Oct 2026. Every app, tool, site and post uses these; change them only
-when IFOKNR asks.
+Fixed by IFOKNR on 28 Oct 2026, updated 30 Oct 2026 (grey icons, a new mark for the site).
+Every app, tool, site and post uses these; change them only when IFOKNR asks.
 
 ## IFOKNR (the developer)
 
@@ -13,29 +13,48 @@ when IFOKNR asks.
 The mark sits to the left of the name (the name is the same height as the mark or smaller).
 On an About page: the mark, then the name, then "Developer" under it.
 
+The violet mark and name above stay in the apps and tools (About pages, signatures) until IFOKNR
+says otherwise. **ifoknr.com uses a new mark and name** (since 30 Oct 2026):
+
+| Piece | What it is | File |
+|---|---|---|
+| Site mark | `IF` in the Audiowide lettering on a graphite tile `#353537` with a thin `#4a4a4f` rim, letters `#f2f1f5`. On light: tile `#e6e4ea`, rim `#c6c5cd`, letters `#1b1b1f` | `site/ifoknr-mark-dark.svg`, `site/ifoknr-mark-light.svg` |
+| Site name | `IFOKNR` in the Audiowide lettering. On dark: silver `#ffffff` → `#a3a5b3`. On light: graphite `#47474f` → `#1b1b1f` | `site/ifoknr-name-dark.svg`, `site/ifoknr-name-light.svg` |
+
 ## Apps and tools
 
 - Names are drawn in the Prixma Bold Italic lettering, small (about the size of the text they replace).
-- Each one has a fixed icon on a dark tile with a glow, in its own colours:
+- Each one has a fixed icon on a dark tile. **Since 30 Oct 2026 every icon is grey**: the same
+  drawing, with a graphite tile and calm grey-blue lines (the colour of Fastboot Studio's icon).
+  The launcher icon, the in-app icon, the WebUI, the site and the Telegram bot all use it.
 
-| App / tool | Icon | Colours | File |
-|---|---|---|---|
-| Fastboot Studio (Windows) and Fastboot Studio Mobile | lightning bolt on a circuit board; a simpler drawing (bigger bolt, thicker traces) at 32 px and below | teal `#3DD6C4` | `icons/fastbootstudio.svg`, `icons/fastbootstudio-small.svg` |
-| NextSUSFS | kernel chip with a crossed-out eye | blue `#3B82F6` → teal `#2DD4BF` | `icons/nextsusfs.svg` |
-| NextZygisk | orbits around a Z core | green `#4ADE80`, `#059669` | `icons/nextzygisk.svg` |
-| NextWheel | radar sweep around a steering wheel | mint `#86EFAC`, `#14B8A6` | `icons/nextwheel.svg` |
-| NextCore | speed gauge with a bolt | orange `#FDBA74` → pink `#F43F5E` | `icons/nextcore.svg`; launcher layers in `nextcore/` |
-| Companion | neon phone with a puzzle piece | light teal `#5EEAD4`, `#B8F5EA` | `icons/companion.svg` |
+| App / tool | Icon | File |
+|---|---|---|
+| Fastboot Studio (Windows) and Fastboot Studio Mobile | lightning bolt on a circuit board; a simpler drawing (bigger bolt, thicker traces) at 32 px and below | `icons/fastbootstudio.svg`, `icons/fastbootstudio-small.svg` |
+| NextSUSFS | kernel chip with a crossed-out eye | `icons/nextsusfs.svg` |
+| NextZygisk | orbits around a Z core | `icons/nextzygisk.svg` |
+| NextWheel | radar sweep around a steering wheel | `icons/nextwheel.svg` |
+| NextCore | speed gauge with a bolt | `icons/nextcore.svg`; launcher layers in `nextcore/` (`mono.svg` and `white.svg` stay one colour) |
+| Companion | phone with a puzzle piece | `icons/companion.svg` |
 
-App icons are never violet: violet is IFOKNR's own colour (mark and name), and it stays violet
-whatever the colours of the page around it.
+`tools-src/greyify.py` turns a coloured drawing into the grey family. A colour darker than 20 %
+lightness becomes graphite (HLS 0.69, 0.17 + 0.55·L, 0.04). Every other colour becomes grey-blue
+(HLS 0.62, min(0.55 + 0.35·L, 0.93), 0.28). Each pixel keeps its lightness order. The coloured
+originals (28 Oct) are in this repository's history.
 
-## App pages (planned, not built yet)
-Fastboot Studio from v2.9 and Fastboot Studio Mobile's new design follow Material 3 Expressive
-in muted colours: dark grey surfaces (`#2a2a2c`, containers `#353537` and `#3d3d40`), tonal fills
-in blue `#2e4d9d`, mauve `#4f4053` and slate `#3f455a`, a selected card `#414a6b`, and light
-periwinkle `#a8c4ff` for buttons, switches and radios. Stats are slim strips (label and value on
-one line), never big tiles. The samples are on the `design-m3-expressive` branch of this repository.
+App icons are never violet: violet is IFOKNR's own colour in the apps (mark and name).
+
+## App pages and the site
+Fastboot Studio (v2.8.0), Fastboot Studio Mobile (v1.1.0), the Companion WebUI (v2.5.2),
+ifoknr.com and its library (`/app`) follow Material 3 Expressive in muted colours:
+- dark grey surfaces `#2a2a2c` (page `#202022`), containers `#303033`, `#38383b` and `#434347`;
+- tonal fills in blue-slate `#343b50`, mauve `#4f4053` and slate `#3f455a`, a selected item `#414a6b`;
+- light periwinkle `#a8c4ff` (dark text `#152c5e`) for buttons, switches and radios;
+- light theme: page `#f4f3f7`, surface `#faf9fd`, blue `#2e4d9d`.
+
+The phone's status and navigation bars match the page: `#2A2A2C` dark, `#FAF9FD` light. A blue
+block with white text is never used. Stats are slim strips (label and value on one line), never
+big tiles.
 
 ## Rules
 
