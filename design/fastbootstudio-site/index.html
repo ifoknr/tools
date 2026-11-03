@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fastboot Studio</title>
+<link rel="icon" href="../../site/assets/img/tools/fastbootstudio.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="bg"></div>
+<header class="nav wrap">
+  <a class="brand" href="#"><img src="../../site/assets/img/tools/fastbootstudio.svg" alt=""><img class="word" src="../../site/assets/img/names/fastbootstudio-dark.svg" alt="Fastboot Studio"></a>
+  <nav class="links"><a href="#features" data-t="n_features"></a><a href="#android" data-t="n_android"></a><a href="#safety" data-t="n_safety"></a><a href="#get" data-t="n_get"></a></nav>
+  <div class="nav-end"><button class="ghost sm" data-act="lang" data-t="lang"></button><a class="btn sm" href="#get" data-t="download"></a></div>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <span class="chip"><i></i><b data-t="chip"></b></span>
+    <h1 data-t="h1"></h1>
+    <p class="lead" data-t="lead"></p>
+    <div class="cta">
+      <a class="btn" href="#get"><svg viewBox="0 0 24 24"><path d="M3 5.5 10 4.5v7H3zM11 4.4 21 3v8.5H11zM3 12.5h7v7L3 18.5zM11 12.5h10V21l-10-1.4z"/></svg><span data-t="win"></span></a>
+      <a class="ghost" href="#android"><svg viewBox="0 0 24 24"><path d="M7 9h10v8a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1zM8.5 5.5 7 3.5M15.5 5.5 17 3.5M7 9a5 5 0 0 1 10 0"/></svg><span data-t="and"></span></a>
+    </div>
+    <code class="winget">winget install IFOKNR.FastbootStudio</code>
+    <div class="stage">
+      <div class="glowball"></div>
+      <div class="laptop"><video src="../../site/assets/media/fastbootstudio.mp4" poster="../../site/assets/media/fastbootstudio.jpg" muted loop playsinline autoplay></video></div>
+      <div class="phone"><video src="../../site/assets/media/mobile.mp4" poster="../../site/assets/media/mobile.jpg" muted loop playsinline autoplay></video></div>
+    </div>
+  </section>
+
+  <section class="sec wrap" id="features">
+    <div class="head"><h2 data-t="f_h"></h2><p data-t="f_d"></p></div>
+    <div class="cards" id="cards"></div>
+  </section>
+
+  <section class="sec wrap" id="safety">
+    <div class="card wide">
+      <div class="wide-text">
+        <span class="tile t3"><svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.5 3 8.3 7 10 4-1.7 7-5.5 7-10V6z M9 12l2 2 4-4"/></svg></span>
+        <h3 data-t="s_h"></h3>
+        <p data-t="s_d"></p>
+        <a class="more" href="#get" data-t="s_more"></a>
+      </div>
+      <div class="term" dir="ltr">
+        <div class="term-bar"><i></i><i></i><i></i><span>Fastboot Studio · log</span></div>
+        <pre id="term"></pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec wrap" id="android">
+    <div class="head"><h2 data-t="a_h"></h2><p data-t="a_d"></p></div>
+    <div class="duo">
+      <div class="card app"><div class="app-top"><img src="../../site/assets/img/tools/mobile.svg" alt=""><img class="word" src="../../site/assets/img/names/mobile-dark.svg" alt="Fastboot Studio Mobile"></div><p data-t="m_d"></p><ul id="m_pts"></ul><div class="shot"><video src="../../site/assets/media/mobile.mp4" poster="../../site/assets/media/mobile.jpg" muted loop playsinline autoplay></video></div></div>
+      <div class="card app"><div class="app-top"><img src="../../site/assets/img/tools/companion.svg" alt=""><img class="word" src="../../site/assets/img/names/companion-dark.svg" alt="Fastboot Studio Companion"></div><p data-t="c_d"></p><ul id="c_pts"></ul><div class="shot"><video src="../../site/assets/media/companion.mp4" poster="../../site/assets/media/companion.jpg" muted loop playsinline autoplay></video></div></div>
+    </div>
+  </section>
+
+  <section class="sec wrap">
+    <div class="stats" id="stats"></div>
+  </section>
+
+  <section class="sec wrap" id="get">
+    <div class="card final">
+      <h2 data-t="g_h"></h2>
+      <p data-t="g_d"></p>
+      <div class="cta center"><a class="btn" href="#"><span data-t="win"></span></a><a class="ghost" href="#"><span data-t="apk"></span></a></div>
+      <p class="fine" data-t="g_f"></p>
+    </div>
+  </section>
+</main>
+
+<footer class="foot wrap">
+  <div class="dev"><img src="../../site/assets/img/ifoknr-mark.svg" alt=""><div><img class="sig" src="../../site/assets/img/ifoknr-dark.svg" alt="IFOKNR"><small data-t="dev"></small></div></div>
+  <div class="foot-links"><a href="#">GitHub</a><a href="#">Telegram</a><a href="#">XDA</a></div>
+</footer>
+<script src="app.js"></script>
+</body>
+</html>
