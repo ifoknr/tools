@@ -46,6 +46,12 @@ curl -fsSL https://raw.githubusercontent.com/ifoknr/tools/main/install.sh | bash
 curl -fsSL https://raw.githubusercontent.com/ifoknr/tools/main/install.sh | bash -s -- --tunnel التوكن
 ```
 
+## موقع التطبيقات وموقع إضافات الروت
+- `ifoknr.com/fastbootstudio/`: موقع Fastboot Studio للويندوز والأندرويد و Companion ([`site/fastbootstudio`](site/fastbootstudio)).
+- `ifoknr.com/modules/`: موقع إضافات الروت: NextZygisk و NextWheel و NextSUSFS و NextCore ([`site/modules`](site/modules)).
+
+الاثنين يقرون أرقام التحميل من GitHub عن طريق `/gh` نفس الموقع الرئيسي، ويستخدمون خطوطه وفيديوهاته من `/assets/`.
+
 ## مكتبة الأدوات (Telegram Mini App)
 صفحة `ifoknr.com/app/` تنفتح داخل تيليجرام من زر البوت، وتنفع كصفحة عادية في المتصفح. بالعربي والإنقليزي، وفيها:
 - **أدوات IFOKNR** بآخر إصداراتها.
@@ -118,6 +124,12 @@ docker run -d --name ifoknr-tools-bot --restart unless-stopped \
 To add or change a tool, edit [`site/assets/tools.json`](site/assets/tools.json); the site and the bot both read it.
 
 Updating: `update-site.sh` (install it as `/usr/local/bin/update-site`) pulls the newest image and mounts the bot's `public/` folder at `/app/live/`.
+
+## Apps site and root modules site
+- `/fastbootstudio/` ([`site/fastbootstudio`](site/fastbootstudio)): Fastboot Studio for Windows and Android, and Companion.
+- `/modules/` ([`site/modules`](site/modules)): the root modules: NextZygisk, NextWheel, NextSUSFS and NextCore.
+
+Both read download numbers from GitHub through the same `/gh` cache as the main site, and use its fonts and videos under `/assets/`.
 
 ## Tools library (Telegram Mini App)
 
