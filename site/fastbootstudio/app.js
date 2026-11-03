@@ -153,10 +153,10 @@
     var tiles = '<div class="kpi big"><small>' + e(t.total) + "</small><b>" + num(all) + "</b><span>" + e(t.apps) + "</span></div>" +
       IDS.map(function (id) {
         var rows = DL[id], lr = rows[rows.length - 1];
-        return '<div class="kpi"><img src="/assets/img/tools/' + id + '.svg" alt=""><small>' + SHORT[id] + "</small><b>" + num(sum(id)) + "</b><span>" + e(t.latest) + ' <bdi dir="ltr">v' + short(lr[0]) + "</bdi> · " + dayShort(lr[1]) + "</span></div>";
+        return '<div class="kpi"><img src="img/' + id + '.svg" alt=""><small>' + SHORT[id] + "</small><b>" + num(sum(id)) + "</b><span>" + e(t.latest) + ' <bdi dir="ltr">v' + short(lr[0]) + "</bdi> · " + dayShort(lr[1]) + "</span></div>";
       }).join("");
     var charts = IDS.map(function (id, i) {
-      return '<figure class="chart' + (i ? "" : " wide") + '"><figcaption><img src="/assets/img/tools/' + id + '.svg" alt="">' + NAMES[id] + "<span>" + DL[id].length + " " + e(t.releases) + "</span></figcaption>" + bars(id, i || narrow.matches ? 520 : 1060) + "</figure>";
+      return '<figure class="chart' + (i ? "" : " wide") + '"><figcaption><img src="img/' + id + '.svg" alt="">' + NAMES[id] + "<span>" + DL[id].length + " " + e(t.releases) + "</span></figcaption>" + bars(id, i || narrow.matches ? 520 : 1060) + "</figure>";
     }).join("");
     var table = '<details class="dtable"><summary>' + e(t.table) + '</summary><div class="tscroll"><table><thead><tr><th></th><th>' + e(t.c_ver) + "</th><th>" + e(t.c_date) + "</th><th>" + e(t.c_dl) + "</th></tr></thead><tbody>" +
       IDS.map(function (id) { return DL[id].slice().reverse().map(function (r) { return "<tr><td>" + NAMES[id] + '</td><td dir="ltr">' + e(r[0]) + (r[3] ? " (" + e(t.test) + ")" : "") + "</td><td>" + day(r[1]) + '</td><td class="n">' + num(r[2]) + "</td></tr>"; }).join(""); }).join("") +
@@ -168,7 +168,7 @@
     var t = T[L];
     root.lang = L; root.dir = L === "ar" ? "rtl" : "ltr";
     document.querySelectorAll("[data-t]").forEach(function (n) { n.textContent = t[n.getAttribute("data-t")]; });
-    document.getElementById("checks").innerHTML = '<header><img src="/assets/img/tools/fastbootstudio.svg" alt="">' + e(t.ck_title) + "<span>" + e(t.ck_n) + "</span></header>" +
+    document.getElementById("checks").innerHTML = '<header><img src="img/fastbootstudio.svg" alt="">' + e(t.ck_title) + "<span>" + e(t.ck_n) + "</span></header>" +
       t.checks.map(function (c) { return '<div class="ck' + (c[0] === "warn" ? " warn" : "") + '"><span class="st">' + svg(c[0]) + "</span>" + e(c[1]) + '<span class="v"><bdi>' + e(c[2]) + "</bdi></span></div>"; }).join("");
     var parts = [["boot", "96 MB", 1], ["vbmeta", "64 KB", 1], ["persist", "32 MB", 1], ["modemst1", "2 MB", 1], ["userdata", "112 GB", 0]];
     document.getElementById("bk").innerHTML = parts.map(function (p, i) { return '<div class="row' + (p[2] ? "" : " off") + (i === 0 ? " sel" : "") + '"><span class="bx">' + (p[2] ? svg("ok") : "") + "</span><code>" + p[0] + '</code><span class="sz">' + p[1] + "</span></div>"; }).join("");
