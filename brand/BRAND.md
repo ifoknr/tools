@@ -1,6 +1,7 @@
 # IFOKNR brand
 
-Fixed by IFOKNR on 28 Oct 2026, updated 30 Oct 2026 (grey icons, a new mark for the site).
+Fixed by IFOKNR on 28 Oct 2026, updated 30 Oct 2026 (grey icons, a new mark for the site) and
+9 Nov 2026 (glass icons for the Fastboot Studio apps).
 Every app, tool, site and post uses these; change them only when IFOKNR asks.
 
 ## IFOKNR (the developer)
@@ -36,6 +37,20 @@ says otherwise. **ifoknr.com uses a new mark and name** (since 30 Oct 2026):
 | NextWheel | radar sweep around a steering wheel | `icons/nextwheel.svg` |
 | NextCore | speed gauge with a bolt | `icons/nextcore.svg`; launcher layers in `nextcore/` (`mono.svg` and `white.svg` stay one colour) |
 | Companion | phone with a puzzle piece | `icons/companion.svg` |
+
+**Since 9 Nov 2026 the three Fastboot Studio apps have glass icons** (the grey drawings above stay
+for the root tools). One family: a glass object on a glass tile, with a white glyph in the dark
+version and a blue one (`#5b8cff` → `#1f4bd8`) in the light version. No core, no ball behind it.
+
+| App | Glass icon | Dark (launcher, dark theme) | Light (light theme) |
+|---|---|---|---|
+| Fastboot Studio (Windows) | a screen with the bolt | `icons/glass/fastbootstudio-dark.svg` | `icons/glass/fastbootstudio-light.svg` |
+| Fastboot Studio Mobile | a phone with the bolt | `icons/glass/mobile-dark.svg` | `icons/glass/mobile-light.svg` |
+| Companion | a chip with the puzzle piece | `icons/glass/companion-dark.svg` | `icons/glass/companion-light.svg` |
+
+Dark: grey glass, tile `#4a4a4f` → `#2c2c2f` with soft `#aab4cc` and `#7d879f` glows, a white veil and
+rim over the object. Light: frosted glass, tile `#f1f3f8` → `#d9dfea` with white and `#b9c6e6` glows.
+A launcher icon that cannot follow the theme uses the dark one.
 
 `tools-src/greyify.py` turns a coloured drawing into the grey family. A colour darker than 20 %
 lightness becomes graphite (HLS 0.69, 0.17 + 0.55·L, 0.04). Every other colour becomes grey-blue
