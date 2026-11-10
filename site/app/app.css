@@ -10,10 +10,11 @@
    and a blue-to-cyan gradient for what matters. Night follows the design; day is its light twin. */
 :root{
   --bg:#1f2041; --panel:#2b2d4a; --panel2:#393b5c; --side:#2a2c4a; --rail:#1b1d38;
-  --side-bg:linear-gradient(180deg,#6b51ab 0%,#8a6cc2 55%,#9b82cc 100%); --rail-bg:linear-gradient(180deg,#4e3c8e,#6d55ad);
-  --side-tx:#ffffff; --side-tx2:rgba(255,255,255,.78); --side-on:rgba(31,32,65,.55);
+  --side-bg:linear-gradient(180deg,#5e479e 0%,#6a52a8 55%,#7258ae 100%); --rail-bg:linear-gradient(180deg,#46357f,#5a4597);
+  --side-tx:#ffffff; --side-tx2:rgba(255,255,255,.85); --side-on:rgba(31,32,65,.55);
   --g1:#e357cf; --g2:#8b5cf6; --g3:#22d3ee;
   --grad:linear-gradient(120deg,var(--g1) 0%,var(--g2) 50%,var(--g3) 100%); --on-grad:#ffffff;
+  --grad-fill:linear-gradient(120deg,#c0359f 0%,#6d3fd8 50%,#0e7f9c 100%);
   --edge:#22d3ee; --edge-soft:rgba(34,211,238,.3); --line:rgba(255,255,255,.1);
   --glass:rgba(57,52,104,.62); --glass-hi:rgba(255,255,255,.14); --blur:16px;
   --tx:#ffffff; --tx2:rgba(255,255,255,.7); --tx3:rgba(255,255,255,.52);
@@ -27,7 +28,7 @@
   --side-bg:linear-gradient(180deg,#ece6fb 0%,#e1d8f8 100%); --rail-bg:linear-gradient(180deg,#d9cff5,#cdbff1);
   --side-tx:#241f45; --side-tx2:#4c4672; --side-on:rgba(255,255,255,.85);
   --g1:#c026d3; --g2:#7c3aed; --g3:#0891b2;
-  --edge:#0e8fa6; --edge-soft:rgba(14,143,166,.3); --line:rgba(31,32,65,.1);
+  --edge:#0a7488; --edge-soft:rgba(10,116,136,.3); --line:rgba(31,32,65,.1);
   --glass:rgba(255,255,255,.72); --glass-hi:rgba(255,255,255,.6);
   --tx:#1f2041; --tx2:#4f5373; --tx3:#62668a;
   --shadow:0 10px 24px rgba(31,32,65,.12); --hover:rgba(31,32,65,.05); --tile:#ffffff;
@@ -99,8 +100,9 @@ html[dir="rtl"] .insp{box-shadow:inset -1px 0 0 var(--line)}
 .b1{width:260px;height:260px;inset-inline-start:-60px;top:-90px;background:radial-gradient(circle at 35% 35%,#ff9ad5,#c35ad8 55%,transparent 70%);opacity:.75}
 .b2{width:220px;height:220px;inset-inline-end:-40px;bottom:-110px;background:radial-gradient(circle at 40% 40%,#7cf0ff,#21a8d6 60%,transparent 72%);opacity:.85}
 .b3{width:140px;height:140px;inset-inline-end:22%;top:-60px;background:radial-gradient(circle,#ffffff66,transparent 70%)}
+.btxt{text-shadow:0 1px 12px rgba(40,10,90,.45)}
 .btxt h1{font-size:26px;font-weight:700;line-height:1.3}
-.btxt p{font-size:14px;opacity:.88;margin-top:4px}
+.btxt p{font-size:14.5px;font-weight:500;margin-top:4px}
 
 /* sections */
 .sec{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:30px 2px 14px}
@@ -188,7 +190,7 @@ html[dir="rtl"] .chev{transform:scaleX(-1)}
 /* tags and filters */
 .tag{display:inline-flex;align-items:center;height:22px;padding:0 9px;border-radius:6px;font-size:11px;font-weight:500;white-space:nowrap;background:var(--panel2);color:var(--tx2)}
 .tag.foss{color:var(--ok)}
-.tag.me{background:var(--grad);color:#fff}
+.tag.me{background:var(--grad-fill);color:#fff}
 .tag.ver{font-family:var(--mono);font-size:10.5px}
 .tag.arch{color:var(--red)}
 .tag.kind{box-shadow:inset 0 0 0 1px var(--edge-soft)}
@@ -196,7 +198,7 @@ html[dir="rtl"] .chev{transform:scaleX(-1)}
 .chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 4px;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
 .chip{flex:none;min-height:36px;padding:0 14px;border-radius:999px;font-size:13px;box-shadow:inset 0 0 0 1px var(--edge-soft);color:var(--tx2);display:inline-flex;align-items:center;gap:6px}
-.chip.on{background:var(--grad);box-shadow:none;color:#fff;font-weight:600}
+.chip.on{background:var(--grad-fill);box-shadow:none;color:#fff;font-weight:600}
 .filters{display:flex;flex-direction:column;gap:8px;margin:18px 0 12px}
 
 /* page header */
@@ -228,14 +230,14 @@ html[dir="rtl"] .back svg{transform:scaleX(-1)}
 .fact i{font-style:normal;text-align:end;min-width:0;overflow-wrap:anywhere}
 .actions{display:flex;flex-direction:column;gap:8px;margin-top:16px}
 .btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:50px;border-radius:12px;font-weight:600;font-size:15px;background:var(--panel2);color:var(--tx);width:100%;box-shadow:inset 0 0 0 1px var(--edge-soft)}
-.btn.primary{background:var(--grad);color:#fff;box-shadow:0 8px 18px rgba(27,177,208,.3)}
+.btn.primary{background:var(--grad-fill);color:#fff;box-shadow:0 8px 18px rgba(27,177,208,.3)}
 .btn.small{min-height:44px;font-size:14px;background:transparent}
 .btn:disabled{opacity:.5}
 .btn-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px}
 .note{margin-top:12px;font-size:13px;color:var(--tx3);line-height:1.7;padding:0 6px}
 
 /* IFOKNR column: the picture in a glass hexagon with thin rings behind it */
-.me{display:flex;flex-direction:column;align-items:center;gap:6px;padding:6px 0 22px;position:relative}
+.insp .me{display:flex;flex-direction:column;align-items:center;gap:6px;padding:6px 0 22px;position:relative}
 .mehex{position:relative;width:150px;height:150px;display:grid;place-items:center;margin-bottom:4px}
 .rings{position:absolute;inset:-14px;width:calc(100% + 28px);height:calc(100% + 28px);fill:none;stroke:url(#rg);stroke-width:1;filter:drop-shadow(0 0 6px var(--edge-soft))}
 .hexin{position:relative;width:112px;height:112px;display:grid;place-items:center;filter:drop-shadow(0 10px 22px rgba(0,0,0,.35))}
@@ -243,8 +245,8 @@ html[dir="rtl"] .back svg{transform:scaleX(-1)}
 .hexin::before{background:var(--grad)}
 .hexin::after{inset:4px;background:linear-gradient(160deg,rgba(255,255,255,.34),rgba(255,255,255,0) 42%);z-index:2}
 .mehex img.mm{position:relative;z-index:1;width:104px;height:104px;object-fit:cover;clip-path:polygon(50% 0,93.3% 25%,93.3% 75%,50% 100%,6.7% 75%,6.7% 25%)}
-.me img.sig{height:17px;width:auto}
-.me small{color:var(--tx3);font-size:13px}
+.insp .me img.sig{height:17px;width:auto}
+.insp .me small{color:var(--tx3);font-size:13px}
 .ihead{display:flex;justify-content:space-between;color:var(--tx2);font-size:14.5px;padding:10px 2px 8px}
 .ihead span+span{color:var(--tx3)}
 .ilist,.ilinks{display:flex;flex-direction:column;gap:8px}

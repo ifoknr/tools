@@ -118,9 +118,6 @@
     return '<img class="' + cls + ' dark-only" src="' + src.replace('{t}', 'dark') + '" alt="' + esc(alt || '') + '">' +
       '<img class="' + cls + ' light-only" src="' + src.replace('{t}', 'light') + '" alt="">';
   }
-  function mark(cls) {
-    return '<img class="' + cls + ' dark-only" src="/assets/img/ifoknr-mark.svg?v=4" alt=""><img class="' + cls + ' light-only" src="/assets/img/ifoknr-mark-light.svg?v=4" alt="">';
-  }
   function toolTitle(tool, cls) { return themed('/assets/img/names/' + esc(tool.id) + '-{t}.svg', cls, toolName(tool)); }
   function haptic() { try { tg && tg.HapticFeedback && tg.HapticFeedback.selectionChanged(); } catch (e) {} }
   function toast(msg) {
@@ -324,7 +321,7 @@
   function ghPic(gh) { return gh ? 'https://github.com/' + esc(gh.split('/')[0]) + '.png?size=96' : ''; }
   function rail(r) {
     return '<aside class="rail" aria-label="IFOKNR">' +
-      '<a class="rail-mark" href="https://ifoknr.com" aria-label="ifoknr.com">' + mark('rm') + '</a>' +
+      '<a class="rail-mark" href="#/" aria-label="' + esc(t('title')) + '"><img class="rm" src="/app/icon.svg" width="42" height="42" alt=""></a>' +
       '<button class="rbtn' + (r.view === 'home' ? ' on' : '') + '" data-go="#/" aria-label="' + esc(t('home')) + '"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg></button>' +
       '<span class="rsp"></span>' +
       (inTelegram ? '' : '<button class="rbtn" data-theme aria-label="' + esc(t('theme')) + '">' + ICON.theme + '</button>') +

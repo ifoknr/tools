@@ -13,6 +13,8 @@ Every app, tool, site and post uses these; change them only when IFOKNR asks.
 
 The mark sits to the left of the name (the name is the same height as the mark or smaller).
 On an About page: the mark, then the name, then "Developer" under it.
+The tools library (/app) is the one exception: IFOKNR's picture (`site/app/ifoknr.webp`) in a glass hexagon
+stands in for the mark, and the rail at the top shows the library's own icon (`site/app/icon.svg`).
 
 The violet mark and name above stay in the apps and tools (About pages, signatures) until IFOKNR
 says otherwise. **ifoknr.com uses a new mark and name** (since 30 Oct 2026):

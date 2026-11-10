@@ -12,6 +12,8 @@ The full guide and the source files are in `brand/` (BRAND.md). In short:
 - IFOKNR's mark is `IF` in the Swamp Ninja lettering on a soft deep-violet tile, and the name is
   `IFOKNR` in the same lettering, lilac to violet to rose on dark (darker violets on light).
   The apps and tools use these. On an About page: mark, name, "Developer" under it.
+  Exception (his request, 10 Nov 2026): the tools library (/app) shows his picture (`site/app/ifoknr.webp`)
+  in a glass hexagon instead of the mark, and its rail shows the library's own icon (`site/app/icon.svg`).
 - ifoknr.com uses a new mark and name: `IF` and `IFOKNR` in the Audiowide lettering, a graphite
   tile, the name silver on dark and graphite on light.
 - App and tool names are drawn in the Prixma Bold Italic lettering, small.
