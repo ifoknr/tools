@@ -357,8 +357,14 @@
       '<button class="ilink" data-open="https://ifoknr.com/fastboot/">Fastboot Studio</button></div>';
     return h + credit() + '</aside>';
   }
+  // Phones hide the rail, so their top bar carries the library icon, the theme and the language.
+  function mtop() {
+    return '<div class="mtop"><a class="mlogo" href="#/"><img src="/app/icon.svg" width="34" height="34" alt=""><b>' + t('title') + '</b></a>' +
+      (inTelegram ? '' : '<button class="mbtn" data-theme aria-label="' + esc(t('theme')) + '">' + ICON.theme + '</button>') +
+      '<button class="mbtn txt" data-lang>' + t('lang') + '</button></div>';
+  }
   function shell(view, r) {
-    return '<div class="shell">' + rail(r) + side(r) + '<main class="main"><div class="bar">' + searchBox() + '</div><div class="content">' + view + '</div></main>' + insp() + '</div>';
+    return '<div class="shell">' + rail(r) + side(r) + '<main class="main"><div class="bar">' + mtop() + searchBox() + '</div><div class="content">' + view + '</div></main>' + insp() + '</div>';
   }
   function secHead(title, go) {
     return '<div class="sec"><h2>' + title + '</h2>' + (go ? '<button class="see" data-go="' + go + '">' + t('seeAll') + '</button>' : '') + '</div>';
