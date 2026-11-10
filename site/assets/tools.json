@@ -185,7 +185,7 @@
     "repo": "ifoknr/FastbootStudio",
     "group": "pc",
     "accent": "#3dd6c4",
-    "version": "v2.8.0",
+    "version": "v3.0.0",
     "asset": "\\.zip$",
     "license": "MIT",
     "base": {
@@ -251,7 +251,7 @@
         "Partition backups on the phone; a WebUI for phones and tablets, day and night"
       ]
     },
-    "version": "v2.5.2",
+    "version": "v2.5.3",
     "asset": "\\.zip$",
     "license": "MIT"
   },
@@ -288,7 +288,7 @@
         "OTG: flash another phone in fastboot mode over a cable, no root needed"
       ]
     },
-    "version": "v1.1.0",
+    "version": "v1.2.0",
     "asset": "\\.apk$",
     "license": "MIT"
   }
