@@ -26,7 +26,7 @@
       uploaded: 'انرفع', fileType: 'نوع الملف', privateNote: 'الملف يوصلك من البوت @{bot} في المحادثة.',
       credit: 'قائمة البرامج من <a href="{url}">{name}</a> (رخصة {lic}، {copy}). أدوات IFOKNR من <a href="https://ifoknr.com">ifoknr.com</a>.',
       updated: 'آخر تحديث للقائمة {d}', theme: 'الوضع الفاتح أو الداكن', lang: 'EN', loadFail: 'ما قدرت أحمّل المكتبة', retry: 'حاول مرة ثانية',
-      explore: 'استكشف', home: 'الرئيسية', featured: 'منظومة NEXT', popular: 'الأكثر نجوم', recent: 'تحدّثت مؤخراً', seeAll: 'عرض الكل', dev: 'المطوّر', follow: 'تابعني', site: 'الموقع', telegram: 'قروب تلقرام', bannerSub: '{n} برنامج وموديول للروت، تتحدث كل يوم'
+      explore: 'استكشف', home: 'الرئيسية', featured: 'منظومة NEXT', popular: 'الأكثر نجوم', recent: 'تحدّثت مؤخراً', seeAll: 'عرض الكل', dev: 'المطوّر', follow: 'تابعني', site: 'الموقع', telegram: 'قروب تلقرام', tagline: 'برامج الروت والموديولات والتفليش في مكان واحد', stApps: 'برنامج وموديول', stCats: 'قسم', stDaily: 'تحديث يومي'
     },
     en: {
       title: 'Tools library', sub: '{n} root apps and modules', search: 'Search: Magisk, hide root, battery…',
@@ -43,7 +43,7 @@
       uploaded: 'Added', fileType: 'File type', privateNote: 'The file comes from the bot @{bot} in the chat.',
       credit: 'App list from <a href="{url}">{name}</a> ({lic} license, {copy}). IFOKNR tools from <a href="https://ifoknr.com">ifoknr.com</a>.',
       updated: 'List updated {d}', theme: 'Light or dark theme', lang: 'ع', loadFail: 'The library did not load', retry: 'Try again',
-      explore: 'Explore', home: 'Home', featured: 'The NEXT stack', popular: 'Most starred', recent: 'Recently updated', seeAll: 'See all', dev: 'Developer', follow: 'Follow me', site: 'Website', telegram: 'Telegram group', bannerSub: '{n} root apps and modules, updated every day'
+      explore: 'Explore', home: 'Home', featured: 'The NEXT stack', popular: 'Most starred', recent: 'Recently updated', seeAll: 'See all', dev: 'Developer', follow: 'Follow me', site: 'Website', telegram: 'Telegram group', tagline: 'Root apps, modules and flashing tools in one place', stApps: 'apps & modules', stCats: 'categories', stDaily: 'Updated daily'
     }
   };
   var CAT_ICON = {
@@ -391,11 +391,18 @@
       (rel.t ? ' · ' + esc(date(rel.t)) : '') + '</small></span></button>';
   }
 
+  // The banner's sound bars, like the wave in the Daccord design.
+  var WAVE = '<div class="wave" aria-hidden="true">' + Array.apply(null, Array(64)).map(function (_, k) {
+    return '<i style="height:' + (10 + Math.round(Math.abs(Math.sin(k * 0.45) * Math.cos(k * 0.13)) * 46) + (k % 3) * 4) + 'px"></i>';
+  }).join('') + '</div>';
+
   // ---------- views ----------
   function home() {
     var d = state.data, h = '';
-    h += '<div class="banner"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span>' +
-      '<div class="btxt"><h1>' + t('title') + '</h1><p>' + t('bannerSub', { n: num(d.items.length) }) + '</p></div></div>';
+    h += '<div class="banner"><span class="glow g1"></span><span class="glow g2"></span>' + WAVE +
+      '<div class="btxt"><h1>' + t('title') + '</h1><p>' + t('tagline') + '</p><div class="bst">' +
+      '<span><b class="ltr">' + num(d.items.length) + '</b>' + t('stApps') + '</span><span><b class="ltr">' + num(d.categories.length) + '</b>' + t('stCats') + '</span>' +
+      '<span><i></i>' + t('stDaily') + '</span></div></div></div>';
     if (state.q.trim()) {
       var found = applyFilters(search(state.q));
       return h + filterBar() + '<div class="sec"><h2>' + t('results', { n: num(found.length) }) + '</h2></div>' + list(found);
