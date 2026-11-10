@@ -26,6 +26,7 @@ jobs:
           node -e "JSON.parse(require('fs').readFileSync('site/assets/tools.json'))"
           node --check site/assets/app.js
           node --check site/app/app.js
+          for f in site/fastboot/*.js; do node --check "$f"; done
           node -e "const d=JSON.parse(require('fs').readFileSync('site/app/library.json'));if(d.items.length<100||d.categories.length<10)process.exit(1);console.log('library:',d.items.length,'entries')"
           python3 -m unittest discover -s scripts
 
@@ -55,6 +56,9 @@ jobs:
           # The tools library: its page (opened by Telegram), its data, and the bot's list only
           # when the bot's folder is mounted.
           curl -fsS http://127.0.0.1:8090/app/ | grep -q 'app/app.js?v='
+          curl -fsS http://127.0.0.1:8090/fastboot/ | grep -q 'fastboot.js'
+          curl -fsS http://127.0.0.1:8090/fastboot/app.html | grep -q 'app-page.js'
+          curl -fsS -o /dev/null http://127.0.0.1:8090/fastboot/img/win/ar-02-device.webp
           curl -fsSI http://127.0.0.1:8090/app/ | grep -i "frame-ancestors 'self' https://web.telegram.org"
           curl -fsS http://127.0.0.1:8090/app/library.json | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{if(JSON.parse(s).items.length<100)process.exit(1)})"
           test "$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8090/app/live/private.json)" = 404
