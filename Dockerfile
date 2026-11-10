@@ -12,6 +12,10 @@ RUN cd /usr/share/nginx/html && for f in assets/boot.js assets/app.js assets/sty
     done && grep -q 'app.js?v=' index.html \
     && sed -i '/<script type="application\/json" id="tools-data">/r assets/tools.json' index.html \
     && grep -q '"fastbootstudio"' index.html \
+    && for f in assets/boot.js assets/app.js assets/style.css; do \
+      h=$(md5sum "$f" | cut -c1-10); sed -i "s#\"../$f\"#\"../$f?v=$h\"#" fastboot/index.html; \
+    done && grep -q 'app.js?v=' fastboot/index.html \
+    && sed -i '/<script type="application\/json" id="tools-data">/r assets/tools.json' fastboot/index.html \
     && for f in app/app.js app/app.css; do \
       h=$(md5sum "$f" | cut -c1-10); sed -i "s#\"/$f\"#\"/$f?v=$h\"#" app/index.html; \
     done && grep -q 'app.js?v=' app/index.html && rm -rf app/live
