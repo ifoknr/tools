@@ -25,7 +25,8 @@
       changes: 'التغييرات', needs: 'يحتاج', beta: 'بيتا', soon: 'قريباً', sendMe: 'أرسله لي في المحادثة',
       uploaded: 'انرفع', fileType: 'نوع الملف', privateNote: 'الملف يوصلك من البوت @{bot} في المحادثة.',
       credit: 'قائمة البرامج من <a href="{url}">{name}</a> (رخصة {lic}، {copy}). أدوات IFOKNR من <a href="https://ifoknr.com">ifoknr.com</a>.',
-      updated: 'آخر تحديث للقائمة {d}', theme: 'الوضع الفاتح أو الداكن', lang: 'EN', loadFail: 'ما قدرت أحمّل المكتبة', retry: 'حاول مرة ثانية'
+      updated: 'آخر تحديث للقائمة {d}', theme: 'الوضع الفاتح أو الداكن', lang: 'EN', loadFail: 'ما قدرت أحمّل المكتبة', retry: 'حاول مرة ثانية',
+      explore: 'استكشف', home: 'الرئيسية', featured: 'منظومة NEXT', popular: 'الأكثر نجوم', recent: 'تحدّثت مؤخراً', seeAll: 'عرض الكل', dev: 'المطوّر', follow: 'تابعني', site: 'الموقع', telegram: 'قروب تلقرام', bannerSub: '{n} برنامج وموديول للروت، تتحدث كل يوم'
     },
     en: {
       title: 'Tools library', sub: '{n} root apps and modules', search: 'Search: Magisk, hide root, battery…',
@@ -41,9 +42,29 @@
       changes: 'Changes', needs: 'Needs', beta: 'Beta', soon: 'Soon', sendMe: 'Send it to me in the chat',
       uploaded: 'Added', fileType: 'File type', privateNote: 'The file comes from the bot @{bot} in the chat.',
       credit: 'App list from <a href="{url}">{name}</a> ({lic} license, {copy}). IFOKNR tools from <a href="https://ifoknr.com">ifoknr.com</a>.',
-      updated: 'List updated {d}', theme: 'Light or dark theme', lang: 'ع', loadFail: 'The library did not load', retry: 'Try again'
+      updated: 'List updated {d}', theme: 'Light or dark theme', lang: 'ع', loadFail: 'The library did not load', retry: 'Try again',
+      explore: 'Explore', home: 'Home', featured: 'The NEXT stack', popular: 'Most starred', recent: 'Recently updated', seeAll: 'See all', dev: 'Developer', follow: 'Follow me', site: 'Website', telegram: 'Telegram group', bannerSub: '{n} root apps and modules, updated every day'
     }
   };
+  var CAT_ICON = {
+    'root-management': '<path d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6z"/>',
+    system: '<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1L7 17M17 7l2.1-2.1"/>',
+    performance: '<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>',
+    privacy: '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path d="M4 20L20 4"/>',
+    security: '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+    'ad-blocking': '<circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/>',
+    'app-modifications': '<path d="M14 3h4a3 3 0 0 1 3 3v4h-3a2 2 0 1 0 0 4h3v4a3 3 0 0 1-3 3h-4v-3a2 2 0 1 0-4 0v3H6a3 3 0 0 1-3-3v-4h3a2 2 0 1 0 0-4H3V6a3 3 0 0 1 3-3h4v3a2 2 0 1 0 4 0z"/>',
+    debloating: '<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>',
+    'file-management': '<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
+    backup: '<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/>',
+    customization: '<path d="M12 3a9 9 0 0 0 0 18c1.1 0 2-.9 2-2 0-.5-.2-1-.5-1.3-.3-.4-.5-.8-.5-1.3 0-1.1.9-2 2-2h2.4A4.6 4.6 0 0 0 22 9.8C22 6 17.5 3 12 3z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10.5" cy="7.5" r="1"/><circle cx="15" cy="7.5" r="1"/>',
+    audio: '<path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/>',
+    networking: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>',
+    gaming: '<path d="M6 9h4M8 7v4M15 9h.01M18 11h.01"/><path d="M7 5h10a5 5 0 0 1 5 5l-1 6a3 3 0 0 1-5.2 1.6L14 16h-4l-1.8 1.6A3 3 0 0 1 3 16l-1-6a5 5 0 0 1 5-5z"/>',
+    development: '<path d="M8 8l-5 4 5 4M16 8l5 4-5 4M14 4l-4 16"/>',
+    utilities: '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/>'
+  };
+  function catIcon(id) { return '<svg class="ci" viewBox="0 0 24 24" aria-hidden="true">' + (CAT_ICON[id] || '<circle cx="12" cy="12" r="8"/>') + '</svg>'; }
   var ROOT_NAMES = { magisk: 'Magisk', kernelsu: 'KernelSU', apatch: 'APatch', lsposed: 'LSPosed' };
 
   var state = { lang: pickLang(), data: null, tools: [], rel: {}, priv: [], q: '', shown: PAGE, filter: { root: '', foss: false, sec: -1 } };
@@ -81,7 +102,7 @@
   function avatar(name, gh, cls) {
     var letter = esc((name || '?').replace(/^[^A-Za-z0-9؀-ۿ]+/, '').charAt(0).toUpperCase() || '?');
     var img = gh ? '<img loading="lazy" alt="" src="https://github.com/' + esc(gh.split('/')[0]) + '.png?size=96" data-fallback>' : '';
-    return '<span class="av ' + (cls || '') + ' c' + (hash(name || '') % 8) + '">' + letter + img + '</span>';
+    return '<span class="av hex ' + (cls || '') + ' c' + (hash(name || '') % 8) + '">' + letter + img + '</span>';
   }
   var ICON = {
     search: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>',
@@ -235,6 +256,8 @@
   function toolName(tool) { return Array.isArray(tool.name) ? tool.name.join('') : tool.name; }
   // A tool with an icon shows it; the modules get a monogram in their group's colour.
   function toolAvatar(tool, cls) {
+    // The Fastboot Studio apps use their glass icons, one per theme.
+    if (tool.group === 'pc') return '<span class="av glass ' + (cls || '') + '">' + themed('/fastboot/img/glass/' + esc(tool.id) + '-{t}.svg', 'gi', '') + '</span>';
     if (tool.icon) return '<span class="av ' + (cls || '') + ' acc-icon"><img src="/' + esc(tool.icon) + '" alt=""></span>';
     var parts = Array.isArray(tool.name) ? tool.name : [tool.name || '?'];
     var mono = parts.map(function (p) { return String(p).trim().charAt(0); }).join('').toUpperCase().slice(0, 2);
@@ -293,29 +316,92 @@
   }
   function credit() {
     var s = state.data.source;
-    return '<div class="credit"><div class="dev">' + mark('mk') + themed('/assets/img/ifoknr-{t}.svg', 'sig', 'IFOKNR') + '</div>' + t('credit', { url: esc(s.url), name: esc(s.name), lic: esc(s.license), copy: esc(s.copyright) }) +
-      '<br>' + t('updated', { d: esc(date(state.data.updated)) }) + '</div>';
+    return '<p class="credit">' + t('credit', { url: esc(s.url), name: esc(s.name), lic: esc(s.license), copy: esc(s.copyright) }) +
+      '<br>' + t('updated', { d: esc(date(state.data.updated)) }) + '</p>';
+  }
+  // ---------- Daccord layout: icon rail, category list, main column, IFOKNR column ----------
+  var UI = { nextzygisk: 'zy', nextwheel: 'wh', nextsusfs: 'su' };
+  function ghPic(gh) { return gh ? 'https://github.com/' + esc(gh.split('/')[0]) + '.png?size=96' : ''; }
+  function rail(r) {
+    return '<aside class="rail" aria-label="IFOKNR">' +
+      '<a class="rail-mark" href="https://ifoknr.com" aria-label="ifoknr.com">' + mark('rm') + '</a>' +
+      '<button class="rbtn' + (r.view === 'home' ? ' on' : '') + '" data-go="#/" aria-label="' + esc(t('home')) + '"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg></button>' +
+      '<span class="rsp"></span>' +
+      (inTelegram ? '' : '<button class="rbtn" data-theme aria-label="' + esc(t('theme')) + '">' + ICON.theme + '</button>') +
+      '<button class="rbtn txt" data-lang>' + t('lang') + '</button></aside>';
+  }
+  function side(r) {
+    var cats = state.data.categories, cur = r.view === 'cat' ? r.id : r.view === 'home' && !state.q ? '#home' : '';
+    return '<nav class="side" aria-label="' + esc(t('cats')) + '"><div class="side-head">' + t('explore') + '</div><div class="side-list">' +
+      '<button class="snav' + (cur === '#home' ? ' on' : '') + '" data-go="#/"><svg class="ci" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg><span>' + t('home') + '</span></button>' +
+      cats.map(function (c) {
+        return '<button class="snav' + (cur === c.id ? ' on' : '') + '" data-go="#/c/' + esc(c.id) + '">' + catIcon(c.id) + '<span>' + esc(c[state.lang]) + '</span><small class="ltr">' + num(c.count) + '</small></button>';
+      }).join('') + '</div></nav>';
+  }
+  function insp() {
+    var h = '<aside class="insp"><div class="me"><span class="mehex">' + mark('mm') + '</span>' + themed('/assets/img/ifoknr-{t}.svg', 'sig', 'IFOKNR') + '<small>' + t('dev') + '</small></div>';
+    if (state.priv.length) h += '<div class="ihead"><span>' + t('uploads') + '</span><span class="ltr">' + num(state.priv.length) + '</span></div><div class="ilist">' +
+      state.priv.slice(0, 6).map(function (p) {
+        return '<button class="irow" data-go="#/p/' + esc(p.id) + '">' + avatar(p.name, null, 'sm') + '<span><b class="ltr">' + esc(p.name) + '</b><small>' + esc(p.t ? date(p.t) : (p.ext ? '.' + p.ext : '')) + '</small></span></button>';
+      }).join('') + '</div>';
+    h += '<div class="ihead"><span>' + t('follow') + '</span></div><div class="ilinks">' +
+      '<button class="ilink" data-open="https://t.me/BeNeXTBrO">' + t('telegram') + '</button>' +
+      '<button class="ilink" data-open="https://t.me/IFOKNR1"><span class="ltr">@IFOKNR1</span></button>' +
+      '<button class="ilink" data-open="https://github.com/ifoknr">GitHub</button>' +
+      '<button class="ilink" data-open="https://ifoknr.com">ifoknr.com</button>' +
+      '<button class="ilink" data-open="https://ifoknr.com/fastboot/">Fastboot Studio</button></div>';
+    return h + credit() + '</aside>';
+  }
+  function shell(view, r) {
+    return '<div class="shell">' + rail(r) + side(r) + '<main class="main"><div class="bar">' + searchBox() + '</div><div class="content">' + view + '</div></main>' + insp() + '</div>';
+  }
+  function secHead(title, go) {
+    return '<div class="sec"><h2>' + title + '</h2>' + (go ? '<button class="see" data-go="' + go + '">' + t('seeAll') + '</button>' : '') + '</div>';
+  }
+  function fcard(tool) {
+    var rel = state.rel[tool.id], txt = tool[state.lang] || tool.en || {}, ui = UI[tool.id];
+    var shot = ui ? '<img class="fimg dark-only" loading="lazy" src="/assets/ui/' + ui + '-dark.webp" alt=""><img class="fimg light-only" loading="lazy" src="/assets/ui/' + ui + '-light.webp" alt="">'
+      : '<img class="fimg" loading="lazy" src="/assets/media/' + esc(tool.id) + '.jpg" alt="">';
+    var kind = tool.layer ? t('layer_' + tool.layer) : T[state.lang]['plat_' + tool.id] ? t('plat_' + tool.id) : '';
+    return '<button class="fcard" data-go="#/t/' + esc(tool.id) + '"><span class="fpic">' + shot + '</span><span class="fwave"></span>' +
+      '<span class="fav">' + toolAvatar(tool, 'hex') + '</span><span class="fbody"><span class="fname ltr">' + toolTitle(tool, 'tname') + '</span>' +
+      '<span class="fdesc">' + esc(txt.tagline || '') + '</span><span class="fmeta"><span>' + esc(kind) + '</span><span class="ltr">' +
+      esc(rel ? rel.v : tool.version || '') + '</span></span></span></button>';
+  }
+  function pcard(i, go, sub, foot) {
+    var pic = ghPic(i.gh);
+    return '<button class="pcard" data-go="' + go + '"><span class="ppic">' + (pic ? '<img class="pblur" loading="lazy" alt="" src="' + pic + '" data-fallback>' : '') + avatar(i.n, i.gh, 'md') + '</span>' +
+      '<span class="pbody"><b class="ltr">' + esc(i.n) + '</b><span class="auto">' + esc(sub || '') + '</span><small>' + foot + '</small></span></button>';
+  }
+  function scard(i) {
+    var pic = ghPic(i.gh), rel = i.rel || {};
+    return '<button class="scard" data-go="#/i/' + esc(i.id) + '"><span class="spic">' + (pic ? '<img class="pblur" loading="lazy" alt="" src="' + pic + '" data-fallback>' : '') + '</span><span class="swave"></span>' +
+      avatar(i.n, i.gh, 'sm') + '<span class="sbody"><b class="ltr">' + esc(i.n) + '</b><span class="auto">' + esc(i.d || '') + '</span><small><span class="ltr">' + esc(rel.v || '') + '</span>' +
+      (rel.t ? ' · ' + esc(date(rel.t)) : '') + '</small></span></button>';
   }
 
   // ---------- views ----------
   function home() {
-    var d = state.data, h = '<div class="top">' + mark('logo') +
-      '<div class="title">' + themed('/assets/img/ifoknr-{t}.svg', 'sig', 'IFOKNR') + '<h1>' + t('title') + '</h1><p>' + t('sub', { n: num(d.items.length) }) + '</p></div>' +
-      (inTelegram ? '' : '<button class="pill-btn round" data-theme aria-label="' + t('theme') + '">' + ICON.theme + '</button>') +
-      '<button class="pill-btn" data-lang>' + t('lang') + '</button></div>' + searchBox();
+    var d = state.data, h = '';
+    h += '<div class="banner"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span>' +
+      '<div class="btxt"><h1>' + t('title') + '</h1><p>' + t('bannerSub', { n: num(d.items.length) }) + '</p></div></div>';
     if (state.q.trim()) {
       var found = applyFilters(search(state.q));
       return h + filterBar() + '<div class="sec"><h2>' + t('results', { n: num(found.length) }) + '</h2></div>' + list(found);
     }
-    h += toolSections();
-    if (state.priv.length) h += '<div class="sec"><h2>' + t('uploads') + '</h2><span>' + num(state.priv.length) + '</span></div><div class="list">' + state.priv.slice(0, 6).map(privRow).join('') + '</div>';
-    h += '<div class="sec"><h2>' + t('cats') + '</h2><span>' + num(d.categories.length) + '</span></div><div class="cats">' +
-      d.categories.map(function (c) {
-        return '<button class="cat" data-go="#/c/' + esc(c.id) + '"><span class="em">' + c.emoji + '</span><span><b>' + esc(c[state.lang]) + '</b><small>' + t('items', { n: num(c.count) }) + '</small></span></button>';
-      }).join('') + '</div>';
-    var picks = d.items.filter(function (i) { return i.star; }).sort(function (a, b) { return (b.stars || 0) - (a.stars || 0); }).slice(0, 12);
-    if (picks.length) h += '<div class="sec"><h2>' + t('picks') + '</h2></div><div class="list">' + picks.map(row).join('') + '</div>';
-    return h + credit();
+    h += '<div class="mcats">' + d.categories.map(function (c) { return '<button class="mcat" data-go="#/c/' + esc(c.id) + '">' + catIcon(c.id) + '<span>' + esc(c[state.lang]) + '</span></button>'; }).join('') + '</div>';
+    var hide = state.tools.filter(function (x) { return x.group === 'hide'; }).sort(function (a, b) { return LAYERS.indexOf(a.layer) - LAYERS.indexOf(b.layer); });
+    if (hide.length) h += secHead(t('featured')) + '<div class="fgrid">' + hide.map(fcard).join('') + '</div>';
+    var fbs = state.tools.filter(function (x) { return x.group === 'pc'; }).sort(function (a, b) { return FBS.indexOf(a.id) - FBS.indexOf(b.id); });
+    if (fbs.length) h += secHead(t('fbs')) + '<div class="pgrid">' + fbs.map(function (tl) {
+      var txt = tl[state.lang] || tl.en || {}, rel = state.rel[tl.id];
+      return '<button class="pcard tool" data-go="#/t/' + esc(tl.id) + '"><span class="ppic">' + toolAvatar(tl, 'hex md') + '</span><span class="pbody"><b class="ltr">' + esc(toolName(tl)) + '</b><span>' + esc(txt.tagline || '') + '</span><small class="ltr">' + esc(rel ? rel.v : tl.version || '') + '</small></span></button>';
+    }).join('') + '</div>';
+    var picks = d.items.filter(function (i) { return i.star; }).sort(function (a, b) { return (b.stars || 0) - (a.stars || 0); }).slice(0, 6);
+    if (picks.length) h += secHead(t('popular'), '#/c/root-management') + '<div class="pgrid">' + picks.map(function (i) { return pcard(i, '#/i/' + i.id, i.d, '★ <span class="ltr">' + num(i.stars) + '</span>'); }).join('') + '</div>';
+    var recent = d.items.filter(function (i) { return i.rel && i.rel.t; }).sort(function (a, b) { return a.rel.t < b.rel.t ? 1 : -1; }).slice(0, 6);
+    if (recent.length) h += secHead(t('recent')) + '<div class="sgrid">' + recent.map(scard).join('') + '</div>';
+    return h;
   }
   function category(id) {
     var c = state.cats[id];
@@ -392,6 +478,7 @@
   function render(keepScroll) {
     var r = route(), key = r.view + ':' + (r.id || '');
     var html = r.view === 'cat' ? category(r.id) : r.view === 'item' ? item(r.id) : r.view === 'tool' ? tool(r.id) : r.view === 'upload' ? upload(r.id) : home();
+    html = shell(html, r);
     var y = window.scrollY, focused = document.activeElement && document.activeElement.id === 'q', caret = focused ? document.activeElement.selectionStart : 0;
     app.innerHTML = html;
     app.querySelectorAll('img[data-fallback]').forEach(function (img) {
@@ -443,6 +530,8 @@
   app.addEventListener('input', function (e) {
     if (e.target.id !== 'q') return;
     state.q = e.target.value; state.shown = PAGE;
+    // Typing on another page searches the whole library from the home page.
+    if (state.q.trim() && route().view !== 'home') { location.hash = '#/'; return; }
     clearTimeout(typing); typing = setTimeout(function () { render(true); }, 120);
   });
   app.addEventListener('keydown', function (e) { if (e.target.id === 'q' && e.key === 'Enter') e.target.blur(); });
