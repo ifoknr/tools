@@ -3,8 +3,13 @@
   var CACHE_KEY = "releases-v2";
   var CACHE_MS = 60 * 60 * 1000; // GitHub allows 60 unauthenticated requests an hour per visitor.
   var root = document.documentElement;
+  // The main site (ifoknr.com) or the Fastboot Studio site (ifoknr.com/fastboot/), which shows
+  // only the "pc" group; BASE leads from the page's folder back to the site root's files.
+  var SCOPE = root.getAttribute("data-scope") === "fastboot" ? "fastboot" : "main";
+  var BASE = root.getAttribute("data-base") || "";
   var TOOLS = []; // from tools.json, shared with the Telegram bot
   var byId = {};
+  var ALL = {}; // every tool by id, including the other site's (the hero's videos)
   var releases = {}; // repo -> { tag, date, url, asset, downloads }
   var apiFailed = false;
 
@@ -34,6 +39,10 @@
       st_apk: ["حمّل ملف APK، أو تابع التحديثات من Obtainium", "اسمح بصلاحية الروت أول ما تفتحه", "للجوال الثاني: وصّله بكيبل OTG"],
       copy: "نسخ", copied: "تم النسخ", prev: "السابق", next: "التالي", back: "كل الأدوات",
       dev: "المطوّر", telegram: "قروب تلقرام",
+      fb_site: "موقع Fastboot Studio", all_tools: "كل أدوات IFOKNR",
+      fb_moved: "التطبيقات الثلاثة صار لها موقعها الخاص.", fb_open: "افتح موقع Fastboot Studio",
+      fb_h1: "Fastboot Studio: فلّش جوالك من الكمبيوتر أو من الجوال نفسه",
+      fb_lead: "تطبيق ويندوز وتطبيق جوال يفلّشون جوالك ويحمونه من الأخطاء، وموديول روت يكمّلهم من داخل الجوال.",
       lang: "English",
       months: ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"]
     },
@@ -56,6 +65,10 @@
       st_apk: ["Download the APK, or follow updates with Obtainium", "Allow root when it first opens", "For a second phone: connect it with an OTG cable"],
       copy: "Copy", copied: "Copied", prev: "Previous", next: "Next", back: "All tools",
       dev: "Developer", telegram: "Telegram group",
+      fb_site: "Fastboot Studio site", all_tools: "All IFOKNR tools",
+      fb_moved: "The three apps now have their own site.", fb_open: "Open the Fastboot Studio site",
+      fb_h1: "Fastboot Studio: flash your phone from the PC or from the phone itself",
+      fb_lead: "A Windows app and a phone app that flash your phone and guard it against mistakes, and a root module that completes them from inside the phone.",
       lang: "عربي",
       months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
     }
@@ -108,26 +121,30 @@
     if (r && !newer(t.version, r.tag)) return r;
     return { tag: t.version, date: "", downloads: r ? r.downloads : 0, url: "https://github.com/" + t.repo + "/releases/latest", asset: null };
   }
-  function icon(t) { return esc(t.icon); }
+  function icon(t) { return esc(BASE + t.icon); }
   function nm(t, cls) {
-    return '<img class="' + cls + " " + cls + '-dark" src="assets/img/names/' + t.id + '-dark.svg" alt="' + esc(t.name.join("")) + '">' +
-      '<img class="' + cls + " " + cls + '-light" src="assets/img/names/' + t.id + '-light.svg" alt="">';
+    return '<img class="' + cls + " " + cls + '-dark" src="' + BASE + 'assets/img/names/' + t.id + '-dark.svg" alt="' + esc(t.name.join("")) + '">' +
+      '<img class="' + cls + " " + cls + '-light" src="' + BASE + 'assets/img/names/' + t.id + '-light.svg" alt="">';
   }
   function vid(t) {
-    return '<video src="assets/media/' + t.id + '.mp4" poster="assets/media/' + t.id + '.jpg" muted loop playsinline preload="metadata" aria-hidden="true"></video>';
+    return '<video src="' + BASE + 'assets/media/' + t.id + '.mp4" poster="' + BASE + 'assets/media/' + t.id + '.jpg" muted loop playsinline preload="metadata" aria-hidden="true"></video>';
   }
   function ext(href, cls, body) { return '<a class="' + cls + '" href="' + esc(href) + '" target="_blank" rel="noopener">' + body + "</a>"; }
 
   function menu(cur) {
     var h = '<a class="nav' + (cur === "home" ? " on" : "") + '" href="#home"' + (cur === "home" ? ' aria-current="page"' : "") + ">" + SV.home + "<span>" + s("home") + "</span></a>";
     GROUPS.forEach(function (g) {
+      var list = TOOLS.filter(function (x) { return x.group === g[0]; });
+      if (!list.length) return;
       h += '<div class="label">' + s(g[1]) + "</div>";
-      TOOLS.filter(function (x) { return x.group === g[0]; }).forEach(function (t) {
+      list.forEach(function (t) {
         var on = cur === t.id;
         h += '<a class="nav' + (on ? " on" : "") + '" href="#' + t.id + '"' + (on ? ' aria-current="page"' : "") + '><img class="ic" src="' + icon(t) + '" alt="">' + nm(t, "nm") + '<span class="ver">' + esc(short(rel(t).tag)) + "</span></a>";
       });
     });
     h += '<div class="label">' + s("links") + "</div>" +
+      (SCOPE === "fastboot" ? '<a class="nav" href="' + BASE + '">' + SV.home + "<span>" + s("all_tools") + "</span></a>"
+        : '<a class="nav" href="fastboot/"><img class="ic" src="assets/img/tools/fastbootstudio.svg?v=4" alt=""><span>' + s("fb_site") + "</span></a>") +
       ext("https://t.me/BeNeXTBrO", "nav", SV.tg.replace("<svg", '<svg class="ic"') + "<span>" + s("telegram") + "</span>") +
       ext("https://github.com/ifoknr", "nav", SV.gh.replace("<svg", '<svg class="ic"') + "<span>GitHub</span>");
     return h;
@@ -155,8 +172,8 @@
   }
 
   function foot() {
-    return '<footer class="foot"><div class="dev"><img class="mark sig-dark" src="assets/img/ifoknr-mark.svg?v=4" alt=""><img class="mark sig-light" src="assets/img/ifoknr-mark-light.svg?v=4" alt="">' +
-      '<div><img class="sig sig-dark" src="assets/img/ifoknr-dark.svg?v=4" alt="IFOKNR"><img class="sig sig-light" src="assets/img/ifoknr-light.svg?v=4" alt=""><small>' + s("dev") + "</small></div></div>" +
+    return '<footer class="foot"><div class="dev"><img class="mark sig-dark" src="' + BASE + 'assets/img/ifoknr-mark.svg?v=4" alt=""><img class="mark sig-light" src="' + BASE + 'assets/img/ifoknr-mark-light.svg?v=4" alt="">' +
+      '<div><img class="sig sig-dark" src="' + BASE + 'assets/img/ifoknr-dark.svg?v=4" alt="IFOKNR"><img class="sig sig-light" src="' + BASE + 'assets/img/ifoknr-light.svg?v=4" alt=""><small>' + s("dev") + "</small></div></div>" +
       '<div class="links">' + ext("https://t.me/IFOKNR1", "pill-btn tonal small", SV.tg + "@IFOKNR1") + ext("https://t.me/BeNeXTBrO", "pill-btn outlined small", s("telegram")) + ext("https://github.com/ifoknr", "pill-btn outlined small", SV.gh + "GitHub") + "</div></footer>";
   }
 
@@ -172,17 +189,20 @@
         (g === "hide" ? stack() : "") +
         '<div class="grid g-' + g + '">' + TOOLS.filter(function (t) { return t.group === g; }).map(card).join("") + "</div></section>";
     };
-    var fbs = byId.fastbootstudio, mob = byId.mobile;
+    // On the main site the Fastboot Studio apps are one link to their own site.
+    var fbLink = '<section class="section" id="sec-pc"><div class="sec-head"><div><h2>' + s("sec_pc") + "</h2><p>" + s("fb_moved") + "</p></div></div>" +
+      '<div class="cta"><a class="pill-btn filled" href="fastboot/"><img class="ic" src="assets/img/tools/fastbootstudio.svg?v=4" alt="">' + s("fb_open") + "</a></div></section>";
+    var fbs = ALL.fastbootstudio, mob = ALL.mobile, fb = SCOPE === "fastboot";
     return '<section class="hero"><div>' +
         '<div class="eyebrow"><span class="chip blue">' + s("eyebrow") + '</span><span class="chip">' + TOOLS.length + " " + s("tools") + "</span></div>" +
-        "<h1>" + s("h1") + '</h1><p class="lead">' + s("lead") + "</p>" +
+        "<h1>" + s(fb ? "fb_h1" : "h1") + '</h1><p class="lead">' + s(fb ? "fb_lead" : "lead") + "</p>" +
         '<div class="cta"><a class="pill-btn filled" href="#tools">' + SV.list + s("browse") + "</a>" + ext("https://t.me/BeNeXTBrO", "pill-btn tonal", SV.tg + "Telegram") + ext("https://github.com/ifoknr", "pill-btn outlined", SV.gh + "GitHub") + "</div></div>" +
         '<div class="reel" aria-hidden="true">' + (fbs ? '<div class="laptop">' + vid(fbs) + "</div>" : "") + (mob ? '<div class="phone">' + vid(mob) + "</div>" : "") + "</div>" +
       "</section>" +
       '<div class="strips"><div class="strip"><span>' + s("tools") + "</span><b>" + TOOLS.length + '</b></div><div class="strip"><span>' + s("downloads") + "</span><b>" + num(total) + "</b></div>" +
         '<div class="strip"><span>' + s("updated") + "</span><b>" + (last ? date(last.r.date) : "—") + '</b></div><div class="strip"><span>' + s("latest") + "</span><b>" + (last ? esc(last.t.name.join("") + " " + short(last.r.tag)) : "—") + "</b></div></div>" +
       '<div id="tools"></div>' +
-      sec("pc", "sec_pc", "sec_pc_d") + sec("hide", "sec_hide", "sec_hide_d") + sec("perf", "sec_perf", "sec_perf_d") + foot();
+      (fb ? sec("pc", "sec_pc", "sec_pc_d") : fbLink + sec("hide", "sec_hide", "sec_hide_d") + sec("perf", "sec_perf", "sec_perf_d")) + foot();
   }
 
   function tool(t) {
@@ -235,7 +255,8 @@
     document.getElementById("menu").innerHTML = menu(cur);
     document.getElementById("menu-sheet").innerHTML = menu(cur);
     document.querySelectorAll("[data-act=lang]").forEach(function (b) { b.textContent = s("lang"); });
-    document.title = t ? t.name.join("") + " · IFOKNR Tools" : "IFOKNR Tools";
+    var site = SCOPE === "fastboot" ? "Fastboot Studio · IFOKNR" : "IFOKNR Tools";
+    document.title = t ? t.name.join("") + " · " + site : site;
     var page = document.getElementById("page");
     var y = window.scrollY;
     page.innerHTML = t ? tool(t) : home();
@@ -321,7 +342,9 @@
   }
 
   function start(list) {
-    TOOLS = list.slice().sort(function (a, b) { return ORDER.indexOf(a.id) - ORDER.indexOf(b.id); });
+    list.forEach(function (t) { ALL[t.id] = t; });
+    TOOLS = list.filter(function (t) { return (t.group === "pc") === (SCOPE === "fastboot"); })
+      .sort(function (a, b) { return ORDER.indexOf(a.id) - ORDER.indexOf(b.id); });
     TOOLS.forEach(function (t) { byId[t.id] = t; });
     load();
   }
@@ -330,5 +353,5 @@
   var inline = null;
   try { inline = JSON.parse(document.getElementById("tools-data").textContent); } catch (e) {}
   if (Array.isArray(inline) && inline.length) start(inline);
-  else fetch("assets/tools.json", { cache: "no-cache" }).then(function (r) { return r.json(); }).then(start);
+  else fetch(BASE + "assets/tools.json", { cache: "no-cache" }).then(function (r) { return r.json(); }).then(start);
 })();

@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fastboot Studio · IFOKNR</title>
+  <meta name="description" content="Fastboot Studio by IFOKNR: the Windows app, the phone app and the Companion module. Flash your phone safely, from the PC or the phone itself.">
+  <meta name="theme-color" content="#0b0b0e">
+  <meta property="og:title" content="Fastboot Studio · IFOKNR">
+  <meta property="og:description" content="Flash your Android phone safely, from the PC or from the phone itself.">
+  <link rel="icon" href="img/glass/fastbootstudio-dark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="fastboot.css">
+</head>
+<body>
+<div dir="rtl" lang="ar" class="page" id="page">
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="./"><img src="img/glass/fastbootstudio-dark.svg" alt=""><span class="ltr">Fastboot Studio</span></a>
+    <nav class="nav"><a href="#wizard" data-en="What do you need">وش تبي تسوي</a><a href="#tour" data-en="Tour">جولة</a><a href="#glossary" data-en="Glossary">القاموس</a><a href="#rel" data-en="Releases">الإصدارات</a><a href="../" data-en="All IFOKNR tools">كل أدوات IFOKNR</a></nav>
+    <button class="lang" type="button" id="lang">English</button>
+    <a class="btn fill" href="#get" data-en="Download">تحميل</a>
+  </header>
+</div>
+
+<div class="ghero">
+  <div class="rings" aria-hidden="true"><i></i><i></i><i></i></div>
+  <section class="hero wrap">
+    <span class="pill"><span data-en="Free and open source">مجاني ومفتوح المصدر</span> · <span class="ltr" data-ver="win">v3.0.0</span></span>
+    <h1 data-en-html="Flash your phone, &lt;em&gt;without fear&lt;/em&gt;">فلّش جوالك <em>بدون خوف</em></h1>
+    <p class="lead" data-en="A Windows app, a phone app and a root module. Every file is checked before it is written.">برنامج ويندوز، وتطبيق جوال، وموديول روت. كل ملف ينفحص قبل ما ينكتب.</p>
+    <div class="smart" id="smart">
+      <div class="cta flush"><a class="btn fill" id="smartbtn" href="#get"></a><a class="btn line" href="#wizard" data-en="Not sure what I need">ما أدري وش أحتاج</a></div>
+      <span class="os"><span data-en="Your device:">جهازك:</span> <b id="osname"></b> · <span class="alt" id="smartalt"></span></span>
+    </div>
+    <div class="gstage">
+      <div class="device" id="device" data-mode="dark">
+        <div class="laptop2"><img class="shot sd" src="img/win/ar-02-device.webp" alt=""><img class="shot sl" src="img/win/light-02-device.webp" alt=""></div>
+        <div class="phone2"><img class="shot sd" src="img/mob/hero-ar-dark-device.webp" data-en-src="img/mob/hero-en-dark-device.webp" alt=""><img class="shot sl" src="img/mob/hero-ar-light-device.webp" data-en-src="img/mob/hero-en-light-device.webp" alt=""></div>
+      </div>
+      <div class="pane p1"><small data-en="Before flashing">قبل التفليش</small><b><span class="ltr">boot.img</span> <span class="ok" data-en="✓ checked">✓ مفحوص</span></b></div>
+      <div class="pane p2"><small>SHA-256</small><b class="ltr">9f3c…a41e</b></div>
+      <div class="pane p3"><small data-en="Samsung">سامسونج</small><b data-en="Download mode">وضع Download</b></div>
+      <div class="pane p4"><small data-en="Root">الروت</small><b class="ltr">Magisk · KernelSU · APatch</b></div>
+    </div>
+    <div class="modes" role="group" aria-label="Theme"><button type="button" data-mode="dark" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.2A8 8 0 0 1 9.8 4a8 8 0 1 0 10.2 10.2z"/></svg><span data-en="Dark">ليلي</span></button><button type="button" data-mode="light" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg><span data-en="Light">نهاري</span></button></div>
+    <div class="shelf">
+      <a class="gapp" href="app.html#win"><img src="img/glass/fastbootstudio-dark.svg" alt=""><span><b class="ltr">Fastboot Studio</b><small class="ltr"><span data-ver="win">v3.0.0</span> · Windows</small></span></a>
+      <a class="gapp" href="app.html#mob"><img src="img/glass/mobile-dark.svg" alt=""><span><b class="ltr">Mobile</b><small class="ltr"><span data-ver="mob">v1.2.0</span> · Android 8+</small></span></a>
+      <a class="gapp" href="app.html#comp"><img src="img/glass/companion-dark.svg" alt=""><span><b class="ltr">Companion</b><small class="ltr"><span data-ver="comp">v2.5.3</span> · KernelSU · Magisk · APatch</small></span></a>
+    </div>
+  </section>
+</div>
+
+<section class="sec wrap" id="apps">
+  <div class="head"><span class="pill" data-en="The apps">التطبيقات</span><h2 data-en-html="Three apps, &lt;em&gt;the same folders&lt;/em&gt;">ثلاثة تطبيقات، <em>نفس المجلدات</em></h2><p data-en="Each works on its own, and together they share the same backups.">كل واحد يشتغل لحاله، ومع بعض يشوفون نفس النسخ الاحتياطية.</p></div>
+  <div class="apps">
+    <article class="app"><img class="ic" src="img/glass/fastbootstudio-dark.svg" alt=""><img class="nm" src="../assets/img/names/fastbootstudio-dark.svg" alt="Fastboot Studio"><p data-en="The Android toolbox for Windows.">أداة أندرويد المتكاملة لويندوز.</p><div class="meta"><span class="ltr" data-ver="win">v3.0.0</span><span>Windows 10 / 11</span></div><a class="go" href="app.html#win" data-en="Details →">التفاصيل ←</a></article>
+    <article class="app"><img class="ic" src="img/glass/mobile-dark.svg" alt=""><img class="nm" src="../assets/img/names/mobile-dark.svg" alt="Fastboot Studio Mobile"><p data-en="Fastboot Studio on the phone itself: flash safely without a PC.">Fastboot Studio على الجوال نفسه: فلّش بأمان بدون كمبيوتر.</p><div class="meta"><span class="ltr" data-ver="mob">v1.2.0</span><span>Android 8+</span></div><a class="go" href="app.html#mob" data-en="Details →">التفاصيل ←</a></article>
+    <article class="app"><img class="ic" src="img/glass/companion-dark.svg" alt=""><img class="nm" src="../assets/img/names/companion-dark.svg" alt="Fastboot Studio Companion"><p data-en="A root module that completes Fastboot Studio from inside the phone.">موديول روت يكمّل Fastboot Studio من داخل الجوال.</p><div class="meta"><span class="ltr" data-ver="comp">v2.5.3</span><span>KernelSU · Magisk · APatch</span></div><a class="go" href="app.html#comp" data-en="Details →">التفاصيل ←</a></article>
+  </div>
+</section>
+
+<section class="sec wrap" id="wizard">
+  <div class="head"><span class="pill" data-en="New">جديد</span><h2 data-en-html="What do you &lt;em&gt;want to do&lt;/em&gt;?">وش <em>تبي تسوي</em>؟</h2><p data-en="Pick your goal, and we tell you which app fits and how to start.">اختر هدفك، ونقولك أي تطبيق يناسبك وكيف تبدأ.</p></div>
+  <div class="goals" role="group" id="goals"></div>
+  <div class="answer" id="answer" aria-live="polite"></div>
+</section>
+
+<section class="sec wrap" id="tour">
+  <div class="head"><span class="pill" data-en="Tour">جولة</span><h2 data-en-html="See &lt;em&gt;inside&lt;/em&gt; the app">شوف <em>من داخل</em> التطبيق</h2><p data-en="Real screenshots from the apps. Pick a page to see what is on it.">صور حقيقية من التطبيقات. اختر صفحة وتشوف وش فيها.</p></div>
+  <div class="apptabs" role="tablist">
+    <button type="button" role="tab" data-app="win" aria-selected="true">Fastboot Studio</button>
+    <button type="button" role="tab" data-app="mob" aria-selected="false">Mobile</button>
+    <button type="button" role="tab" data-app="comp" aria-selected="false">Companion</button>
+  </div>
+  <div class="tour"><div class="pagetabs" id="pagetabs" role="tablist"></div><div><div class="view" id="view"><img id="viewimg" alt=""></div><p class="cap" id="cap"></p></div></div>
+</section>
+
+<section class="sec wrap" id="why">
+  <div class="head"><span class="pill" data-en="Features">المميزات</span><h2 data-en-html="What &lt;em&gt;each app&lt;/em&gt; does">وش يسوي <em>كل تطبيق</em></h2></div>
+  <div class="feat">
+    <div><h3><img src="img/glass/fastbootstudio-dark.svg" alt=""><span data-en="Fastboot Studio for Windows">Fastboot Studio للويندوز</span></h3>
+      <ul class="list"><li data-en="Root with Magisk, KernelSU or APatch in four steps; boot images checked before flashing">روت بـ Magisk أو KernelSU أو APatch في أربع خطوات، وفحص صورة boot قبل التفليش</li><li data-en="Flashes payload.bin straight from an OTA zip; checks super space, creates missing partitions">يفلّش payload.bin من ملف OTA مباشرة، ويحسب مساحة super ويسوي الأقسام الناقصة</li><li data-en="Phone page with the Companion module, backups, terminal, image tools, full Arabic">صفحة الجوال مع إضافة Companion، نسخ احتياطي، طرفية، أدوات صور، وعربي كامل</li></ul></div>
+    <div class="shot"><img src="img/win/ar-03-flash.webp" data-en-src="img/win/light-03-flash.webp" alt=""></div>
+  </div>
+  <div class="feat">
+    <div><h3><img src="img/glass/mobile-dark.svg" alt="">Fastboot Studio Mobile</h3>
+      <ul class="list"><li data-en="A check before every flash: a wrong or tampered file, or a kernel of another series, is refused">فحص قبل كل تفليش: الملف الغلط أو المتلاعب فيه أو كيرنل سلسلة ثانية ينرفض</li><li data-en="A backup before writing, in the same folders as the Windows app and the Companion">نسخة احتياطية قبل الكتابة، ونفس مجلدات برنامج الويندز والـ Companion</li><li data-en="OTG: flash another phone in fastboot mode over a cable, no root needed">OTG: فلّش جوال ثاني في وضع fastboot بالكيبل، بدون روت</li></ul></div>
+    <div class="shot tall"><img src="img/mob/ar-flash.webp" data-en-src="img/mob/en-flash.webp" alt=""></div>
+  </div>
+  <div class="feat">
+    <div><h3><img src="img/glass/companion-dark.svg" alt="">Fastboot Studio Companion</h3>
+      <ul class="list"><li data-en="The AVB state from the bootloader itself, and the hiding module that changes it">حالة AVB من البوت لودر نفسه، ويكشف مود الإخفاء اللي يغيّرها</li><li data-en="Finds conflicts between modules: the same file, a replaced folder, a property set twice">يكشف التعارض بين المودات: نفس الملف، مجلد مستبدل، خاصية مكررة</li><li data-en="Partition backups on the phone; a WebUI for phones and tablets, day and night">نسخ احتياطي للأقسام من الجوال، وواجهة للجوال والتابلت بالوضع الليلي والنهاري</li></ul></div>
+    <div class="shot"><img src="img/comp/webui-ar.webp" data-en-src="img/comp/webui-en.webp" alt=""></div>
+  </div>
+</section>
+
+<section class="sec wrap" id="pick">
+  <div class="head"><span class="pill" data-en="Compare">مقارنة</span><h2 data-en-html="Which one &lt;em&gt;fits you&lt;/em&gt;?">وش <em>يناسبك</em>؟</h2><p data-en="All three are free.">الثلاثة مجانية.</p></div>
+  <div class="compare">
+    <div class="col"><h3>Mobile</h3><p class="where" data-en="On the phone itself">على الجوال نفسه</p><p class="big ltr">APK</p><a class="btn line" href="#get" data-en="Download APK">تحميل APK</a>
+      <div class="row"><span class="k" data-en="Flashes">يفلّش</span><span data-en="boot and AnyKernel3 kernels">boot وكيرنل AnyKernel3</span></div><div class="row"><span class="k" data-en="Needs">يحتاج</span><span data-en="Android 8+, root">Android 8+، روت</span></div><div class="row"><span class="k" data-en="Second phone">جوال ثاني</span><span data-en="Over an OTG cable">بكيبل OTG</span></div><div class="row"><span class="k" data-en="Updates">التحديث</span><span data-en="Through Obtainium">من Obtainium</span></div></div>
+    <div class="col mid"><span class="pill" data-en="The fullest">الأشمل</span><h3 class="mt8">Fastboot Studio</h3><p class="where" data-en="On a Windows PC">على كمبيوتر ويندوز</p><p class="big ltr">winget</p><a class="btn fill" href="#get" data-en="Download for Windows">تحميل للويندوز</a>
+      <div class="row"><span class="k" data-en="Flashes">يفلّش</span><span data-en="boot, payload.bin and partitions">boot وpayload.bin والأقسام</span></div><div class="row"><span class="k" data-en="Root">الروت</span><span>Magisk · KernelSU · APatch</span></div><div class="row"><span class="k" data-en="Samsung">سامسونج</span><span data-en="Download mode">وضع Download</span></div><div class="row"><span class="k" data-en="Needs">يحتاج</span><span>Windows 10 / 11 x64</span></div></div>
+    <div class="col"><h3>Companion</h3><p class="where" data-en="A module inside the phone">موديول داخل الجوال</p><p class="big ltr">zip</p><a class="btn line" href="#get" data-en="Download the module">تحميل الموديول</a>
+      <div class="row"><span class="k" data-en="Flashes">يفلّش</span><span data-en="No, read only">لا، قراءة فقط</span></div><div class="row"><span class="k" data-en="Finds">يكشف</span><span data-en="AVB state, module conflicts">حالة AVB وتعارض المودات</span></div><div class="row"><span class="k" data-en="Backups">نسخ احتياطي</span><span data-en="Partitions, from the phone">للأقسام من الجوال</span></div><div class="row"><span class="k" data-en="Needs">يحتاج</span><span>KernelSU · Magisk · APatch</span></div></div>
+  </div>
+</section>
+
+<section class="sec wrap" id="get">
+  <div class="head"><span class="pill" data-en="Download">التحميل</span><h2 data-en-html="Download &lt;em&gt;your way&lt;/em&gt;">حمّل <em>بالطريقة اللي تناسبك</em></h2><p data-en="Every file comes with its SHA-256 fingerprint, so you can check it was not changed.">كل ملف معه بصمة SHA-256 عشان تتأكد إنه ما تغيّر.</p></div>
+  <div class="get">
+    <div class="col mid"><h3>Fastboot Studio</h3><p class="where">Windows 10 / 11 · x64</p>
+      <div class="code ltr"><code>winget install IFOKNR.FastbootStudio</code><button type="button" data-copy="winget install IFOKNR.FastbootStudio" data-en="Copy">نسخ</button></div>
+      <a class="btn fill" href="https://github.com/ifoknr/FastbootStudio/releases/latest" data-dl="win" data-en="Or download the zip">أو حمّل ملف zip</a><span class="sha ltr" data-sha="win" hidden></span></div>
+    <div class="col"><h3>Fastboot Studio Mobile</h3><p class="where" data-en="Android 8+ · root">Android 8+ · روت</p>
+      <a class="btn line" href="https://github.com/ifoknr/FastbootStudio-Mobile/releases/latest" data-dl="mob" data-en="Download APK">تحميل APK</a><a class="obt" href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://app/%7B%22id%22%3A%22com.ifoknr.fastbootstudio.mobile%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2Fifoknr%2FFastbootStudio-Mobile%22%2C%22author%22%3A%22IFOKNR%22%2C%22name%22%3A%22Fastboot%20Studio%20Mobile%22%2C%22additionalSettings%22%3A%22%7B%5C%22includePrereleases%5C%22%3Afalse%7D%22%7D" target="_blank" rel="noopener"><img class="badge" src="img/badge-obtainium.png" alt="Get it on Obtainium"></a><span class="sha ltr" data-sha="mob" hidden></span></div>
+    <div class="col"><h3>Fastboot Studio Companion</h3><p class="where">KernelSU · Magisk · APatch</p>
+      <ol class="steps"><li data-en="Download the zip">حمّل ملف zip</li><li data-en="Install it in your root manager">ركّبه من مدير الروت</li><li data-en="Restart and open its WebUI">أعد تشغيل الجوال وافتح الواجهة</li></ol>
+      <a class="btn line" href="https://github.com/ifoknr/FastbootStudio-Companion/releases/latest" data-dl="comp" data-en="Download the module">تحميل الموديول</a><span class="sha ltr" data-sha="comp" hidden></span></div>
+  </div>
+</section>
+
+<section class="sec wrap" id="rel">
+  <div class="head"><span class="pill" data-en="Releases">الإصدارات</span><h2 data-en-html="Latest &lt;em&gt;releases&lt;/em&gt;">آخر <em>الإصدارات</em></h2><p data-en="Read live from GitHub, in Arabic and English.">تنقرا حيّة من GitHub بالعربي والإنجليزي.</p></div>
+  <div class="rels" id="rels">
+    <div class="rel"><small>Fastboot Studio</small><div class="v ltr" data-ver="win">v3.0.0</div><ul><li data-en="The new look in dark charcoal and white">الشكل الجديد بالفحمي الغامق والأبيض</li><li data-en="The glass icon">الأيقونة الزجاجية</li><li data-en="Samsung support through Download mode">دعم سامسونج عن طريق وضع Download</li></ul></div>
+    <div class="rel"><small>Fastboot Studio Mobile</small><div class="v ltr" data-ver="mob">v1.2.0</div><ul><li data-en="A signed APK">APK موقّع</li></ul></div>
+    <div class="rel"><small>Fastboot Studio Companion</small><div class="v ltr" data-ver="comp">v2.5.3</div><ul><li data-en="update.json updated">ملف update.json محدّث</li></ul></div>
+  </div>
+</section>
+
+<section class="sec wrap" id="glossary">
+  <div class="head"><span class="pill" data-en="Glossary">القاموس</span><h2 data-en-html="The terms, &lt;em&gt;explained&lt;/em&gt;">المصطلحات <em>بالعربي</em></h2><p data-en="Every word you meet in the flashing world, in plain words.">كل كلمة تمر عليك في عالم الفلاش، بشرح بسيط.</p></div>
+  <label class="gsearch"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5"/></svg><input id="gq" type="search"></label>
+  <div class="terms" id="terms"></div>
+  <p class="none" id="none" hidden data-en="No match for that word.">ما لقينا هالكلمة.</p>
+</section>
+
+<div class="glow"><section class="final wrap"><h2 data-en="Ready to start?">جاهز تبدأ؟</h2><p data-en="Download the app that fits you, and ask anything in the Telegram group.">حمّل التطبيق اللي يناسبك، وأي سؤال في قروب تلقرام.</p><div class="cta center"><a class="btn fill" href="#get" data-en="Download">تحميل</a><a class="btn line" href="https://t.me/BeNeXTBrO" target="_blank" rel="noopener" data-en="Telegram group">قروب تلقرام</a></div></section></div>
+
+<footer><div class="wrap"><img class="fmark" src="../assets/img/ifoknr-mark.svg" alt=""><span>IFOKNR · Developer</span><div class="links"><a href="../" data-en="All IFOKNR tools">كل أدوات IFOKNR</a><a href="https://github.com/ifoknr" target="_blank" rel="noopener">GitHub</a><a href="https://xdaforums.com/t/tool-windows-fastboot-studio-fastboot-ota-flasher-root-helper-phone-info-payload-dumper-super-builder-backups.4804685/" target="_blank" rel="noopener">XDA</a><a href="https://t.me/BeNeXTBrO" target="_blank" rel="noopener">Telegram</a></div></div></footer>
+</div>
+<script src="live.js"></script>
+<script src="fastboot.js"></script>
+</body>
+</html>
