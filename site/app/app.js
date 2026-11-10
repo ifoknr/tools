@@ -338,8 +338,16 @@
         return '<button class="snav' + (cur === c.id ? ' on' : '') + '" data-go="#/c/' + esc(c.id) + '">' + catIcon(c.id) + '<span>' + esc(c[state.lang]) + '</span><small class="ltr">' + num(c.count) + '</small></button>';
       }).join('') + '</div></nav>';
   }
+  // IFOKNR's picture sits in a glass hexagon; thin rings behind it, like the Daccord profile.
+  var RINGS = '<svg class="rings" viewBox="-80 -80 160 160" aria-hidden="true"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1">' +
+    '<stop offset="0" style="stop-color:var(--g1)"/><stop offset=".5" style="stop-color:var(--g2)"/><stop offset="1" style="stop-color:var(--g3)"/></linearGradient></defs>' +
+    [0, 9, 18, 27, 36].map(function (a, n) {
+      var r = 62 + n * 3.2, pts = [];
+      for (var k = 0; k < 6; k++) { var ang = (k * 60 - 90 + a) * Math.PI / 180; pts.push((r * Math.cos(ang)).toFixed(1) + ',' + (r * Math.sin(ang)).toFixed(1)); }
+      return '<polygon points="' + pts.join(' ') + '" stroke-opacity="' + (0.55 - n * 0.09).toFixed(2) + '"/>';
+    }).join('') + '</svg>';
   function insp() {
-    var h = '<aside class="insp"><div class="me"><span class="mehex">' + mark('mm') + '</span>' + themed('/assets/img/ifoknr-{t}.svg', 'sig', 'IFOKNR') + '<small>' + t('dev') + '</small></div>';
+    var h = '<aside class="insp"><div class="me"><span class="mehex">' + RINGS + '<span class="hexin"><img class="mm" src="/app/ifoknr.webp" width="96" height="96" alt="IFOKNR"></span></span>' + themed('/assets/img/ifoknr-{t}.svg', 'sig', 'IFOKNR') + '<small>' + t('dev') + '</small></div>';
     if (state.priv.length) h += '<div class="ihead"><span>' + t('uploads') + '</span><span class="ltr">' + num(state.priv.length) + '</span></div><div class="ilist">' +
       state.priv.slice(0, 6).map(function (p) {
         return '<button class="irow" data-go="#/p/' + esc(p.id) + '">' + avatar(p.name, null, 'sm') + '<span><b class="ltr">' + esc(p.name) + '</b><small>' + esc(p.t ? date(p.t) : (p.ext ? '.' + p.ext : '')) + '</small></span></button>';
@@ -370,7 +378,7 @@
   }
   function pcard(i, go, sub, foot) {
     var pic = ghPic(i.gh);
-    return '<button class="pcard" data-go="' + go + '"><span class="ppic">' + (pic ? '<img class="pblur" loading="lazy" alt="" src="' + pic + '" data-fallback>' : '') + avatar(i.n, i.gh, 'md') + '</span>' +
+    return '<button class="pcard" data-go="' + go + '"><span class="ppic">' + (pic ? '<img class="pblur" loading="lazy" alt="" src="' + pic + '" data-fallback>' : '') + '</span>' + avatar(i.n, i.gh, 'md') +
       '<span class="pbody"><b class="ltr">' + esc(i.n) + '</b><span class="auto">' + esc(sub || '') + '</span><small>' + foot + '</small></span></button>';
   }
   function scard(i) {
@@ -395,7 +403,7 @@
     var fbs = state.tools.filter(function (x) { return x.group === 'pc'; }).sort(function (a, b) { return FBS.indexOf(a.id) - FBS.indexOf(b.id); });
     if (fbs.length) h += secHead(t('fbs')) + '<div class="pgrid">' + fbs.map(function (tl) {
       var txt = tl[state.lang] || tl.en || {}, rel = state.rel[tl.id];
-      return '<button class="pcard tool" data-go="#/t/' + esc(tl.id) + '"><span class="ppic">' + toolAvatar(tl, 'hex md') + '</span><span class="pbody"><b class="ltr">' + esc(toolName(tl)) + '</b><span>' + esc(txt.tagline || '') + '</span><small class="ltr">' + esc(rel ? rel.v : tl.version || '') + '</small></span></button>';
+      return '<button class="pcard tool" data-go="#/t/' + esc(tl.id) + '"><span class="ppic"></span>' + toolAvatar(tl, 'hex md') + '<span class="pbody"><b class="ltr">' + esc(toolName(tl)) + '</b><span>' + esc(txt.tagline || '') + '</span><small class="ltr">' + esc(rel ? rel.v : tl.version || '') + '</small></span></button>';
     }).join('') + '</div>';
     var picks = d.items.filter(function (i) { return i.star; }).sort(function (a, b) { return (b.stars || 0) - (a.stars || 0); }).slice(0, 6);
     if (picks.length) h += secHead(t('popular'), '#/c/root-management') + '<div class="pgrid">' + picks.map(function (i) { return pcard(i, '#/i/' + i.id, i.d, '★ <span class="ltr">' + num(i.stars) + '</span>'); }).join('') + '</div>';
