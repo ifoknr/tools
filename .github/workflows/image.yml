@@ -22,9 +22,8 @@ jobs:
 
       - name: Check scripts
         run: |
-          node --check site/assets/boot.js
           node -e "JSON.parse(require('fs').readFileSync('site/assets/tools.json'))"
-          node --check site/assets/app.js
+          for f in site/assets/common.js site/assets/live.js site/assets/tool.js; do node --check "$f"; done
           node --check site/app/app.js
           for f in site/fastboot/*.js; do node --check "$f"; done
           node -e "const d=JSON.parse(require('fs').readFileSync('site/app/library.json'));if(d.items.length<100||d.categories.length<10)process.exit(1);console.log('library:',d.items.length,'entries')"
@@ -44,7 +43,9 @@ jobs:
         run: |
           docker run -d --name site -p 8090:80 tools:test
           for i in $(seq 1 20); do curl -fs http://127.0.0.1:8090/ >/dev/null && break; sleep 1; done
-          curl -fsS http://127.0.0.1:8090/ | grep -q 'assets/app.js'
+          curl -fsS http://127.0.0.1:8090/ | grep -q 'assets/common.js?v='
+          curl -fsS http://127.0.0.1:8090/tool.html | grep -q 'assets/tool.js?v='
+          curl -fsS -o /dev/null http://127.0.0.1:8090/assets/ui/zy-dark.webp
           curl -fsSI http://127.0.0.1:8090/assets/tools.js | grep -qi 'content-security-policy'
           curl -fsS -o /dev/null http://127.0.0.1:8090/assets/fonts/NotoKufiArabic-Regular.woff
           # GitHub's release data through the site: a list, then the same from the cache.
