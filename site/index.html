@@ -1,46 +1,117 @@
 <!doctype html>
-<html lang="ar" dir="rtl" data-theme="dark">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>IFOKNR Tools</title>
-  <meta name="description" content="IFOKNR — Android tools: Fastboot Studio, NextZygisk, NextWheel, NextSUSFS, NextCore.">
-  <meta name="theme-color" content="#202022">
+  <meta name="description" content="IFOKNR: NextZygisk, NextWheel and NextSUSFS hide root in apps, in Zygote and in the kernel. Free and open source. Fastboot Studio has its own site.">
+  <meta name="theme-color" content="#1d1e23">
   <meta property="og:title" content="IFOKNR Tools">
-  <meta property="og:description" content="Flashing, root hiding and performance tools for Android.">
+  <meta property="og:description" content="Three layers of root hiding for Android: NextZygisk, NextWheel and NextSUSFS.">
   <link rel="icon" href="assets/img/favicon.svg?v=5" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/style.css">
-  <script src="assets/boot.js"></script>
+  <link rel="stylesheet" href="assets/site.css">
 </head>
 <body>
-  <a class="skip" href="#page" data-i18n="skip"></a>
-  <div class="shell">
-    <aside class="rail" aria-label="Menu" data-i18n-label="menu">
-      <a class="brand" href="#home" aria-label="IFOKNR"><img class="mark sig-dark" src="assets/img/ifoknr-mark.svg?v=4" alt=""><img class="mark sig-light" src="assets/img/ifoknr-mark-light.svg?v=4" alt=""><span class="brand-name"><img class="sig sig-dark" src="assets/img/ifoknr-dark.svg?v=4" alt=""><img class="sig sig-light" src="assets/img/ifoknr-light.svg?v=4" alt=""></span></a>
-      <nav class="menu" id="menu"></nav>
-      <div class="rail-foot">
-        <button class="pill-btn tonal small" type="button" data-act="lang"></button>
-        <button class="icon-btn" type="button" data-act="theme" aria-label="Theme" data-i18n-label="theme"><svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.2A8 8 0 0 1 9.8 4a8 8 0 1 0 10.2 10.2z"/></svg></button>
-      </div>
-    </aside>
+<div id="page" dir="rtl" lang="ar" data-v="2">
+<header class="bar"><div class="wrap">
+  <a class="mark" href="#top" aria-label="IFOKNR"><img class="m" src="assets/img/ifoknr-mark.svg" alt=""><img class="n dk" src="assets/img/ifoknr-dark.svg" alt="IFOKNR"><img class="n lt" src="assets/img/ifoknr-light.svg" alt=""></a>
+  <nav><a href="#tools" data-en="Tools">الأدوات</a><a href="#how" data-en="How it goes">كيف تبدأ</a><a href="fastboot/">Fastboot Studio</a><a href="https://t.me/BeNeXTBrO" target="_blank" rel="noopener" data-en="Telegram">تلقرام</a></nav>
+  <button class="theme" type="button" id="theme" aria-label="Dark or light"><svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.2A8 8 0 0 1 9.8 4a8 8 0 1 0 10.2 10.2z"/></svg></button>
+  <button class="btn o s" type="button" id="lang">English</button>
+</div></header>
 
-    <header class="appbar">
-      <a class="brand" href="#home" aria-label="IFOKNR"><img class="mark sig-dark" src="assets/img/ifoknr-mark.svg?v=4" alt=""><img class="mark sig-light" src="assets/img/ifoknr-mark-light.svg?v=4" alt=""><span class="brand-name"><img class="sig sig-dark" src="assets/img/ifoknr-dark.svg?v=4" alt=""><img class="sig sig-light" src="assets/img/ifoknr-light.svg?v=4" alt=""></span></a>
-      <div class="appbar-actions">
-        <button class="icon-btn" type="button" data-act="theme" aria-label="Theme" data-i18n-label="theme"><svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.2A8 8 0 0 1 9.8 4a8 8 0 1 0 10.2 10.2z"/></svg></button>
-        <button class="icon-btn" type="button" data-act="menu" aria-label="Menu" data-i18n-label="menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
-      </div>
-    </header>
+<main id="top">
+<section class="hero"><div class="wrap">
+  <span class="sticker k1" data-en="Hide root">أخفِ الروت</span>
+  <span class="sticker round k2" data-en="Zygisk modules">وحدات Zygisk</span>
+  <span class="sticker k3" data-en="Live dashboard">لوحة حية</span>
+  <span class="sticker round k4"><span class="ltr">SuSFS</span></span>
+  <span class="sticker k8" data-en="11 languages">11 لغة</span>
+  <span class="sticker round k5" data-en="Play Integrity Fix">Play Integrity Fix</span>
+  <span class="sticker k6" data-en="Detector apps">أدوات الفحص</span>
+  <span class="sticker round k7" data-en="LSPosed">LSPosed</span>
+  <img class="logo" src="assets/img/ifoknr-mark.svg" alt="">
+  <h1 data-en="Three layers. Root hidden from every one.">ثلاث طبقات. والروت مخفي من كلها.</h1>
+  <p data-en="Three root modules that hide root in apps, in Zygote and in the kernel, and each one shows the others' status. Free and open source.">ثلاثة موديولات روت تخفي الروت داخل التطبيقات، وفي Zygote، وفي النواة، وكل وحدة تعرض حالة الباقي. مجانية ومفتوحة المصدر.</p>
+  <div class="cta"><a class="btn w" href="#tools" data-en="Browse the tools">تصفّح الأدوات</a><a class="btn o" href="https://t.me/BeNeXTBrO" target="_blank" rel="noopener" data-en="Telegram group">قروب تلقرام</a></div>
+  <span class="note" data-en="Works with KernelSU, Magisk and APatch.">تشتغل مع KernelSU وMagisk وAPatch.</span>
+  <div class="stats">
+    <div><b class="ltr" data-total>…</b><span data-en="downloads on GitHub">تحميل من GitHub</span></div>
+    <div><b class="ltr">3</b><span data-en="layers of hiding">طبقات إخفاء</span></div>
+    <div><b data-last>…</b><span data-en="last release">آخر إصدار</span></div>
+  </div>
+</div></section>
 
-    <main id="page" tabindex="-1"></main>
+<section class="wrap" id="tools">
+  <div class="shead"><h2 data-en="What you get">وش تحصل</h2><p data-en="Each tool is one root module with its own WebUI, and each one shows the others' status.">كل أداة موديول روت واحد بواجهته الخاصة، وكل وحدة تعرض حالة الباقي.</p></div>
+  <div class="cards">
+    <article class="card c-sage">
+      <div class="tx"><img class="ic" src="assets/img/tools/nextzygisk.svg" alt=""><img class="nm nm1" src="assets/img/names/nextzygisk-dark.svg" alt=""><img class="nm nm23" src="assets/img/names/nextzygisk-light.svg" alt="NextZygisk">
+        <h3 data-en="Standalone Zygisk for every root manager">Zygisk مستقل لكل مدراء الروت</h3>
+        <p data-en="Runs Zygisk modules such as LSPosed, Play Integrity Fix and NextWheel, and hides root from the apps you choose.">يشغّل وحدات Zygisk مثل LSPosed، NextWheel، Play Integrity Fix، ويخفي الروت عن التطبيقات اللي تختارها.</p>
+        <div class="meta"><span class="dls"><b class="ltr" data-dls="zy">…</b> <i data-en="downloads">تحميل</i></span><span class="ltr" data-ver="zy">v1.0.7</span><span>Zygote</span><span>AGPL-3.0</span></div>
+        <div class="acts"><a class="btn d s" href="https://github.com/ifoknr/NexTZygisk/releases/latest" data-dl="zy" target="_blank" rel="noopener" data-en="Download">تحميل</a><a class="btn o s" href="tool.html#zy" data-en="Full guide">الشرح الكامل</a></div></div>
+      <div class="shot"><img class="dk" src="assets/ui/zy-dark.webp" alt="NextZygisk WebUI"><img class="lt" src="assets/ui/zy-light.webp" alt=""></div>
+    </article>
+    <article class="card c-sky">
+      <div class="tx"><img class="ic" src="assets/img/tools/nextwheel.svg" alt=""><img class="nm nm1" src="assets/img/names/nextwheel-dark.svg" alt=""><img class="nm nm23" src="assets/img/names/nextwheel-light.svg" alt="NextWheel">
+        <h3 data-en="Hides Zygisk and root inside apps">يخفي Zygisk والروت داخل التطبيقات</h3>
+        <p data-en="Light and traceless, with a live dashboard that shows whether hiding works or stopped.">خفيف وما يترك أثر، ومعه لوحة حية توضّح إذا الإخفاء شغّال أو توقف.</p>
+        <div class="meta"><span class="dls"><b class="ltr" data-dls="wh">…</b> <i data-en="downloads">تحميل</i></span><span class="ltr" data-ver="wh">v0.0.18</span><span data-en="Apps layer">طبقة التطبيقات</span><span>AGPL-3.0</span></div>
+        <div class="acts"><a class="btn d s" href="https://github.com/ifoknr/NextWheel/releases/latest" data-dl="wh" target="_blank" rel="noopener" data-en="Download">تحميل</a><a class="btn o s" href="tool.html#wh" data-en="Full guide">الشرح الكامل</a></div></div>
+      <div class="shot"><img class="dk" src="assets/ui/wh-dark.webp" alt="NextWheel WebUI"><img class="lt" src="assets/ui/wh-light.webp" alt=""></div>
+    </article>
+    <article class="card c-rose">
+      <div class="tx"><img class="ic" src="assets/img/tools/nextsusfs.svg" alt=""><img class="nm nm1" src="assets/img/names/nextsusfs-dark.svg" alt=""><img class="nm nm23" src="assets/img/names/nextsusfs-light.svg" alt="NextSUSFS">
+        <h3 data-en="Kernel-level root hiding with SuSFS">إخفاء الروت من مستوى النواة مع SuSFS</h3>
+        <p data-en="Hides paths, mounts, memory maps and properties from apps; 40+ settings across 7 pages.">يخفي المسارات ونقاط الربط وخرائط الذاكرة والخصائص، وأكثر من 40 إعداد في 7 صفحات.</p>
+        <div class="meta"><span class="dls"><b class="ltr" data-dls="su">…</b> <i data-en="downloads">تحميل</i></span><span class="ltr" data-ver="su">v0.0.14</span><span data-en="Kernel layer">طبقة النواة</span><span>AGPL-3.0</span></div>
+        <div class="acts"><a class="btn d s" href="https://github.com/ifoknr/NextSUSFS/releases/latest" data-dl="su" target="_blank" rel="noopener" data-en="Download">تحميل</a><a class="btn o s" href="tool.html#su" data-en="Full guide">الشرح الكامل</a></div></div>
+      <div class="shot"><img class="dk" src="assets/ui/su-dark.webp" alt="NextSUSFS WebUI"><img class="lt" src="assets/ui/su-light.webp" alt=""></div>
+    </article>
+    <article class="card wide fb">
+      <div class="tx"><img class="ic dk" src="fastboot/img/glass/fastbootstudio-dark.svg" alt=""><img class="ic lt" src="fastboot/img/glass/fastbootstudio-light.svg" alt=""><div><h3 class="ltr">Fastboot Studio</h3><p data-en="Flashing from the PC or the phone itself has its own site.">الفلاش من الكمبيوتر أو من الجوال نفسه له موقعه الخاص.</p></div><a class="btn w" href="fastboot/" data-en="Open the Fastboot Studio site">افتح موقع Fastboot Studio</a></div>
+    </article>
+  </div>
+</section>
+
+<section class="wrap" id="how">
+  <div class="shead"><h2 data-en="How it goes">كيف تبدأ</h2><p data-en="Three steps for any of the three, from your root manager.">ثلاث خطوات لأي وحدة من الثلاث، من مدير الروت.</p></div>
+  <div class="journey">
+    <div class="col">
+      <div class="step"><span class="n c-peach">1</span><span><b data-en="Download the zip">حمّل ملف zip</b><small data-en="From the tool's card above, or its GitHub releases.">من بطاقة الأداة فوق، أو من إصداراتها في GitHub.</small></span></div>
+      <div class="step"><span class="n c-sky">2</span><span><b data-en="Install it in your root manager">ركّبه من مدير الروت</b><small data-en="KernelSU, Magisk or APatch.">KernelSU أو Magisk أو APatch.</small></span></div>
+    </div>
+    <div class="phone"><img class="dk" src="assets/ui/zy-dark.webp" alt=""><img class="lt" src="assets/ui/zy-light.webp" alt=""></div>
+    <div class="col">
+      <div class="step"><span class="n c-sage">3</span><span><b data-en="Restart and open its WebUI">أعد التشغيل وافتح الواجهة</b><small data-en="From the root manager: status, settings and hiding in one place.">من مدير الروت: الحالة والإعدادات والإخفاء في مكان واحد.</small></span></div>
+      <div class="step"><span class="n c-rose">+</span><span><b data-en="Check the result">افحص النتيجة</b><small data-en="NextSUSFS puts the detector apps one tap away.">NextSUSFS يحط أدوات الفحص على بعد ضغطة.</small></span></div>
+    </div>
+  </div>
+  <div class="stack">
+    <a class="lay c-sky" href="tool.html#wh"><img src="assets/img/tools/nextwheel.svg" alt=""><span><b data-en="Apps">التطبيقات</b><small class="ltr">NextWheel</small></span></a>
+    <a class="lay c-sage" href="tool.html#zy"><img src="assets/img/tools/nextzygisk.svg" alt=""><span><b>Zygote</b><small class="ltr">NextZygisk</small></span></a>
+    <a class="lay c-rose" href="tool.html#su"><img src="assets/img/tools/nextsusfs.svg" alt=""><span><b data-en="Kernel">النواة</b><small class="ltr">NextSUSFS</small></span></a>
   </div>
 
-  <div class="scrim" data-act="close"></div>
-  <div class="sheet" role="dialog" aria-label="Menu" data-i18n-label="menu"><div class="grab"></div><nav class="menu" id="menu-sheet"></nav><div class="sheet-foot"><button class="pill-btn tonal" type="button" data-act="lang"></button></div></div>
+  <div class="close">
+    <img src="assets/img/ifoknr-mark.svg" alt="">
+    <div><h2 data-en="Free and open source, every one of them.">مجانية ومفتوحة المصدر، كلها.</h2><p data-en="Questions and updates in the Telegram group.">الأسئلة والتحديثات في قروب تلقرام.</p>
+      <div class="acts"><a class="btn d" href="https://t.me/BeNeXTBrO" target="_blank" rel="noopener" data-en="Join the group">ادخل القروب</a><a class="btn o" href="https://github.com/ifoknr" target="_blank" rel="noopener">GitHub</a></div></div>
+  </div>
+</section>
+</main>
 
-  <noscript><p class="noscript">IFOKNR Tools: <a href="https://github.com/ifoknr">github.com/ifoknr</a> · <a href="https://t.me/BeNeXTBrO">t.me/BeNeXTBrO</a></p></noscript>
-  <script type="application/json" id="tools-data">
-</script>
-  <script src="assets/app.js"></script>
+<footer><div class="wrap">
+  <div class="dev"><img class="m" src="assets/img/ifoknr-mark.svg" alt=""><div><img class="n dk" src="assets/img/ifoknr-dark.svg" alt="IFOKNR"><img class="n lt" src="assets/img/ifoknr-light.svg" alt=""><small data-en="Developer">المطوّر</small></div></div>
+  <div><h4 data-en="Tools">الأدوات</h4><ul><li><a href="tool.html#zy" class="ltr">NextZygisk</a></li><li><a href="tool.html#wh" class="ltr">NextWheel</a></li><li><a href="tool.html#su" class="ltr">NextSUSFS</a></li></ul></div>
+  <div><h4 data-en="Sites">المواقع</h4><ul><li><a href="fastboot/" class="ltr">Fastboot Studio</a></li><li><a href="app/" data-en="Tools library">مكتبة الأدوات</a></li></ul></div>
+  <div><h4 data-en="Contact">التواصل</h4><ul><li><a href="https://t.me/IFOKNR1" target="_blank" rel="noopener" class="ltr">@IFOKNR1</a></li><li><a href="https://t.me/BeNeXTBrO" target="_blank" rel="noopener" data-en="Telegram group">قروب تلقرام</a></li><li><a href="https://github.com/ifoknr" target="_blank" rel="noopener">GitHub</a></li></ul></div>
+</div></footer>
+</div>
+
+<script src="assets/common.js"></script>
+<script src="assets/live.js"></script>
+
 </body>
 </html>

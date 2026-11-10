@@ -5,13 +5,11 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY security-headers.conf /etc/nginx/security-headers.conf
 COPY app-headers.conf /etc/nginx/app-headers.conf
 COPY site/ /usr/share/nginx/html/
-# Cloudflare keeps /assets/ for hours, so each release names its own copy: app.js?v=<hash>.
+# Cloudflare keeps /assets/ for hours, so each release names its own copy: common.js?v=<hash>.
 # A new index.html (never cached) then asks for the new files instead of yesterday's.
-RUN cd /usr/share/nginx/html && for f in assets/boot.js assets/app.js assets/style.css; do \
-      h=$(md5sum "$f" | cut -c1-10); sed -i "s#\"$f\"#\"$f?v=$h\"#" index.html; \
-    done && grep -q 'app.js?v=' index.html \
-    && sed -i '/<script type="application\/json" id="tools-data">/r assets/tools.json' index.html \
-    && grep -q '"fastbootstudio"' index.html \
+RUN cd /usr/share/nginx/html && for f in assets/site.css assets/common.js assets/live.js assets/tool.js; do \
+      h=$(md5sum "$f" | cut -c1-10); sed -i "s#\"$f\"#\"$f?v=$h\"#" index.html tool.html; \
+    done && grep -q 'common.js?v=' index.html && grep -q 'tool.js?v=' tool.html \
     && for f in app/app.js app/app.css; do \
       h=$(md5sum "$f" | cut -c1-10); sed -i "s#\"/$f\"#\"/$f?v=$h\"#" app/index.html; \
     done && grep -q 'app.js?v=' app/index.html && rm -rf app/live
