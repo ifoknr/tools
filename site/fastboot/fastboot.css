@@ -365,3 +365,24 @@ section.sec{padding-top:110px}
 .terms>*{min-width:0}
 .term h3{flex-wrap:wrap}
 .gsearch input{min-width:0;width:100%}
+
+/* downloads: the GitHub count, all three apps and each one with its share */
+.dls{display:grid;grid-template-columns:1.1fr repeat(3,minmax(0,1fr));gap:14px}
+.dls>*{padding:20px;border-radius:22px;background:var(--glass);box-shadow:var(--glass-edge);backdrop-filter:blur(14px)}
+.dls .tot{display:flex;flex-direction:column;gap:8px;background:linear-gradient(135deg,rgba(122,162,255,.22),rgba(122,162,255,.05)),var(--glass)}
+.dls .tot .num{font-size:46px;font-weight:700;line-height:1.05}
+.dls .tot>*{align-self:flex-start}
+.dls small{color:var(--tx2);font-size:13px}
+.dapp{display:flex;align-items:center;gap:12px;transition:transform .2s,box-shadow .2s}
+.dapp:hover{transform:translateY(-3px);box-shadow:var(--glass-edge),0 16px 36px rgba(122,162,255,.18)}
+.dapp img{width:46px;height:46px;flex:none}
+.dapp>span{flex:1;min-width:0;display:flex;flex-direction:column}
+.dapp>span>*{align-self:flex-start}
+.dapp>span>.bar{align-self:stretch}
+.dapp b{font-size:22px;font-weight:700}
+.dapp .bar{display:block;height:6px;border-radius:6px;background:rgba(255,255,255,.08);margin-top:8px;overflow:hidden}
+.dapp .bar i{display:block;height:100%;width:0;border-radius:6px;background:linear-gradient(90deg,var(--acc),var(--acc2));transition:width .8s ease-out}
+@media (max-width:900px){.dls{grid-template-columns:1fr 1fr}.dls .tot{grid-column:1/-1}}
+@media (max-width:520px){.dls{grid-template-columns:1fr}}
+@media (prefers-reduced-transparency:reduce){.dls>*{backdrop-filter:none;background:#1b1b21}}
+#dl[hidden]{display:none}

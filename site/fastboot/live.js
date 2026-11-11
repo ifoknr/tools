@@ -52,6 +52,18 @@ var FB = (function () {
           '<a class="go" href="' + esc(r.url) + '" target="_blank" rel="noopener">' + (lang === "en" ? "Full notes" : "الملاحظات كاملة") + "</a></div>";
       }).join("");
     }
+    // The downloads section shows once all three apps have answered, so the total is never short.
+    var dl = document.getElementById("dl"), ids = ["win", "mob", "comp"];
+    if (dl && ids.every(function (id) { return data[id]; })) {
+      var max = Math.max.apply(null, ids.map(function (id) { return data[id].downloads; })) || 1, all = 0;
+      ids.forEach(function (id) {
+        var n = data[id].downloads; all += n;
+        document.querySelectorAll('[data-dlc="' + id + '"]').forEach(function (e) { e.textContent = num(n); });
+        document.querySelectorAll('[data-dlbar="' + id + '"]').forEach(function (e) { e.style.width = Math.max(2, Math.round(n / max * 100)) + "%"; });
+      });
+      document.querySelectorAll('[data-dlc="all"]').forEach(function (e) { e.textContent = num(all); });
+      dl.hidden = false;
+    }
     waiters.forEach(function (f) { f(); });
   }
   function load(lang) {
