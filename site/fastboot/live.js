@@ -55,14 +55,38 @@ var FB = (function () {
     // The downloads section shows once all three apps have answered, so the total is never short.
     var dl = document.getElementById("dl"), ids = ["win", "mob", "comp"];
     if (dl && ids.every(function (id) { return data[id]; })) {
-      var max = Math.max.apply(null, ids.map(function (id) { return data[id].downloads; })) || 1, all = 0;
+      var max = Math.max.apply(null, ids.map(function (id) { return data[id].downloads; })) || 1, all = 0, figs = [];
       ids.forEach(function (id) {
         var n = data[id].downloads; all += n;
-        document.querySelectorAll('[data-dlc="' + id + '"]').forEach(function (e) { e.textContent = num(n); });
-        document.querySelectorAll('[data-dlbar="' + id + '"]').forEach(function (e) { e.style.width = Math.max(2, Math.round(n / max * 100)) + "%"; });
+        document.querySelectorAll('[data-dlc="' + id + '"]').forEach(function (e) { e.textContent = num(n); figs.push([e, n]); });
       });
-      document.querySelectorAll('[data-dlc="all"]').forEach(function (e) { e.textContent = num(all); });
+      document.querySelectorAll('[data-dlc="all"]').forEach(function (e) { e.textContent = num(all); figs.push([e, all]); });
       dl.hidden = false;
+      // Once, when the card comes into view: the bars fill and the real figures count up from 0.
+      // The markup already holds the final figures, so nothing is lost with reduced motion or no observer.
+      if (!dl.dataset.shown) {
+        dl.dataset.shown = "1";
+        var bars = function () {
+          ids.forEach(function (id) {
+            document.querySelectorAll('[data-dlbar="' + id + '"]').forEach(function (e) { e.style.width = Math.max(2, Math.round(data[id].downloads / max * 100)) + "%"; });
+          });
+        };
+        var still = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (still || !("IntersectionObserver" in window)) { bars(); }
+        else {
+          var seen = new IntersectionObserver(function (es) {
+            if (!es.some(function (x) { return x.isIntersecting; })) return;
+            seen.disconnect(); bars();
+            var t0 = performance.now();
+            (function step(t) {
+              var k = Math.min(1, (t - t0) / 900), e = 1 - Math.pow(1 - k, 3);
+              figs.forEach(function (f) { f[0].textContent = num(Math.round(f[1] * e)); });
+              if (k < 1) requestAnimationFrame(step);
+            })(t0);
+          }, { threshold: 0.35 });
+          seen.observe(dl.querySelector(".dlx") || dl);
+        }
+      }
     }
     waiters.forEach(function (f) { f(); });
   }
